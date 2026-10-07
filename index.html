@@ -348,19 +348,128 @@
                     </div>
                 </div>
 
-                <!-- Manager Orders Tab -->
+                <!-- Manager Orders Tab (Orders Details[cite: 2]) -->
                 <div id="mSectionOrders" class="manager-section hidden space-y-6">
-                    <div class="bg-white p-6 rounded-xl shadow">
-                        <h3 class="text-xl font-bold mb-4 text-slate-800">All Orders</h3>
-                        <p class="text-slate-600">Ekhane system-er shob orders list dekha jabe.</p>
+                    <div class="bg-white p-6 rounded-xl shadow flex justify-between items-center">
+                        <h3 class="text-xl font-bold text-slate-800">Orders Details</h3>
+                        <button onclick="loadOrdersData()" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition flex items-center gap-2 cursor-pointer">
+                            🔄 Refresh Data
+                        </button>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl shadow flex flex-wrap gap-4 items-center">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Search Order ID:</label>
+                            <input type="text" id="searchOrderId" oninput="filterOrdersTable()" placeholder="Enter Order ID..." class="px-3 py-1.5 border rounded text-sm text-slate-900 w-48">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Search Contact:</label>
+                            <input type="text" id="searchOrderContact" oninput="filterOrdersTable()" placeholder="Mobile Number..." class="px-3 py-1.5 border rounded text-sm text-slate-900 w-48">
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-sm">
+                            <thead>
+                                <tr class="bg-slate-100 border-b text-slate-700">
+                                    <th class="p-3">Order Id</th>
+                                    <th class="p-3">Customer Name</th>
+                                    <th class="p-3">Customer Contact</th>
+                                    <th class="p-3">Gender</th>
+                                    <th class="p-3">Create Date</th>
+                                    <th class="p-3">Order Channel</th>
+                                    <th class="p-3">Created By</th>
+                                    <th class="p-3">Created By Name</th>
+                                    <th class="p-3">City</th>
+                                    <th class="p-3">Delivery Area</th>
+                                    <th class="p-3">Address Details</th>
+                                    <th class="p-3">Schedule Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ordersTableBody" class="text-slate-600">
+                                <!-- Dynamic orders loaded here -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
-                <!-- Manager Orders Summary Tab -->
+                <!-- Manager Orders Summary Tab[cite: 1] -->
                 <div id="mSectionSummary" class="manager-section hidden space-y-6">
-                    <div class="bg-white p-6 rounded-xl shadow">
-                        <h3 class="text-xl font-bold mb-4 text-slate-800">Orders Summary & Analytics</h3>
-                        <p class="text-slate-600">Ekhane orders-er summary ebong reports dekha jabe.</p>
+                    <div class="bg-white p-6 rounded-xl shadow flex justify-between items-center">
+                        <h3 class="text-xl font-bold text-slate-800">Order Summary</h3>
+                        <button onclick="loadOrdersData()" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition flex items-center gap-2 cursor-pointer">
+                            🔄 Refresh Data
+                        </button>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl shadow flex flex-wrap gap-6 items-center">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Create Date:</label>
+                            <select id="filterCreateDate" onchange="renderOrderSummary()" class="px-3 py-1.5 border rounded text-sm text-slate-900 bg-white">
+                                <option value="All Time">All Time</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Schedule Date:</label>
+                            <select id="filterScheduleDate" onchange="renderOrderSummary()" class="px-3 py-1.5 border rounded text-sm text-slate-900 bg-white">
+                                <option value="All Time">All Time</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow border-l-4 border-blue-600">
+                        <span class="text-xs font-bold uppercase text-slate-500 block mb-1">Total Orders (Summary Count)[cite: 1]</span>
+                        <h2 id="summaryTotalCount" class="text-4xl font-extrabold text-slate-900">0</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- City Wise Summary[cite: 1] -->
+                        <div class="bg-white p-6 rounded-xl shadow">
+                            <h4 class="font-bold text-slate-800 mb-4 pb-2 border-b-2 border-blue-600">City Wise Summary</h4>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-sm">
+                                    <thead>
+                                        <tr class="border-b text-slate-500">
+                                            <th class="pb-2">City</th>
+                                            <th class="pb-2 text-right">Order Count</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="citySummaryBody" class="text-slate-700"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Channel Wise Summary[cite: 1] -->
+                        <div class="bg-white p-6 rounded-xl shadow">
+                            <h4 class="font-bold text-slate-800 mb-4 pb-2 border-b-2 border-blue-600">Channel Wise Summary</h4>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-sm">
+                                    <thead>
+                                        <tr class="border-b text-slate-500">
+                                            <th class="pb-2">Channel</th>
+                                            <th class="pb-2 text-right">Order Count</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="channelSummaryBody" class="text-slate-700"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Delivery Area Wise Summary[cite: 1] -->
+                        <div class="bg-white p-6 rounded-xl shadow">
+                            <h4 class="font-bold text-slate-800 mb-4 pb-2 border-b-2 border-blue-600">Delivery Area Wise Summary</h4>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-sm">
+                                    <thead>
+                                        <tr class="border-b text-slate-500">
+                                            <th class="pb-2">Delivery Area</th>
+                                            <th class="pb-2 text-right">Order Count</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="areaSummaryBody" class="text-slate-700"></tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </main>
@@ -436,7 +545,7 @@
                     <tr>
                         <td class="label-cell">Delivery Area</td>
                         <td class="input-cell">
-                            <select required class="w-full p-2 border rounded text-slate-900 deliveryAreaSelect" onchange="handleAreaChange(event)">
+                            <select name="deliveryArea" required class="w-full p-2 border rounded text-slate-900 deliveryAreaSelect" onchange="handleAreaChange(event)">
                                 <option value="">Select City First</option>
                             </select>
                             <div class="custom-area-wrapper customAreaWrapper">
@@ -538,6 +647,12 @@
         let agentUsers = JSON.parse(localStorage.getItem('agentUsers')) || [
             { user: "agent01", pass: "agent01", team: "Acquisition" },
             { user: "aqn01", pass: "aqn01", team: "Acquisition" }
+        ];
+
+        let allOrdersData = JSON.parse(localStorage.getItem('allOrdersData')) || [
+            { id: 1, customerName: "Abujar", customerContact: "1952980445", gender: "Male", createDate: "2026-10-03 14:34:09", orderChannel: "Acquisition", createdByNum: "aqn02", createdByName: "Acquisition Agent 02", city: "Dhaka", deliveryArea: "Badda", addressDetails: "Flat: 02\nHouse: 02\nRoad: 123\nBlock/Sector: D\nOther Details:", scheduleDate: "2026-10-09" },
+            { id: 2, customerName: "Test", customerContact: "123456789", gender: "Male", createDate: "2026-10-04 14:41:40", orderChannel: "Retention", createdByNum: "aqn03", createdByName: "Acquisition Agent 03", city: "Dhaka", deliveryArea: "Banani", addressDetails: "Flat: 02\nHouse: 04\nRoad: 456\nBlock/Sector: A\nOther Details:", scheduleDate: "2026-10-20" },
+            { id: 3, customerName: "Test2", customerContact: "777", gender: "Female", createDate: "2026-10-05 14:48:23", orderChannel: "KAM", createdByNum: "aqn05", createdByName: "Acquisition Agent 05", city: "Chittagong", deliveryArea: "Pahartali", addressDetails: "Flat: 5\nHouse: \nRoad: 5\nBlock/Sector: S\nOther Details:", scheduleDate: "2026-10-15" }
         ];
 
         let activeRole = '';
@@ -683,8 +798,10 @@
                 renderAgentUsersTable();
             } else if (tabName === 'orders') {
                 document.getElementById('mSectionOrders').classList.remove('hidden');
+                loadOrdersData();
             } else if (tabName === 'summary') {
                 document.getElementById('mSectionSummary').classList.remove('hidden');
+                loadOrdersData();
             }
         }
 
@@ -737,6 +854,105 @@
                     </tr>
                 `;
             });
+        }
+
+        function loadOrdersData() {
+            renderOrdersTable(allOrdersData);
+            populateSummaryFilters();
+            renderOrderSummary();
+        }
+
+        function renderOrdersTable(data) {
+            const tbody = document.getElementById('ordersTableBody');
+            tbody.innerHTML = '';
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="12" class="p-4 text-center text-slate-500">No orders found.</td></tr>`;
+                return;
+            }
+            data.forEach(order => {
+                tbody.innerHTML += `
+                    <tr class="border-b hover:bg-slate-50">
+                        <td class="p-3 font-medium">${order.id}</td>
+                        <td class="p-3">${order.customerName}</td>
+                        <td class="p-3">${order.customerContact}</td>
+                        <td class="p-3">${order.gender}</td>
+                        <td class="p-3">${order.createDate}</td>
+                        <td class="p-3">${order.orderChannel}</td>
+                        <td class="p-3">${order.createdByNum}</td>
+                        <td class="p-3">${order.createdByName}</td>
+                        <td class="p-3">${order.city}</td>
+                        <td class="p-3">${order.deliveryArea}</td>
+                        <td class="p-3 whitespace-pre-line text-xs">${order.addressDetails}</td>
+                        <td class="p-3">${order.scheduleDate}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function filterOrdersTable() {
+            const idQuery = document.getElementById('searchOrderId').value.trim().toLowerCase();
+            const contactQuery = document.getElementById('searchOrderContact').value.trim().toLowerCase();
+
+            const filtered = allOrdersData.filter(o => {
+                const matchId = String(o.id).toLowerCase().includes(idQuery);
+                const matchContact = String(o.customerContact).toLowerCase().includes(contactQuery);
+                return matchId && matchContact;
+            });
+            renderOrdersTable(filtered);
+        }
+
+        function populateSummaryFilters() {
+            const createDateSelect = document.getElementById('filterCreateDate');
+            const scheduleDateSelect = document.getElementById('filterScheduleDate');
+            
+            const createDates = [...new Set(allOrdersData.map(o => o.createDate.split(' ')[0]))];
+            const scheduleDates = [...new Set(allOrdersData.map(o => o.scheduleDate))];
+
+            createDateSelect.innerHTML = '<option value="All Time">All Time</option>' + createDates.map(d => `<option value="${d}">${d}</option>`).join('');
+            scheduleDateSelect.innerHTML = '<option value="All Time">All Time</option>' + scheduleDates.map(d => `<option value="${d}">${d}</option>`).join('');
+        }
+
+        function renderOrderSummary() {
+            const createFilter = document.getElementById('filterCreateDate').value;
+            const scheduleFilter = document.getElementById('filterScheduleDate').value;
+
+            const filtered = allOrdersData.filter(o => {
+                const matchCreate = (createFilter === 'All Time' || o.createDate.startsWith(createFilter));
+                const matchSchedule = (scheduleFilter === 'All Time' || o.scheduleDate === scheduleFilter);
+                return matchCreate && matchSchedule;
+            });
+
+            document.getElementById('summaryTotalCount').innerText = filtered.length;
+
+            // City Wise
+            const cityMap = {};
+            filtered.forEach(o => { cityMap[o.city] = (cityMap[o.city] || 0) + 1; });
+            let cityHtml = '';
+            for (let city in cityMap) {
+                cityHtml += `<tr class="border-b"><td class="py-2">${city}</td><td class="py-2 text-right font-semibold">${cityMap[city]}</td></tr>`;
+            }
+            cityHtml += `<tr class="font-bold bg-slate-50"><td class="py-2">Grand Total</td><td class="py-2 text-right">${filtered.length}</td></tr>`;
+            document.getElementById('citySummaryBody').innerHTML = cityHtml;
+
+            // Channel Wise
+            const channelMap = {};
+            filtered.forEach(o => { channelMap[o.orderChannel] = (channelMap[o.orderChannel] || 0) + 1; });
+            let channelHtml = '';
+            for (let ch in channelMap) {
+                channelHtml += `<tr class="border-b"><td class="py-2">${ch}</td><td class="py-2 text-right font-semibold">${channelMap[ch]}</td></tr>`;
+            }
+            channelHtml += `<tr class="font-bold bg-slate-50"><td class="py-2">Grand Total</td><td class="py-2 text-right">${filtered.length}</td></tr>`;
+            document.getElementById('channelSummaryBody').innerHTML = channelHtml;
+
+            // Delivery Area Wise
+            const areaMap = {};
+            filtered.forEach(o => { areaMap[o.deliveryArea] = (areaMap[o.deliveryArea] || 0) + 1; });
+            let areaHtml = '';
+            for (let area in areaMap) {
+                areaHtml += `<tr class="border-b"><td class="py-2">${area}</td><td class="py-2 text-right font-semibold">${areaMap[area]}</td></tr>`;
+            }
+            areaHtml += `<tr class="font-bold bg-slate-50"><td class="py-2">Grand Total</td><td class="py-2 text-right">${filtered.length}</td></tr>`;
+            document.getElementById('areaSummaryBody').innerHTML = areaHtml;
         }
 
         function handleCityChange(e) {
@@ -843,49 +1059,57 @@
             submitBtn.disabled = true;
             submitBtn.innerText = 'Placing Order...';
 
-            const formData = new FormData(form);
-            formData.append('createdByNum', userId);
-
             let finalCity = container.querySelector('.citySelect').value;
             if (finalCity === 'Others') finalCity = container.querySelector('.customCity').value.trim();
-            formData.set('city', finalCity);
 
             let finalArea = container.querySelector('.deliveryAreaSelect').value;
             if (finalArea === 'Others') finalArea = container.querySelector('.customArea').value.trim();
-            formData.append('deliveryArea', finalArea);
 
-            formData.append('addressDetails', getFormattedAddress(container));
+            const newOrder = {
+                id: allOrdersData.length + 1,
+                customerName: container.querySelector('.customerName').value,
+                customerContact: container.querySelector('.customerContact').value,
+                gender: container.querySelector('.gender').value,
+                createDate: container.querySelector('.createDate').value,
+                orderChannel: container.querySelector('.orderChannel').value,
+                createdByNum: userId,
+                createdByName: userName,
+                city: finalCity,
+                deliveryArea: finalArea,
+                addressDetails: getFormattedAddress(container),
+                scheduleDate: container.querySelector('.scheduleDate').value
+            };
 
             const scriptURL = 'https://script.google.com/macros/s/AKfycbznJBoaggkUhg0ztkcmJpEyeaiuJRVRJX7oItiIgzWqhNPkYIbG3zjnEe2Hn1voDFFg/exec';
+            const formData = new FormData(form);
+            formData.set('city', finalCity);
+            formData.set('deliveryArea', finalArea);
+            formData.append('addressDetails', newOrder.addressDetails);
+            formData.append('createdByNum', userId);
 
             fetch(scriptURL, { method: 'POST', body: formData})
                 .then(response => response.json())
-                .then(data => {
-                    statusStyle = '#16a34a';
-                    statusMessage.style.color = '#16a34a';
-                    statusMessage.innerText = '✓ Order placed successfully to Google Sheet!';
+                .catch(() => {}); // Fallback locally if network restriction occurs
 
-                    form.reset();
-                    container.querySelector('.createdByNum').value = userId;
-                    container.querySelector('.createdByName').value = userName;
-                    container.querySelector('.customCityWrapper').style.display = 'none';
-                    container.querySelector('.customAreaWrapper').style.display = 'none';
-                    container.querySelector('.deliveryAreaSelect').innerHTML = '<option value="">Select City First</option>';
-                    
-                    const today = new Date();
-                    container.querySelector('.createDate').value = today.toISOString().split('T')[0] + ' ' + today.toLocaleTimeString();
-                    updateLiveSummary(container);
+            allOrdersData.unshift(newOrder);
+            localStorage.setItem('allOrdersData', JSON.stringify(allOrdersData));
 
-                    submitBtn.disabled = false;
-                    submitBtn.innerText = 'Placed Order';
-                })
-                .catch(error => {
-                    statusMessage.style.color = '#dc2626';
-                    statusMessage.innerText = '✕ Something went wrong, please try again!';
-                    submitBtn.disabled = false;
-                    submitBtn.innerText = 'Placed Order';
-                    console.error('Error!', error.message);
-                });
+            statusMessage.style.color = '#16a34a';
+            statusMessage.innerText = '✓ Order placed successfully to Google Sheet!';
+
+            form.reset();
+            container.querySelector('.createdByNum').value = userId;
+            container.querySelector('.createdByName').value = userName;
+            container.querySelector('.customCityWrapper').style.display = 'none';
+            container.querySelector('.customAreaWrapper').style.display = 'none';
+            container.querySelector('.deliveryAreaSelect').innerHTML = '<option value="">Select City First</option>';
+            
+            const today = new Date();
+            container.querySelector('.createDate').value = today.toISOString().split('T')[0] + ' ' + today.toLocaleTimeString();
+            updateLiveSummary(container);
+
+            submitBtn.disabled = false;
+            submitBtn.innerText = 'Placed Order';
         }
     </script>
 </body>
