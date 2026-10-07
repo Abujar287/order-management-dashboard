@@ -129,7 +129,7 @@
                 <div id="mSectionUsers" class="manager-section hidden space-y-6">
                     <div class="bg-white p-6 rounded-xl shadow">
                         <h3 class="text-xl font-bold mb-4 text-slate-800">Agent Accounts Management</h3>
-                        <p class="text-slate-600 mb-4 text-sm">Ekhane apni notun agent-der username ebong password set ba create korte parben[cite: 1]. Ei list-e thaka user chara keu agent portal-e login korte parbe na[cite: 1].</p>
+                        <p class="text-slate-600 mb-4 text-sm">Ekhane apni notun agent-der username ebong password set ba create korte parben.</p>
                         
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                             <input type="text" id="newAgentUser" placeholder="Agent Username (e.g. agent01)" class="px-4 py-2 border rounded-lg text-slate-900">
@@ -246,27 +246,17 @@
         function addNewAgent() {
             const u = document.getElementById('newAgentUser').value.trim();
             const p = document.getElementById('newAgentPassword').value.trim();
-            if (!u || !p) {
-                alert('Please enter both username and password.');
-                return;
-            }
-            if (agentUsers.some(a => a.user === u)) {
-                alert('Agent username already exists!');
-                return;
-            }
+            if (!u || !p) return;
+            if (agentUsers.some(a => a.user === u)) return;
             agentUsers.push({ user: u, pass: p });
             localStorage.setItem('agentUsers', JSON.stringify(agentUsers));
             document.getElementById('newAgentUser').value = '';
             document.getElementById('newAgentPassword').value = '';
             renderAgentUsersTable();
-            alert('Agent user created successfully!');
         }
 
         function deleteAgent(index) {
-            if (agentUsers.length <= 1) {
-                alert('You must keep at least one agent account.');
-                return;
-            }
+            if (agentUsers.length <= 1) return;
             agentUsers.splice(index, 1);
             localStorage.setItem('agentUsers', JSON.stringify(agentUsers));
             renderAgentUsersTable();
