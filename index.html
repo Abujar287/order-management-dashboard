@@ -229,141 +229,8 @@
         </header>
 
         <main class="p-6 max-w-4xl mx-auto w-full flex-grow">
-            <form id="orderForm">
-                <table class="table-form">
-                    <tbody>
-                        <tr>
-                            <td class="label-cell">Customer Name</td>
-                            <td class="input-cell"><input type="text" id="customerName" name="customerName" required placeholder="Enter customer name" class="w-full p-2 border rounded text-slate-900"></td>
-                        </tr>
-                        <tr>
-                            <td class="label-cell">Customer Contact</td>
-                            <td class="input-cell"><input type="tel" id="customerContact" name="customerContact" required placeholder="Enter contact number" class="w-full p-2 border rounded text-slate-900"></td>
-                        </tr>
-                        <tr>
-                            <td class="label-cell">Gender</td>
-                            <td class="input-cell">
-                                <select id="gender" name="gender" required class="w-full p-2 border rounded text-slate-900">
-                                    <option value="">Select Gender</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="label-cell">Create Date</td>
-                            <td class="input-cell"><input type="text" id="createDate" name="createDate" readonly class="w-full p-2 border rounded bg-slate-100 text-slate-700"></td>
-                        </tr>
-                        <tr>
-                            <td class="label-cell">Order Channel</td>
-                            <td class="input-cell">
-                                <select id="orderChannel" name="orderChannel" required class="w-full p-2 border rounded text-slate-900">
-                                    <option value="">Select Channel</option>
-                                    <option value="Acquisition">Acquisition</option>
-                                    <option value="Retention">Retention</option>
-                                    <option value="KAM">KAM</option>
-                                    <option value="Call-Center">Call-Center</option>
-                                    <option value="Facebook">Facebook</option>
-                                    <option value="Back-Office">Back-Office</option>
-                                    <option value="VOC">VOC</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="label-cell">Created By</td>
-                            <td class="input-cell"><input type="text" id="createdByNum" name="createdByNum" readonly class="w-full p-2 border rounded bg-slate-100 text-slate-700"></td>
-                        </tr>
-                        <tr>
-                            <td class="label-cell">Created By Name</td>
-                            <td class="input-cell"><input type="text" id="createdByName" name="createdByName" readonly class="w-full p-2 border rounded bg-slate-100 text-slate-700"></td>
-                        </tr>
-                        <tr>
-                            <td class="label-cell">City</td>
-                            <td class="input-cell">
-                                <select id="city" name="city" required onchange="handleCityChange()" class="w-full p-2 border rounded text-slate-900">
-                                    <option value="">Select City</option>
-                                    <option value="Dhaka">Dhaka</option>
-                                    <option value="Chittagong">Chittagong</option>
-                                    <option value="Jashore">Jashore</option>
-                                    <option value="Others">Others</option>
-                                </select>
-                                <div id="customCityWrapper" class="custom-area-wrapper">
-                                    <input type="text" id="customCity" placeholder="Type custom city name" class="w-full p-2 border rounded mt-1 text-slate-900">
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="label-cell">Delivery Area</td>
-                            <td class="input-cell">
-                                <select id="deliveryAreaSelect" required onchange="handleAreaChange()" class="w-full p-2 border rounded text-slate-900">
-                                    <option value="">Select City First</option>
-                                </select>
-                                <div id="customAreaWrapper" class="custom-area-wrapper">
-                                    <input type="text" id="customArea" placeholder="Type custom area location" class="w-full p-2 border rounded mt-1 text-slate-900">
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="label-cell">Address Details</td>
-                            <td class="input-cell">
-                                <div class="address-grid">
-                                    <div class="address-item"><span>Flat:</span><input type="text" id="addrFlat" placeholder="e.g. 02"></div>
-                                    <div class="address-item"><span>House:</span><input type="text" id="addrHouse" placeholder="e.g. 02"></div>
-                                    <div class="address-item"><span>Road:</span><input type="text" id="addrRoad" placeholder="e.g. 123"></div>
-                                    <div class="address-item"><span>Block/Sector:</span><input type="text" id="addrBlock" placeholder="e.g. D"></div>
-                                    <div class="address-item full-width"><span>Other Details:</span><input type="text" id="addrOthers" placeholder="Additional details..."></div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="label-cell">Schedule Date</td>
-                            <td class="input-cell"><input type="date" id="scheduleDate" name="scheduleDate" required class="w-full p-2 border rounded text-slate-900"></td>
-                        </tr>
-                        <tr>
-                            <td class="label-cell">Scheduled Time</td>
-                            <td class="input-cell">
-                                <select id="scheduledTime" name="scheduledTime" required class="w-full p-2 border rounded text-slate-900">
-                                    <option value="">Select Time Slot</option>
-                                    <option value="9AM to 10AM">9 AM to 10 AM</option>
-                                    <option value="10AM to 11AM">10 AM to 11 AM</option>
-                                    <option value="11AM to 12PM">11 AM to 12 PM</option>
-                                    <option value="12PM to 1PM">12 PM to 1 PM</option>
-                                    <option value="1PM to 2PM">1 PM to 2 PM</option>
-                                    <option value="2PM to 3PM">2 PM to 3 PM</option>
-                                    <option value="3PM to 4PM">3 PM to 4 PM</option>
-                                    <option value="4PM to 5PM">4 PM to 5 PM</option>
-                                    <option value="5PM to 6PM">5 PM to 6 PM</option>
-                                    <option value="6PM to 7PM">6 PM to 7 PM</option>
-                                    <option value="7PM to 8PM">7 PM to 8 PM</option>
-                                    <option value="8PM to 9PM">8 PM to 9 PM</option>
-                                </select>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="mt-6 flex items-center justify-between">
-                    <p id="status-message" class="text-sm font-semibold"></p>
-                    <button type="submit" id="submitBtn" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition cursor-pointer">Save Order</button>
-                </div>
-            </form>
-
-            <div id="summaryCard" class="summary-card">
-                <h3>Order Preview & Summary <span>Live Auto-Update</span></h3>
-                <div class="summary-grid">
-                    <div class="summary-item"><span>Customer Name</span><strong id="sumCustomerName">-</strong></div>
-                    <div class="summary-item"><span>Customer Contact</span><strong id="sumCustomerContact">-</strong></div>
-                    <div class="summary-item"><span>Gender</span><strong id="sumGender">-</strong></div>
-                    <div class="summary-item"><span>Create Date</span><strong id="sumCreateDate">-</strong></div>
-                    <div class="summary-item"><span>Order Channel</span><strong id="sumOrderChannel">-</strong></div>
-                    <div class="summary-item"><span>Created By</span><strong id="sumCreatedBy">-</strong></div>
-                    <div class="summary-item"><span>City</span><strong id="sumCity">-</strong></div>
-                    <div class="summary-item"><span>Delivery Area</span><strong id="sumDeliveryArea">-</strong></div>
-                    <div class="summary-item"><span>Address Details</span><strong id="sumAddressDetails">-</strong></div>
-                    <div class="summary-item"><span>Schedule Date & Time</span><strong id="sumSchedule">-</strong></div>
-                </div>
-            </div>
+            <!-- Reusable Order Form Component -->
+            <div id="orderFormContainer"></div>
         </main>
     </div>
 
@@ -377,6 +244,7 @@
                 <nav class="p-4 space-y-2">
                     <button onclick="switchManagerTab('profiles')" class="w-full text-left px-4 py-2.5 rounded-lg transition hover:bg-slate-800 hover:text-white flex items-center space-x-3 cursor-pointer">Profiles</button>
                     <button onclick="switchManagerTab('users')" class="w-full text-left px-4 py-2.5 rounded-lg transition hover:bg-slate-800 hover:text-white flex items-center space-x-3 cursor-pointer">Users Management</button>
+                    <button onclick="switchManagerTab('addOrder')" class="w-full text-left px-4 py-2.5 rounded-lg transition hover:bg-slate-800 hover:text-white flex items-center space-x-3 cursor-pointer">Add Order</button>
                 </nav>
             </div>
             <div class="p-4 border-t border-slate-800">
@@ -394,6 +262,7 @@
                 <div class="flex flex-wrap gap-2 mb-6 md:hidden">
                     <button onclick="switchManagerTab('profiles')" class="px-3 py-1.5 bg-slate-800 text-white rounded text-sm">Profiles</button>
                     <button onclick="switchManagerTab('users')" class="px-3 py-1.5 bg-slate-800 text-white rounded text-sm">Users</button>
+                    <button onclick="switchManagerTab('addOrder')" class="px-3 py-1.5 bg-slate-800 text-white rounded text-sm">Add Order</button>
                 </div>
 
                 <!-- Profiles Tab -->
@@ -432,9 +301,155 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Add Order Tab -->
+                <div id="mSectionAddOrder" class="manager-section hidden space-y-6">
+                    <div class="max-w-4xl mx-auto w-full">
+                        <div id="managerOrderFormContainer"></div>
+                    </div>
+                </div>
             </main>
         </div>
     </div>
+
+    <!-- Template for Order Form -->
+    <template id="orderFormTemplate">
+        <form class="orderForm">
+            <table class="table-form">
+                <tbody>
+                    <tr>
+                        <td class="label-cell">Customer Name</td>
+                        <td class="input-cell"><input type="text" name="customerName" required placeholder="Enter customer name" class="w-full p-2 border rounded text-slate-900 customerName"></td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Customer Contact</td>
+                        <td class="input-cell"><input type="tel" name="customerContact" required placeholder="Enter contact number" class="w-full p-2 border rounded text-slate-900 customerContact"></td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Gender</td>
+                        <td class="input-cell">
+                            <select name="gender" required class="w-full p-2 border rounded text-slate-900 gender">
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Create Date</td>
+                        <td class="input-cell"><input type="text" name="createDate" readonly class="w-full p-2 border rounded bg-slate-100 text-slate-700 createDate"></td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Order Channel</td>
+                        <td class="input-cell">
+                            <select name="orderChannel" required class="w-full p-2 border rounded text-slate-900 orderChannel">
+                                <option value="">Select Channel</option>
+                                <option value="Acquisition">Acquisition</option>
+                                <option value="Retention">Retention</option>
+                                <option value="KAM">KAM</option>
+                                <option value="Call-Center">Call-Center</option>
+                                <option value="Facebook">Facebook</option>
+                                <option value="Back-Office">Back-Office</option>
+                                <option value="VOC">VOC</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Created By</td>
+                        <td class="input-cell"><input type="text" name="createdByNum" readonly class="w-full p-2 border rounded bg-slate-100 text-slate-700 createdByNum"></td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Created By Name</td>
+                        <td class="input-cell"><input type="text" name="createdByName" readonly class="w-full p-2 border rounded bg-slate-100 text-slate-700 createdByName"></td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">City</td>
+                        <td class="input-cell">
+                            <select name="city" required class="w-full p-2 border rounded text-slate-900 citySelect" onchange="handleCityChange(event)">
+                                <option value="">Select City</option>
+                                <option value="Dhaka">Dhaka</option>
+                                <option value="Chittagong">Chittagong</option>
+                                <option value="Jashore">Jashore</option>
+                                <option value="Others">Others</option>
+                            </select>
+                            <div class="custom-area-wrapper customCityWrapper">
+                                <input type="text" placeholder="Type custom city name" class="w-full p-2 border rounded mt-1 text-slate-900 customCity">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Delivery Area</td>
+                        <td class="input-cell">
+                            <select required class="w-full p-2 border rounded text-slate-900 deliveryAreaSelect" onchange="handleAreaChange(event)">
+                                <option value="">Select City First</option>
+                            </select>
+                            <div class="custom-area-wrapper customAreaWrapper">
+                                <input type="text" placeholder="Type custom area location" class="w-full p-2 border rounded mt-1 text-slate-900 customArea">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Address Details</td>
+                        <td class="input-cell">
+                            <div class="address-grid">
+                                <div class="address-item"><span>Flat:</span><input type="text" class="addrFlat" placeholder="e.g. 02"></div>
+                                <div class="address-item"><span>House:</span><input type="text" class="addrHouse" placeholder="e.g. 02"></div>
+                                <div class="address-item"><span>Road:</span><input type="text" class="addrRoad" placeholder="e.g. 123"></div>
+                                <div class="address-item"><span>Block/Sector:</span><input type="text" class="addrBlock" placeholder="e.g. D"></div>
+                                <div class="address-item full-width"><span>Other Details:</span><input type="text" class="addrOthers" placeholder="Additional details..."></div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Schedule Date</td>
+                        <td class="input-cell"><input type="date" name="scheduleDate" required class="w-full p-2 border rounded text-slate-900 scheduleDate"></td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Scheduled Time</td>
+                        <td class="input-cell">
+                            <select name="scheduledTime" required class="w-full p-2 border rounded text-slate-900 scheduledTime">
+                                <option value="">Select Time Slot</option>
+                                <option value="9AM to 10AM">9 AM to 10 AM</option>
+                                <option value="10AM to 11AM">10 AM to 11 AM</option>
+                                <option value="11AM to 12PM">11 AM to 12 PM</option>
+                                <option value="12PM to 1PM">12 PM to 1 PM</option>
+                                <option value="1PM to 2PM">1 PM to 2 PM</option>
+                                <option value="2PM to 3PM">2 PM to 3 PM</option>
+                                <option value="3PM to 4PM">3 PM to 4 PM</option>
+                                <option value="4PM to 5PM">4 PM to 5 PM</option>
+                                <option value="5PM to 6PM">5 PM to 6 PM</option>
+                                <option value="6PM to 7PM">6 PM to 7 PM</option>
+                                <option value="7PM to 8PM">7 PM to 8 PM</option>
+                                <option value="8PM to 9PM">8 PM to 9 PM</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="mt-6 flex items-center justify-between">
+                <p class="text-sm font-semibold status-message"></p>
+                <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition cursor-pointer submitBtn">Save Order</button>
+            </div>
+        </form>
+
+        <div class="summary-card">
+            <h3>Order Preview & Summary <span>Live Auto-Update</span></h3>
+            <div class="summary-grid">
+                <div class="summary-item"><span>Customer Name</span><strong class="sumCustomerName">-</strong></div>
+                <div class="summary-item"><span>Customer Contact</span><strong class="sumCustomerContact">-</strong></div>
+                <div class="summary-item"><span>Gender</span><strong class="sumGender">-</strong></div>
+                <div class="summary-item"><span>Create Date</span><strong class="sumCreateDate">-</strong></div>
+                <div class="summary-item"><span>Order Channel</span><strong class="sumOrderChannel">-</strong></div>
+                <div class="summary-item"><span>Created By</span><strong class="sumCreatedBy">-</strong></div>
+                <div class="summary-item"><span>City</span><strong class="sumCity">-</strong></div>
+                <div class="summary-item"><span>Delivery Area</span><strong class="sumDeliveryArea">-</strong></div>
+                <div class="summary-item"><span>Address Details</span><strong class="sumAddressDetails">-</strong></div>
+                <div class="summary-item"><span>Schedule Date & Time</span><strong class="sumSchedule">-</strong></div>
+            </div>
+        </div>
+    </template>
 
     <script>
         const cityAreaMap = {
@@ -471,6 +486,34 @@
         ];
 
         let activeRole = '';
+
+        // Initialize Form Instances
+        function initOrderForm(containerId, userId, userName) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            const template = document.getElementById('orderFormTemplate');
+            const clone = template.content.cloneNode(true);
+            container.appendChild(clone);
+
+            const form = container.querySelector('.orderForm');
+            
+            container.querySelector('.createdByNum').value = userId;
+            container.querySelector('.createdByName').value = userName;
+            
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0] + ' ' + today.toLocaleTimeString();
+            container.querySelector('.createDate').value = formattedDate;
+
+            form.addEventListener('input', () => updateLiveSummary(container));
+            form.addEventListener('change', () => updateLiveSummary(container));
+            
+            form.addEventListener('submit', e => {
+                e.preventDefault();
+                handleFormSubmit(container, userId, userName);
+            });
+
+            updateLiveSummary(container);
+        }
 
         document.getElementById('agentCardBtn').addEventListener('click', () => showLogin('agent'));
         document.getElementById('managerCardBtn').addEventListener('click', () => showLogin('manager'));
@@ -530,15 +573,13 @@
                     document.getElementById('agentApp').classList.remove('hidden');
                     
                     document.getElementById('activeAgentBadge').innerText = 'User: ' + userInput;
-                    document.getElementById('createdByNum').value = userInput;
                     
                     const numMatch = userInput.match(/\d+/);
                     const userNum = numMatch ? parseInt(numMatch[0], 10) : 1;
                     const formattedNumStr = userNum < 10 ? "0" + userNum : "" + userNum;
-                    document.getElementById('createdByName').value = 'Acquisition Agent ' + formattedNumStr;
+                    const agentName = 'Acquisition Agent ' + formattedNumStr;
 
-                    setFormattedDate();
-                    updateLiveSummary();
+                    initOrderForm('orderFormContainer', userInput, agentName);
                 } else {
                     errorDiv.innerText = 'Invalid Agent credentials or not authorized!';
                     errorDiv.classList.remove('hidden');
@@ -560,6 +601,9 @@
             } else if (tabName === 'users') {
                 document.getElementById('mSectionUsers').classList.remove('hidden');
                 renderAgentUsersTable();
+            } else if (tabName === 'addOrder') {
+                document.getElementById('mSectionAddOrder').classList.remove('hidden');
+                initOrderForm('managerOrderFormContainer', 'manager01', 'System Manager');
             }
         }
 
@@ -598,20 +642,14 @@
             });
         }
 
-        function setFormattedDate() {
-            const today = new Date();
-            const formattedDate = today.toISOString().split('T')[0] + ' ' + today.toLocaleTimeString();
-            document.getElementById('createDate').value = formattedDate;
-        }
-
-        function handleCityChange() {
-            const citySelect = document.getElementById('city');
-            const selectedCity = citySelect.value;
-            const areaSelect = document.getElementById('deliveryAreaSelect');
-            const customCityWrapper = document.getElementById('customCityWrapper');
-            const customAreaWrapper = document.getElementById('customAreaWrapper');
-            const customCityInput = document.getElementById('customCity');
-            const customAreaInput = document.getElementById('customArea');
+        function handleCityChange(e) {
+            const form = e.target.closest('form');
+            const selectedCity = e.target.value;
+            const areaSelect = form.querySelector('.deliveryAreaSelect');
+            const customCityWrapper = form.querySelector('.customCityWrapper');
+            const customAreaWrapper = form.querySelector('.customAreaWrapper');
+            const customCityInput = form.querySelector('.customCity');
+            const customAreaInput = form.querySelector('.customArea');
 
             areaSelect.innerHTML = '';
             customCityWrapper.style.display = 'none';
@@ -646,13 +684,14 @@
                 defaultOpt.innerText = 'Select City First';
                 areaSelect.appendChild(defaultOpt);
             }
-            updateLiveSummary();
+            updateLiveSummary(form.closest('div'));
         }
 
-        function handleAreaChange() {
-            const areaSelect = document.getElementById('deliveryAreaSelect');
-            const customAreaWrapper = document.getElementById('customAreaWrapper');
-            const customAreaInput = document.getElementById('customArea');
+        function handleAreaChange(e) {
+            const form = e.target.closest('form');
+            const areaSelect = form.querySelector('.deliveryAreaSelect');
+            const customAreaWrapper = form.querySelector('.customAreaWrapper');
+            const customAreaInput = form.querySelector('.customArea');
 
             if (areaSelect.value === 'Others') {
                 customAreaWrapper.style.display = 'block';
@@ -661,69 +700,66 @@
                 customAreaWrapper.style.display = 'none';
                 customAreaInput.required = false;
             }
-            updateLiveSummary();
+            updateLiveSummary(form.closest('div'));
         }
 
-        function getFormattedAddress() {
-            const flat = document.getElementById('addrFlat').value.trim();
-            const house = document.getElementById('addrHouse').value.trim();
-            const road = document.getElementById('addrRoad').value.trim();
-            const block = document.getElementById('addrBlock').value.trim();
-            const others = document.getElementById('addrOthers').value.trim();
+        function getFormattedAddress(container) {
+            const flat = container.querySelector('.addrFlat').value.trim();
+            const house = container.querySelector('.addrHouse').value.trim();
+            const road = container.querySelector('.addrRoad').value.trim();
+            const block = container.querySelector('.addrBlock').value.trim();
+            const others = container.querySelector('.addrOthers').value.trim();
             return `Flat: ${flat}\nHouse: ${house}\nRoad: ${road}\nBlock/Sector: ${block}\nOther Details: ${others}`;
         }
 
-        function updateLiveSummary() {
-            document.getElementById('sumCustomerName').innerText = document.getElementById('customerName').value || '-';
-            document.getElementById('sumCustomerContact').innerText = document.getElementById('customerContact').value || '-';
-            document.getElementById('sumGender').innerText = document.getElementById('gender').value || '-';
-            document.getElementById('sumCreateDate').innerText = document.getElementById('createDate').value || '-';
-            document.getElementById('sumOrderChannel').innerText = document.getElementById('orderChannel').value || '-';
+        function updateLiveSummary(container) {
+            container.querySelector('.sumCustomerName').innerText = container.querySelector('.customerName').value || '-';
+            container.querySelector('.sumCustomerContact').innerText = container.querySelector('.customerContact').value || '-';
+            container.querySelector('.sumGender').innerText = container.querySelector('.gender').value || '-';
+            container.querySelector('.sumCreateDate').innerText = container.querySelector('.createDate').value || '-';
+            container.querySelector('.sumOrderChannel').innerText = container.querySelector('.orderChannel').value || '-';
             
-            const createdByNum = document.getElementById('createdByNum').value;
-            const createdByName = document.getElementById('createdByName').value;
-            document.getElementById('sumCreatedBy').innerText = createdByNum ? (createdByNum + ' - ' + createdByName) : '-';
+            const createdByNum = container.querySelector('.createdByNum').value;
+            const createdByName = container.querySelector('.createdByName').value;
+            container.querySelector('.sumCreatedBy').innerText = createdByNum ? (createdByNum + ' - ' + createdByName) : '-';
 
-            let cityVal = document.getElementById('city').value;
-            if (cityVal === 'Others') cityVal = document.getElementById('customCity').value.trim() || 'Others';
-            document.getElementById('sumCity').innerText = cityVal || '-';
+            let cityVal = container.querySelector('.citySelect').value;
+            if (cityVal === 'Others') cityVal = container.querySelector('.customCity').value.trim() || 'Others';
+            container.querySelector('.sumCity').innerText = cityVal || '-';
 
-            let areaVal = document.getElementById('deliveryAreaSelect').value;
-            if (areaVal === 'Others') areaVal = document.getElementById('customArea').value.trim() || 'Others';
-            document.getElementById('sumDeliveryArea').innerText = areaVal || '-';
+            let areaVal = container.querySelector('.deliveryAreaSelect').value;
+            if (areaVal === 'Others') areaVal = container.querySelector('.customArea').value.trim() || 'Others';
+            container.querySelector('.sumDeliveryArea').innerText = areaVal || '-';
 
-            document.getElementById('sumAddressDetails').innerText = getFormattedAddress();
+            container.querySelector('.sumAddressDetails').innerText = getFormattedAddress(container);
 
-            const scheduleDate = document.getElementById('scheduleDate').value;
-            const scheduledTime = document.getElementById('scheduledTime').value;
-            document.getElementById('sumSchedule').innerText = (scheduleDate || scheduledTime) ? `${scheduleDate} (${scheduledTime})` : '-';
+            const scheduleDate = container.querySelector('.scheduleDate').value;
+            const scheduledTime = container.querySelector('.scheduledTime').value;
+            container.querySelector('.sumSchedule').innerText = (scheduleDate || scheduledTime) ? `${scheduleDate} (${scheduledTime})` : '-';
         }
 
-        const orderForm = document.getElementById('orderForm');
-        orderForm.addEventListener('input', updateLiveSummary);
-        orderForm.addEventListener('change', updateLiveSummary);
+        function handleFormSubmit(container, userId, userName) {
+            const form = container.querySelector('.orderForm');
+            const submitBtn = container.querySelector('.submitBtn');
+            const statusMessage = container.querySelector('.status-message');
 
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbznJBoaggkUhg0ztkcmJpEyeaiuJRVRJX7oItiIgzWqhNPkYIbG3zjnEe2Hn1voDFFg/exec';[cite: 1]
-        const statusMessage = document.getElementById('status-message');
-        const submitBtn = document.getElementById('submitBtn');
-
-        orderForm.addEventListener('submit', e => {
-            e.preventDefault();
             submitBtn.disabled = true;
             submitBtn.innerText = 'Saving...';
 
-            const formData = new FormData(orderForm);
-            formData.append('createdByNum', document.getElementById('createdByNum').value);
+            const formData = new FormData(form);
+            formData.append('createdByNum', userId);
 
-            let finalCity = document.getElementById('city').value;
-            if (finalCity === 'Others') finalCity = document.getElementById('customCity').value.trim();
+            let finalCity = container.querySelector('.citySelect').value;
+            if (finalCity === 'Others') finalCity = container.querySelector('.customCity').value.trim();
             formData.set('city', finalCity);
 
-            let finalArea = document.getElementById('deliveryAreaSelect').value;
-            if (finalArea === 'Others') finalArea = document.getElementById('customArea').value.trim();
+            let finalArea = container.querySelector('.deliveryAreaSelect').value;
+            if (finalArea === 'Others') finalArea = container.querySelector('.customArea').value.trim();
             formData.append('deliveryArea', finalArea);
 
-            formData.append('addressDetails', getFormattedAddress());
+            formData.append('addressDetails', getFormattedAddress(container));
+
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbznJBoaggkUhg0ztkcmJpEyeaiuJRVRJX7oItiIgzWqhNPkYIbG3zjnEe2Hn1voDFFg/exec';[cite: 1]
 
             fetch(scriptURL, { method: 'POST', body: formData})
                 .then(response => response.json())
@@ -731,18 +767,16 @@
                     statusMessage.style.color = '#16a34a';
                     statusMessage.innerText = '✓ Order saved successfully to Google Sheet!';
 
-                    const currentNum = document.getElementById('createdByNum').value;
-                    const currentAgentName = document.getElementById('createdByName').value;
-
-                    orderForm.reset();
-                    document.getElementById('createdByNum').value = currentNum;
-                    document.getElementById('createdByName').value = currentAgentName;
-                    document.getElementById('customCityWrapper').style.display = 'none';
-                    document.getElementById('customAreaWrapper').style.display = 'none';
-                    document.getElementById('deliveryAreaSelect').innerHTML = '<option value="">Select City First</option>';
+                    form.reset();
+                    container.querySelector('.createdByNum').value = userId;
+                    container.querySelector('.createdByName').value = userName;
+                    container.querySelector('.customCityWrapper').style.display = 'none';
+                    container.querySelector('.customAreaWrapper').style.display = 'none';
+                    container.querySelector('.deliveryAreaSelect').innerHTML = '<option value="">Select City First</option>';
                     
-                    setFormattedDate();
-                    updateLiveSummary();
+                    const today = new Date();
+                    container.querySelector('.createDate').value = today.toISOString().split('T')[0] + ' ' + today.toLocaleTimeString();
+                    updateLiveSummary(container);
 
                     submitBtn.disabled = false;
                     submitBtn.innerText = 'Save Order';
@@ -754,7 +788,7 @@
                     submitBtn.innerText = 'Save Order';
                     console.error('Error!', error.message);
                 });
-        });
+        }
     </script>
 </body>
 </html>
