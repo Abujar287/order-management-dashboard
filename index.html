@@ -9,9 +9,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        :root {
+            --primary: #0f172a;
+            --accent: #2563eb;
+            --border-color: #cbd5e1;
+            --label-bg: #f8fafc;
+            --text-main: #334155;
+        }
+
         body {
             font-family: 'Exo 2', sans-serif;
             min-height: 100vh;
+            color: var(--text-main);
             background: linear-gradient(-45deg, #0f172a, #1e293b, #1e1b4b, #0f172a);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
@@ -22,14 +31,147 @@
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
+
+        .table-form {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            background: #ffffff;
+        }
+
+        .table-form tr {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table-form tr:last-child {
+            border-bottom: none;
+        }
+
+        .table-form td.label-cell {
+            width: 220px;
+            background-color: var(--label-bg);
+            padding: 12px 18px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #1e293b;
+            border-right: 1px solid var(--border-color);
+            vertical-align: middle;
+        }
+
+        .table-form td.input-cell {
+            padding: 8px 12px;
+        }
+
+        .address-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .address-item {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: #ffffff;
+            overflow: hidden;
+        }
+
+        .address-item span {
+            background: #f1f5f9;
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #475569;
+            border-right: 1px solid var(--border-color);
+            white-space: nowrap;
+            min-width: 100px;
+        }
+
+        .address-item input {
+            border: none;
+            border-radius: 0;
+            padding: 8px 10px;
+            width: 100%;
+            outline: none;
+            color: #334155;
+        }
+
+        .address-item.full-width {
+            grid-column: span 2;
+        }
+
+        .custom-area-wrapper {
+            margin-top: 8px;
+            display: none;
+        }
+
+        .summary-card {
+            margin-top: 30px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background: #ffffff;
+            padding: 20px;
+        }
+
+        .summary-card h3 {
+            font-size: 16px;
+            color: var(--primary);
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .summary-card h3 span {
+            font-size: 11px;
+            background: #e2e8f0;
+            color: #475569;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+        }
+
+        .summary-item {
+            background: #f8fafc;
+            padding: 10px 14px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .summary-item span {
+            display: block;
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .summary-item strong {
+            display: block;
+            font-size: 14px;
+            color: #0f172a;
+            margin-top: 2px;
+            word-break: break-word;
+            white-space: pre-line;
+        }
     </style>
 </head>
-<body class="flex flex-col justify-between min-h-screen text-slate-100">
+<body class="flex flex-col justify-between min-h-screen">
 
     <!-- Landing / Portal Selection Screen -->
     <div id="landingScreen" class="flex-grow flex flex-col items-center justify-center p-6">
         <div class="text-center mb-10">
-            <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-2">Portal System</h1>
+            <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-2 text-white">Portal System</h1>
             <p class="text-slate-400">Please select your portal to continue</p>
         </div>
 
@@ -76,18 +218,56 @@
         </div>
     </div>
 
-    <!-- Agent Dashboard View -->
-    <div id="agentApp" class="hidden min-h-screen bg-slate-100 text-slate-800 flex flex-col w-full">
-        <header class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center shadow">
-            <h2 class="text-xl font-bold">Agent Portal Workspace</h2>
-            <button class="logoutBtn bg-red-500 text-white px-3 py-1.5 rounded text-xs font-semibold hover:bg-red-600 transition cursor-pointer">Logout</button>
-        </header>
-        <main class="p-8 text-center flex-grow flex items-center justify-center">
-            <h3 class="text-2xl font-semibold text-slate-700">Welcome to Agent Portal!</h3>
-        </main>
+    <!-- Agent Dashboard View with Left Sidebar -->
+    <div id="agentApp" class="hidden min-h-screen bg-slate-100 text-slate-800 flex w-full">
+        <aside class="w-64 bg-slate-900 text-slate-300 flex flex-col justify-between hidden md:flex">
+            <div>
+                <div class="p-6 border-b border-slate-800">
+                    <h2 class="text-xl font-bold text-white">Agent Portal</h2>
+                    <span id="activeAgentBadge" class="text-xs text-blue-400 mt-1 block">User: agent01</span>
+                </div>
+                <nav class="p-4 space-y-2">
+                    <button onclick="switchAgentTab('profiles')" class="w-full text-left px-4 py-2.5 rounded-lg transition hover:bg-slate-800 hover:text-white flex items-center space-x-3 cursor-pointer">Profiles</button>
+                    <button onclick="switchAgentTab('addOrder')" class="w-full text-left px-4 py-2.5 rounded-lg transition hover:bg-slate-800 hover:text-white flex items-center space-x-3 cursor-pointer">Add Order</button>
+                </nav>
+            </div>
+            <div class="p-4 border-t border-slate-800">
+                <button class="logoutBtn w-full bg-red-600/20 text-red-400 border border-red-500/30 px-4 py-2 rounded-lg text-sm hover:bg-red-600 hover:text-white transition cursor-pointer">Logout</button>
+            </div>
+        </aside>
+
+        <div class="flex-grow flex flex-col min-h-screen">
+            <header class="bg-white shadow px-6 py-4 flex justify-between items-center md:hidden">
+                <h1 class="text-lg font-bold">Agent Portal</h1>
+                <button class="logoutBtn bg-red-500 text-white px-3 py-1.5 rounded text-sm cursor-pointer">Logout</button>
+            </header>
+
+            <main class="p-6 flex-grow overflow-y-auto">
+                <div class="flex flex-wrap gap-2 mb-6 md:hidden">
+                    <button onclick="switchAgentTab('profiles')" class="px-3 py-1.5 bg-slate-800 text-white rounded text-sm">Profiles</button>
+                    <button onclick="switchAgentTab('addOrder')" class="px-3 py-1.5 bg-slate-800 text-white rounded text-sm">Add Order</button>
+                </div>
+
+                <!-- Agent Profiles Tab -->
+                <div id="aSectionProfiles" class="agent-section space-y-6">
+                    <div class="bg-white p-6 rounded-xl shadow max-w-xl">
+                        <h3 class="text-xl font-bold mb-4 text-slate-800">Agent Profile</h3>
+                        <p class="text-slate-600">Username: <strong id="profileAgentUser">agent01</strong></p>
+                        <p class="text-slate-600">Role: Acquisition Agent</p>
+                    </div>
+                </div>
+
+                <!-- Agent Add Order Tab -->
+                <div id="aSectionAddOrder" class="agent-section hidden space-y-6">
+                    <div class="max-w-4xl mx-auto w-full">
+                        <div id="agentOrderFormContainer"></div>
+                    </div>
+                </div>
+            </main>
+        </div>
     </div>
 
-    <!-- Manager Dashboard View with Left Sidebar -->
+    <!-- Manager Portal Dashboard with Left Sidebar -->
     <div id="managerApp" class="hidden min-h-screen bg-slate-100 text-slate-800 flex w-full">
         <aside class="w-64 bg-slate-900 text-slate-300 flex flex-col justify-between hidden md:flex">
             <div>
@@ -97,6 +277,7 @@
                 <nav class="p-4 space-y-2">
                     <button onclick="switchManagerTab('profiles')" class="w-full text-left px-4 py-2.5 rounded-lg transition hover:bg-slate-800 hover:text-white flex items-center space-x-3 cursor-pointer">Profiles</button>
                     <button onclick="switchManagerTab('users')" class="w-full text-left px-4 py-2.5 rounded-lg transition hover:bg-slate-800 hover:text-white flex items-center space-x-3 cursor-pointer">Users Management</button>
+                    <button onclick="switchManagerTab('addOrder')" class="w-full text-left px-4 py-2.5 rounded-lg transition hover:bg-slate-800 hover:text-white flex items-center space-x-3 cursor-pointer">Add Order</button>
                 </nav>
             </div>
             <div class="p-4 border-t border-slate-800">
@@ -114,11 +295,12 @@
                 <div class="flex flex-wrap gap-2 mb-6 md:hidden">
                     <button onclick="switchManagerTab('profiles')" class="px-3 py-1.5 bg-slate-800 text-white rounded text-sm">Profiles</button>
                     <button onclick="switchManagerTab('users')" class="px-3 py-1.5 bg-slate-800 text-white rounded text-sm">Users</button>
+                    <button onclick="switchManagerTab('addOrder')" class="px-3 py-1.5 bg-slate-800 text-white rounded text-sm">Add Order</button>
                 </div>
 
-                <!-- Profiles Tab -->
+                <!-- Manager Profiles Tab -->
                 <div id="mSectionProfiles" class="manager-section space-y-6">
-                    <div class="bg-white p-6 rounded-xl shadow">
+                    <div class="bg-white p-6 rounded-xl shadow max-w-xl">
                         <h3 class="text-xl font-bold mb-4 text-slate-800">Manager Profile</h3>
                         <p class="text-slate-600">Username: <strong>manager01</strong></p>
                         <p class="text-slate-600">Role: System Administrator / Manager</p>
@@ -129,7 +311,7 @@
                 <div id="mSectionUsers" class="manager-section hidden space-y-6">
                     <div class="bg-white p-6 rounded-xl shadow">
                         <h3 class="text-xl font-bold mb-4 text-slate-800">Agent Accounts Management</h3>
-                        <p class="text-slate-600 mb-4 text-sm">Ekhane apni notun agent-der username ebong password set ba create korte parben[cite: 1].</p>
+                        <p class="text-slate-600 mb-4 text-sm">Ekhane apni notun agent-der username ebong password set ba create korte parben.</p>
                         
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                             <input type="text" id="newAgentUser" placeholder="Agent Username (e.g. agent01)" class="px-4 py-2 border rounded-lg text-slate-900">
@@ -152,16 +334,219 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Manager Add Order Tab -->
+                <div id="mSectionAddOrder" class="manager-section hidden space-y-6">
+                    <div class="max-w-4xl mx-auto w-full">
+                        <div id="managerOrderFormContainer"></div>
+                    </div>
+                </div>
             </main>
         </div>
     </div>
 
+    <!-- Template for Order Form -->
+    <template id="orderFormTemplate">
+        <form class="orderForm">
+            <table class="table-form">
+                <tbody>
+                    <tr>
+                        <td class="label-cell">Customer Name</td>
+                        <td class="input-cell"><input type="text" name="customerName" required placeholder="Enter customer name" class="w-full p-2 border rounded text-slate-900 customerName"></td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Customer Contact</td>
+                        <td class="input-cell"><input type="tel" name="customerContact" required placeholder="Enter contact number" class="w-full p-2 border rounded text-slate-900 customerContact"></td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Gender</td>
+                        <td class="input-cell">
+                            <select name="gender" required class="w-full p-2 border rounded text-slate-900 gender">
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Create Date</td>
+                        <td class="input-cell"><input type="text" name="createDate" readonly class="w-full p-2 border rounded bg-slate-100 text-slate-700 createDate"></td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Order Channel</td>
+                        <td class="input-cell">
+                            <select name="orderChannel" required class="w-full p-2 border rounded text-slate-900 orderChannel">
+                                <option value="">Select Channel</option>
+                                <option value="Acquisition">Acquisition</option>
+                                <option value="Retention">Retention</option>
+                                <option value="KAM">KAM</option>
+                                <option value="Call-Center">Call-Center</option>
+                                <option value="Facebook">Facebook</option>
+                                <option value="Back-Office">Back-Office</option>
+                                <option value="VOC">VOC</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Created By</td>
+                        <td class="input-cell"><input type="text" name="createdByNum" readonly class="w-full p-2 border rounded bg-slate-100 text-slate-700 createdByNum"></td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Created By Name</td>
+                        <td class="input-cell"><input type="text" name="createdByName" readonly class="w-full p-2 border rounded bg-slate-100 text-slate-700 createdByName"></td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">City</td>
+                        <td class="input-cell">
+                            <select name="city" required class="w-full p-2 border rounded text-slate-900 citySelect" onchange="handleCityChange(event)">
+                                <option value="">Select City</option>
+                                <option value="Dhaka">Dhaka</option>
+                                <option value="Chittagong">Chittagong</option>
+                                <option value="Jashore">Jashore</option>
+                                <option value="Others">Others</option>
+                            </select>
+                            <div class="custom-area-wrapper customCityWrapper">
+                                <input type="text" placeholder="Type custom city name" class="w-full p-2 border rounded mt-1 text-slate-900 customCity">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Delivery Area</td>
+                        <td class="input-cell">
+                            <select required class="w-full p-2 border rounded text-slate-900 deliveryAreaSelect" onchange="handleAreaChange(event)">
+                                <option value="">Select City First</option>
+                            </select>
+                            <div class="custom-area-wrapper customAreaWrapper">
+                                <input type="text" placeholder="Type custom area location" class="w-full p-2 border rounded mt-1 text-slate-900 customArea">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Address Details</td>
+                        <td class="input-cell">
+                            <div class="address-grid">
+                                <div class="address-item"><span>Flat:</span><input type="text" class="addrFlat" placeholder="e.g. 02"></div>
+                                <div class="address-item"><span>House:</span><input type="text" class="addrHouse" placeholder="e.g. 02"></div>
+                                <div class="address-item"><span>Road:</span><input type="text" class="addrRoad" placeholder="e.g. 123"></div>
+                                <div class="address-item"><span>Block/Sector:</span><input type="text" class="addrBlock" placeholder="e.g. D"></div>
+                                <div class="address-item full-width"><span>Other Details:</span><input type="text" class="addrOthers" placeholder="Additional details..."></div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Schedule Date</td>
+                        <td class="input-cell"><input type="date" name="scheduleDate" required class="w-full p-2 border rounded text-slate-900 scheduleDate"></td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Scheduled Time</td>
+                        <td class="input-cell">
+                            <select name="scheduledTime" required class="w-full p-2 border rounded text-slate-900 scheduledTime">
+                                <option value="">Select Time Slot</option>
+                                <option value="9AM to 10AM">9 AM to 10 AM</option>
+                                <option value="10AM to 11AM">10 AM to 11 AM</option>
+                                <option value="11AM to 12PM">11 AM to 12 PM</option>
+                                <option value="12PM to 1PM">12 PM to 1 PM</option>
+                                <option value="1PM to 2PM">1 PM to 2 PM</option>
+                                <option value="2PM to 3PM">2 PM to 3 PM</option>
+                                <option value="3PM to 4PM">3 PM to 4 PM</option>
+                                <option value="4PM to 5PM">4 PM to 5 PM</option>
+                                <option value="5PM to 6PM">5 PM to 6 PM</option>
+                                <option value="6PM to 7PM">6 PM to 7 PM</option>
+                                <option value="7PM to 8PM">7 PM to 8 PM</option>
+                                <option value="8PM to 9PM">8 PM to 9 PM</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="mt-6 flex items-center justify-between">
+                <p class="text-sm font-semibold status-message"></p>
+                <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition cursor-pointer submitBtn">Save Order</button>
+            </div>
+        </form>
+
+        <div class="summary-card">
+            <h3>Order Preview & Summary <span>Live Auto-Update</span></h3>
+            <div class="summary-grid">
+                <div class="summary-item"><span>Customer Name</span><strong class="sumCustomerName">-</strong></div>
+                <div class="summary-item"><span>Customer Contact</span><strong class="sumCustomerContact">-</strong></div>
+                <div class="summary-item"><span>Gender</span><strong class="sumGender">-</strong></div>
+                <div class="summary-item"><span>Create Date</span><strong class="sumCreateDate">-</strong></div>
+                <div class="summary-item"><span>Order Channel</span><strong class="sumOrderChannel">-</strong></div>
+                <div class="summary-item"><span>Created By</span><strong class="sumCreatedBy">-</strong></div>
+                <div class="summary-item"><span>City</span><strong class="sumCity">-</strong></div>
+                <div class="summary-item"><span>Delivery Area</span><strong class="sumDeliveryArea">-</strong></div>
+                <div class="summary-item"><span>Address Details</span><strong class="sumAddressDetails">-</strong></div>
+                <div class="summary-item"><span>Schedule Date & Time</span><strong class="sumSchedule">-</strong></div>
+            </div>
+        </div>
+    </template>
+
     <script>
+        const cityAreaMap = {
+            'Dhaka': [
+                'Azimpur', 'Badda', 'Banani', 'Banani DOHS', 'Baridhara', 'Baridhara DOHS', 
+                'Bashabo', 'Bashundhara R/A', 'Cantonment', 'Dakshinkhan', 'Dhanmondi', 
+                'Farmgate', 'Gulshan', 'Jatrabari', 'Kafrul', 'Kakrail', 'Kamalapur', 
+                'Kamrangirchor', 'Khilgaon', 'Khilgoan', 'Khilkhet', 'Lalbagh', 'Laxmibazar', 
+                'Malibag', 'Mirpur', 'Mirpur 2', 'Mirpur DOHS', 'Mogbazar', 'Mohakhali', 
+                'Mohakhali DOHS', 'Mohammadpur', 'Motijheel', 'Nikunjo', 'Old Town (Dhaka)', 
+                'Ramna', 'Rampura', 'Rest Of Dhaka', 'Sabujbagh', 'Savar', 'Shahbag', 
+                'Tejgaon', 'Uttara', 'Uttarkhan', 'Vatara', 'Wari', 'Others'
+            ],
+            'Chittagong': [
+                'Anwara', 'Badurdola', 'Bakalia', 'Bandar', 'Bayejid bostami', 'Bou Bazar', 
+                'Chadgaon', 'Colony', 'Double Mooring', 'Halishahar', 'Hathazari', 'Khulshi', 
+                'Kotwali (Chittagong)', 'Nasirabad', 'Pachlaish', 'Pahartali', 'Patenga', 
+                'Sugandha', 'Others'
+            ],
+            'Jashore': [
+                'Chowrasta', 'Doratana', 'Jessore', 'New Market', 'Palbari', 'Kharki', 
+                'Puratan Kasba', 'Others'
+            ],
+            'Others': [
+                'Barisal', 'Comilla', 'Gazipur', 'Jowelasory Tola', 'Joydebpur', 'Kaliakor', 
+                'Kaliganj', 'Khandar', 'Koigari', 'Kotwali', 'Narayanganj', 'Sath Matha', 
+                'Sheujgari', 'Sreepur', 'Sylhet', 'Sylhet Metro', 'Tongi', 'Others'
+            ]
+        };
+
         let agentUsers = JSON.parse(localStorage.getItem('agentUsers')) || [
-            { user: "agent01", pass: "agent01" }
+            { user: "agent01", pass: "agent01" },
+            { user: "aqn01", pass: "aqn01" }
         ];
 
         let activeRole = '';
+        let currentAgentUser = '';
+
+        function initOrderForm(containerId, userId, userName) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            const template = document.getElementById('orderFormTemplate');
+            const clone = template.content.cloneNode(true);
+            container.appendChild(clone);
+
+            const form = container.querySelector('.orderForm');
+            
+            container.querySelector('.createdByNum').value = userId;
+            container.querySelector('.createdByName').value = userName;
+            
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0] + ' ' + today.toLocaleTimeString();
+            container.querySelector('.createDate').value = formattedDate;
+
+            form.addEventListener('input', () => updateLiveSummary(container));
+            form.addEventListener('change', () => updateLiveSummary(container));
+            
+            form.addEventListener('submit', e => {
+                e.preventDefault();
+                handleFormSubmit(container, userId, userName);
+            });
+
+            updateLiveSummary(container);
+        }
 
         document.getElementById('agentCardBtn').addEventListener('click', () => showLogin('agent'));
         document.getElementById('managerCardBtn').addEventListener('click', () => showLogin('manager'));
@@ -219,6 +604,12 @@
                     errorDiv.classList.add('hidden');
                     document.getElementById('loginScreen').classList.add('hidden');
                     document.getElementById('agentApp').classList.remove('hidden');
+                    
+                    currentAgentUser = userInput;
+                    document.getElementById('activeAgentBadge').innerText = 'User: ' + userInput;
+                    document.getElementById('profileAgentUser').innerText = userInput;
+                    
+                    switchAgentTab('profiles');
                 } else {
                     errorDiv.innerText = 'Invalid Agent credentials or not authorized!';
                     errorDiv.classList.remove('hidden');
@@ -233,6 +624,22 @@
             document.getElementById('landingScreen').classList.remove('hidden');
         }
 
+        function switchAgentTab(tabName) {
+            document.querySelectorAll('.agent-section').forEach(sec => sec.classList.add('hidden'));
+            if (tabName === 'profiles') {
+                document.getElementById('aSectionProfiles').classList.remove('hidden');
+            } else if (tabName === 'addOrder') {
+                document.getElementById('aSectionAddOrder').classList.remove('hidden');
+                
+                const numMatch = currentAgentUser.match(/\d+/);
+                const userNum = numMatch ? parseInt(numMatch[0], 10) : 1;
+                const formattedNumStr = userNum < 10 ? "0" + userNum : "" + userNum;
+                const agentName = 'Acquisition Agent ' + formattedNumStr;
+
+                initOrderForm('agentOrderFormContainer', currentAgentUser, agentName);
+            }
+        }
+
         function switchManagerTab(tabName) {
             document.querySelectorAll('.manager-section').forEach(sec => sec.classList.add('hidden'));
             if (tabName === 'profiles') {
@@ -240,6 +647,9 @@
             } else if (tabName === 'users') {
                 document.getElementById('mSectionUsers').classList.remove('hidden');
                 renderAgentUsersTable();
+            } else if (tabName === 'addOrder') {
+                document.getElementById('mSectionAddOrder').classList.remove('hidden');
+                initOrderForm('managerOrderFormContainer', 'manager01', 'System Manager');
             }
         }
 
@@ -276,6 +686,154 @@
                     </tr>
                 `;
             });
+        }
+
+        function handleCityChange(e) {
+            const form = e.target.closest('form');
+            const selectedCity = e.target.value;
+            const areaSelect = form.querySelector('.deliveryAreaSelect');
+            const customCityWrapper = form.querySelector('.customCityWrapper');
+            const customAreaWrapper = form.querySelector('.customAreaWrapper');
+            const customCityInput = form.querySelector('.customCity');
+            const customAreaInput = form.querySelector('.customArea');
+
+            areaSelect.innerHTML = '';
+            customCityWrapper.style.display = 'none';
+            customAreaWrapper.style.display = 'none';
+            customCityInput.required = false;
+            customAreaInput.required = false;
+
+            if (selectedCity === 'Others') {
+                customCityWrapper.style.display = 'block';
+                customCityInput.required = true;
+                const opt = document.createElement('option');
+                opt.value = 'Others';
+                opt.innerText = 'Others';
+                areaSelect.appendChild(opt);
+                customAreaWrapper.style.display = 'block';
+                customAreaInput.required = true;
+            } else if (cityAreaMap[selectedCity]) {
+                const defaultOpt = document.createElement('option');
+                defaultOpt.value = '';
+                defaultOpt.innerText = 'Select Area';
+                areaSelect.appendChild(defaultOpt);
+
+                cityAreaMap[selectedCity].forEach(area => {
+                    const opt = document.createElement('option');
+                    opt.value = area;
+                    opt.innerText = area;
+                    areaSelect.appendChild(opt);
+                });
+            } else {
+                const defaultOpt = document.createElement('option');
+                defaultOpt.value = '';
+                defaultOpt.innerText = 'Select City First';
+                areaSelect.appendChild(defaultOpt);
+            }
+            updateLiveSummary(form.closest('div'));
+        }
+
+        function handleAreaChange(e) {
+            const form = e.target.closest('form');
+            const areaSelect = form.querySelector('.deliveryAreaSelect');
+            const customAreaWrapper = form.querySelector('.customAreaWrapper');
+            const customAreaInput = form.querySelector('.customArea');
+
+            if (areaSelect.value === 'Others') {
+                customAreaWrapper.style.display = 'block';
+                customAreaInput.required = true;
+            } else {
+                customAreaWrapper.style.display = 'none';
+                customAreaInput.required = false;
+            }
+            updateLiveSummary(form.closest('div'));
+        }
+
+        function getFormattedAddress(container) {
+            const flat = container.querySelector('.addrFlat').value.trim();
+            const house = container.querySelector('.addrHouse').value.trim();
+            const road = container.querySelector('.addrRoad').value.trim();
+            const block = container.querySelector('.addrBlock').value.trim();
+            const others = container.querySelector('.addrOthers').value.trim();
+            return `Flat: ${flat}\nHouse: ${house}\nRoad: ${road}\nBlock/Sector: ${block}\nOther Details: ${others}`;
+        }
+
+        function updateLiveSummary(container) {
+            container.querySelector('.sumCustomerName').innerText = container.querySelector('.customerName').value || '-';
+            container.querySelector('.sumCustomerContact').innerText = container.querySelector('.customerContact').value || '-';
+            container.querySelector('.sumGender').innerText = container.querySelector('.gender').value || '-';
+            container.querySelector('.sumCreateDate').innerText = container.querySelector('.createDate').value || '-';
+            container.querySelector('.sumOrderChannel').innerText = container.querySelector('.orderChannel').value || '-';
+            
+            const createdByNum = container.querySelector('.createdByNum').value;
+            const createdByName = container.querySelector('.createdByName').value;
+            container.querySelector('.sumCreatedBy').innerText = createdByNum ? (createdByNum + ' - ' + createdByName) : '-';
+
+            let cityVal = container.querySelector('.citySelect').value;
+            if (cityVal === 'Others') cityVal = container.querySelector('.customCity').value.trim() || 'Others';
+            container.querySelector('.sumCity').innerText = cityVal || '-';
+
+            let areaVal = container.querySelector('.deliveryAreaSelect').value;
+            if (areaVal === 'Others') areaVal = container.querySelector('.customArea').value.trim() || 'Others';
+            container.querySelector('.sumDeliveryArea').innerText = areaVal || '-';
+
+            container.querySelector('.sumAddressDetails').innerText = getFormattedAddress(container);
+
+            const scheduleDate = container.querySelector('.scheduleDate').value;
+            const scheduledTime = container.querySelector('.scheduledTime').value;
+            container.querySelector('.sumSchedule').innerText = (scheduleDate || scheduledTime) ? `${scheduleDate} (${scheduledTime})` : '-';
+        }
+
+        function handleFormSubmit(container, userId, userName) {
+            const form = container.querySelector('.orderForm');
+            const submitBtn = container.querySelector('.submitBtn');
+            const statusMessage = container.querySelector('.status-message');
+
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Saving...';
+
+            const formData = new FormData(form);
+            formData.append('createdByNum', userId);
+
+            let finalCity = container.querySelector('.citySelect').value;
+            if (finalCity === 'Others') finalCity = container.querySelector('.customCity').value.trim();
+            formData.set('city', finalCity);
+
+            let finalArea = container.querySelector('.deliveryAreaSelect').value;
+            if (finalArea === 'Others') finalArea = container.querySelector('.customArea').value.trim();
+            formData.append('deliveryArea', finalArea);
+
+            formData.append('addressDetails', getFormattedAddress(container));
+
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbznJBoaggkUhg0ztkcmJpEyeaiuJRVRJX7oItiIgzWqhNPkYIbG3zjnEe2Hn1voDFFg/exec';
+
+            fetch(scriptURL, { method: 'POST', body: formData})
+                .then(response => response.json())
+                .then(data => {
+                    statusMessage.style.color = '#16a34a';
+                    statusMessage.innerText = '✓ Order saved successfully to Google Sheet!';
+
+                    form.reset();
+                    container.querySelector('.createdByNum').value = userId;
+                    container.querySelector('.createdByName').value = userName;
+                    container.querySelector('.customCityWrapper').style.display = 'none';
+                    container.querySelector('.customAreaWrapper').style.display = 'none';
+                    container.querySelector('.deliveryAreaSelect').innerHTML = '<option value="">Select City First</option>';
+                    
+                    const today = new Date();
+                    container.querySelector('.createDate').value = today.toISOString().split('T')[0] + ' ' + today.toLocaleTimeString();
+                    updateLiveSummary(container);
+
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = 'Save Order';
+                })
+                .catch(error => {
+                    statusMessage.style.color = '#dc2626';
+                    statusMessage.innerText = '✕ Something went wrong, please try again!';
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = 'Save Order';
+                    console.error('Error!', error.message);
+                });
         }
     </script>
 </body>
