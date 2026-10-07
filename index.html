@@ -428,7 +428,7 @@
                         <p class="text-slate-600 mb-4 text-sm">Ekhane apni notun agent-der username ebong password set ba create korte parben[cite: 1]. Ei list-e thaka user chara keu agent portal-e login korte parbe na.</p>
                         
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                            <input type="text" id="newAgentUser" placeholder="Agent Username (e.g. aqn01)" class="px-4 py-2 border rounded-lg">
+                            <input type="text" id="newAgentUser" placeholder="Agent Username (e.g. agentadmin01)" class="px-4 py-2 border rounded-lg">
                             <input type="password" id="newAgentPass" placeholder="Agent Password" class="px-4 py-2 border rounded-lg">
                             <button onclick="addNewAgent()" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition">Add Agent User</button>
                         </div>
@@ -521,8 +521,7 @@
         };
 
         let agentUsers = JSON.parse(localStorage.getItem('agentUsers')) || [
-            { user: "aqn01", pass: "aqnpass01" },
-            { user: "aqn02", pass: "aqnpass02" }
+            { user: "agentadmin01", pass: "agentadmin01" }
         ];
 
         let managerCreds = { user: "manager01", pass: "manager01" };
@@ -585,7 +584,7 @@
                     const numMatch = userInput.match(/\d+/);
                     const userNum = numMatch ? parseInt(numMatch[0], 10) : "";
                     const formattedNumStr = userNum < 10 ? "0" + userNum : "" + userNum;
-                    document.getElementById('createdByName').value = 'Acquisition Agent ' + formattedNumStr;
+                    document.getElementById('createdByName').value = 'Agent ' + formattedNumStr;
 
                     setFormattedDate();
                     updateLiveSummary();
