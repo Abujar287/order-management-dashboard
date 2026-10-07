@@ -20,7 +20,7 @@
 
         body {
             font-family: 'Exo 2', sans-serif;
-            min-h-screen: 100vh;
+            min-height: 100vh;
             color: var(--text-main);
             background: linear-gradient(-45deg, #0f172a, #1e293b, #1e1b4b, #0f172a);
             background-size: 400% 400%;
@@ -416,7 +416,7 @@
                         <p class="text-slate-600 mb-4 text-sm">Ekhane apni notun agent-der username ebong password set ba create korte parben[cite: 1]. Ei list-e thaka user chara keu agent portal-e login korte parbe na.</p>
                         
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                            <input type="text" id="newAgentUser" placeholder="Agent Username (e.g. agentadmin01)" class="px-4 py-2 border rounded-lg">
+                            <input type="text" id="newAgentUser" placeholder="Agent Username (e.g. agent01)" class="px-4 py-2 border rounded-lg">
                             <input type="password" id="newAgentPass" placeholder="Agent Password" class="px-4 py-2 border rounded-lg">
                             <button onclick="addNewAgent()" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition cursor-pointer">Add Agent User</button>
                         </div>
@@ -509,7 +509,7 @@
         };
 
         let agentUsers = JSON.parse(localStorage.getItem('agentUsers')) || [
-            { user: "agentadmin01", pass: "agentadmin01" }
+            { user: "agent01", pass: "agent01" }
         ];
 
         let managerCreds = { user: "manager01", pass: "manager01" };
@@ -826,6 +826,7 @@
                 tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-500">No orders found.</td></tr>';
                 return;
             }
+            ordersList.icoForEach = undefined; // safety
             ordersList.forEach((ord, idx) => {
                 tbody.innerHTML += `
                     <tr class="border-b">
