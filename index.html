@@ -252,8 +252,9 @@
                 <div id="aSectionProfiles" class="agent-section space-y-6">
                     <div class="bg-white p-6 rounded-xl shadow max-w-xl">
                         <h3 class="text-xl font-bold mb-4 text-slate-800">Agent Profile</h3>
-                        <p class="text-slate-600">Username: <strong id="profileAgentUser">agent01</strong></p>
-                        <p class="text-slate-600">Role: Acquisition Agent</p>
+                        <p class="text-slate-600 mb-2">User ID = <strong id="profileAgentUserId">agent01</strong></p>
+                        <p class="text-slate-600 mb-2">Username: <strong id="profileAgentUsername">agent01</strong></p>
+                        <p class="text-slate-600">Team: <strong id="profileAgentTeam">Acquisition</strong></p>
                     </div>
                 </div>
 
@@ -302,7 +303,7 @@
                 <div id="mSectionProfiles" class="manager-section space-y-6">
                     <div class="bg-white p-6 rounded-xl shadow max-w-xl">
                         <h3 class="text-xl font-bold mb-4 text-slate-800">Manager Profile</h3>
-                        <p class="text-slate-600">Username: <strong>manager01</strong></p>
+                        <p class="text-slate-600 mb-2">Username: <strong>manager01</strong></p>
                         <p class="text-slate-600">Role: System Administrator / Manager</p>
                     </div>
                 </div>
@@ -311,11 +312,20 @@
                 <div id="mSectionUsers" class="manager-section hidden space-y-6">
                     <div class="bg-white p-6 rounded-xl shadow">
                         <h3 class="text-xl font-bold mb-4 text-slate-800">Agent Accounts Management</h3>
-                        <p class="text-slate-600 mb-4 text-sm">Ekhane apni notun agent-der username ebong password set ba create korte parben.</p>
+                        <p class="text-slate-600 mb-4 text-sm">Ekhane apni notun agent-der username, password ebong team select kore create korte parben.</p>
                         
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                             <input type="text" id="newAgentUser" placeholder="Agent Username (e.g. agent01)" class="px-4 py-2 border rounded-lg text-slate-900">
                             <input type="password" id="newAgentPassword" placeholder="Agent Password" class="px-4 py-2 border rounded-lg text-slate-900">
+                            <select id="newAgentTeam" class="px-4 py-2 border rounded-lg text-slate-900">
+                                <option value="Acquisition">Acquisition</option>
+                                <option value="Retention">Retention</option>
+                                <option value="KAM">KAM</option>
+                                <option value="Call-Center">Call-Center</option>
+                                <option value="Facebook">Facebook</option>
+                                <option value="Back-Office">Back-Office</option>
+                                <option value="VOC">VOC</option>
+                            </select>
                             <button id="addAgentBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition cursor-pointer">Add Agent User</button>
                         </div>
 
@@ -326,6 +336,7 @@
                                     <tr class="bg-slate-100 border-b text-slate-600 text-sm">
                                         <th class="p-3">Username</th>
                                         <th class="p-3">Password</th>
+                                        <th class="p-3">Team</th>
                                         <th class="p-3">Action</th>
                                     </tr>
                                 </thead>
@@ -514,12 +525,12 @@
         };
 
         let agentUsers = JSON.parse(localStorage.getItem('agentUsers')) || [
-            { user: "agent01", pass: "agent01" },
-            { user: "aqn01", pass: "aqn01" }
+            { user: "agent01", pass: "agent01", team: "Acquisition" },
+            { user: "aqn01", pass: "aqn01", team: "Acquisition" }
         ];
 
         let activeRole = '';
-        let currentAgentUser = '';
+        let currentAgentObj = null;
 
         function initOrderForm(containerId, userId, userName) {
             const container = document.getElementById(containerId);
@@ -605,9 +616,12 @@
                     document.getElementById('loginScreen').classList.add('hidden');
                     document.getElementById('agentApp').classList.remove('hidden');
                     
-                    currentAgentUser = userInput;
-                    document.getElementById('activeAgentBadge').innerText = 'User: ' + userInput;
-                    document.getElementById('profileAgentUser').innerText = userInput;
+                    currentAgentObj = found;
+                    document.getElementById('activeAgentBadge').innerText = 'User: ' + found.user;
+                    
+                    document.getElementById('profileAgentUserId').innerText = found.user;
+                    document.getElementById('profileAgentUsername').innerText = found.user;
+                    document.getElementById('profileAgentTeam').innerText = found.team;
                     
                     switchAgentTab('profiles');
                 } else {
@@ -631,12 +645,8 @@
             } else if (tabName === 'addOrder') {
                 document.getElementById('aSectionAddOrder').classList.remove('hidden');
                 
-                const numMatch = currentAgentUser.match(/\d+/);
-                const userNum = numMatch ? parseInt(numMatch[0], 10) : 1;
-                const formattedNumStr = userNum < 10 ? "0" + userNum : "" + userNum;
-                const agentName = 'Acquisition Agent ' + formattedNumStr;
-
-                initOrderForm('agentOrderFormContainer', currentAgentUser, agentName);
+                const agentFullName = currentAgentObj.team + ' Agent (' + currentAgentObj.user + ')';
+                initOrderForm('agentOrderFormContainer', currentAgentObj.user, agentFullName);
             }
         }
 
@@ -656,9 +666,10 @@
         function addNewAgent() {
             const u = document.getElementById('newAgentUser').value.trim();
             const p = document.getElementById('newAgentPassword').value.trim();
+            const t = document.getElementById('newAgentTeam').value;
             if (!u || !p) return;
             if (agentUsers.some(a => a.user === u)) return;
-            agentUsers.push({ user: u, pass: p });
+            agentUsers.push({ user: u, pass: p, team: t });
             localStorage.setItem('agentUsers', JSON.stringify(agentUsers));
             document.getElementById('newAgentUser').value = '';
             document.getElementById('newAgentPassword').value = '';
@@ -680,6 +691,7 @@
                     <tr class="border-b">
                         <td class="p-3 font-medium text-slate-800">${agent.user}</td>
                         <td class="p-3 text-slate-800">••••••••</td>
+                        <td class="p-3"><span class="bg-blue-100 text-blue-800 text-xs px-2.5 py-1 rounded-full font-semibold">${agent.team}</span></td>
                         <td class="p-3">
                             <button onclick="deleteAgent(${index})" class="text-red-500 hover:text-red-700 text-sm font-semibold cursor-pointer">Delete</button>
                         </td>
