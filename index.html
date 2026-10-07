@@ -252,8 +252,8 @@
                 <div id="aSectionProfiles" class="agent-section space-y-6">
                     <div class="bg-white p-6 rounded-xl shadow max-w-xl">
                         <h3 class="text-xl font-bold mb-4 text-slate-800">Agent Profile</h3>
-                        <p class="text-slate-600 mb-2">User ID = <strong id="profileAgentUserId">agent01</strong></p>
-                        <p class="text-slate-600 mb-2">Username: <strong id="profileAgentUsername">agent01</strong></p>
+                        <p class="text-slate-600 mb-2">Agent Id = <strong id="profileAgentUserId">agent01</strong></p>
+                        <p class="text-slate-600 mb-2">Agent Name: <strong id="profileAgentUsername">agent01</strong></p>
                         <p class="text-slate-600">Team: <strong id="profileAgentTeam">Acquisition</strong></p>
                     </div>
                 </div>
@@ -312,7 +312,7 @@
                 <div id="mSectionUsers" class="manager-section hidden space-y-6">
                     <div class="bg-white p-6 rounded-xl shadow">
                         <h3 class="text-xl font-bold mb-4 text-slate-800">Agent Accounts Management</h3>
-                        <p class="text-slate-600 mb-4 text-sm">Ekhane apni notun agent-der username, password ebong team select kore create korte parben.</p>
+                        <p class="text-slate-600 mb-4 text-sm">Ekhane apni notun agent-der username, password ebong team select kore create ba edit korte parben.</p>
                         
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                             <input type="text" id="newAgentUser" placeholder="Agent Username (e.g. agent01)" class="px-4 py-2 border rounded-lg text-slate-900">
@@ -565,6 +565,21 @@
         document.getElementById('loginSubmitBtn').addEventListener('click', handleLogin);
         document.getElementById('addAgentBtn').addEventListener('click', addNewAgent);
 
+        // Enter key navigation on login inputs
+        document.getElementById('loginUser').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById('loginPass').focus();
+            }
+        });
+
+        document.getElementById('loginPass').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                handleLogin();
+            }
+        });
+
         document.querySelectorAll('.logoutBtn').forEach(btn => {
             btn.addEventListener('click', logout);
         });
@@ -587,6 +602,7 @@
                 title.innerText = 'Manager Portal Login';
                 btn.className = 'w-full bg-emerald-600 text-white py-2.5 rounded-lg font-semibold hover:bg-emerald-700 transition duration-200 cursor-pointer';
             }
+            document.getElementById('loginUser').focus();
         }
 
         function goBackToLanding() {
@@ -645,8 +661,7 @@
             } else if (tabName === 'addOrder') {
                 document.getElementById('aSectionAddOrder').classList.remove('hidden');
                 
-                const agentFullName = currentAgentObj.team + ' Agent (' + currentAgentObj.user + ')';
-                initOrderForm('agentOrderFormContainer', currentAgentObj.user, agentFullName);
+                initOrderForm('agentOrderFormContainer', currentAgentObj.user, currentAgentObj.user);
             }
         }
 
@@ -659,7 +674,7 @@
                 renderAgentUsersTable();
             } else if (tabName === 'addOrder') {
                 document.getElementById('mSectionAddOrder').classList.remove('hidden');
-                initOrderForm('managerOrderFormContainer', 'manager01', 'System Manager');
+                initOrderForm('managerOrderFormContainer', 'manager01', 'manager01');
             }
         }
 
@@ -668,12 +683,27 @@
             const p = document.getElementById('newAgentPassword').value.trim();
             const t = document.getElementById('newAgentTeam').value;
             if (!u || !p) return;
-            if (agentUsers.some(a => a.user === u)) return;
-            agentUsers.push({ user: u, pass: p, team: t });
-            localStorage.setItem('agentUsers', JSON.stringify(agentUsers));
-            document.getElementById('newAgentUser').value = '';
-            document.getElementById('newAgentPassword').value = '';
-            renderAgentUsersTable();
+            
+            const existingIndex = agentUsers.findIndex(a => a.user === u);
+            if (existingIndex >= -1) {
+                if (existingIndex >= 0) {
+                    agentUsers[existingIndex] = { user: u, pass: p, team: t };
+                } else {
+                    agentUsers.push({ user: u, pass: p, team: t });
+                }
+                localStorage.setItem('agentUsers', JSON.stringify(agentUsers));
+                document.getElementById('newAgentUser').value = '';
+                document.getElementById('newAgentPassword').value = '';
+                renderAgentUsersTable();
+            }
+        }
+
+        function editAgent(index) {
+            const agent = agentUsers[index];
+            document.getElementById('newAgentUser').value = agent.user;
+            document.getElementById('newAgentPassword').value = agent.pass;
+            document.getElementById('newAgentTeam').value = agent.team;
+            document.getElementById('newAgentUser').focus();
         }
 
         function deleteAgent(index) {
@@ -692,7 +722,8 @@
                         <td class="p-3 font-medium text-slate-800">${agent.user}</td>
                         <td class="p-3 text-slate-800">••••••••</td>
                         <td class="p-3"><span class="bg-blue-100 text-blue-800 text-xs px-2.5 py-1 rounded-full font-semibold">${agent.team}</span></td>
-                        <td class="p-3">
+                        <td class="p-3 space-x-2">
+                            <button onclick="editAgent(${index})" class="text-blue-600 hover:text-blue-800 text-sm font-semibold cursor-pointer">Edit</button>
                             <button onclick="deleteAgent(${index})" class="text-red-500 hover:text-red-700 text-sm font-semibold cursor-pointer">Delete</button>
                         </td>
                     </tr>
