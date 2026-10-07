@@ -36,8 +36,8 @@
         </div>
     </div>
 
-    <!-- Login Form Modal / Screen (Hidden initially) -->
-    <div id="loginScreen" class="hidden flex-grow flex items-center justify-center p-6 animate-fadeIn">
+    <!-- Login Form Modal / Screen -->
+    <div id="loginScreen" class="hidden flex-grow flex items-center justify-center p-6">
         <div class="bg-slate-800 border border-slate-700 p-8 rounded-2xl shadow-2xl max-w-md w-full relative">
             <button onclick="goBackToLanding()" class="absolute top-4 left-4 text-slate-400 hover:text-white flex items-center text-sm">
                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg> Back
@@ -65,78 +65,159 @@
         </div>
     </div>
 
-    <!-- Main Dashboard Application (Hidden by default) -->
-    <div id="mainApp" class="hidden min-h-screen bg-slate-100 text-slate-800">
+    <!-- Agent Dashboard View -->
+    <div id="agentApp" class="hidden min-h-screen bg-slate-100 text-slate-800 flex flex-col">
         <header class="bg-white shadow px-6 py-4 flex justify-between items-center">
-            <h1 id="appTitle" class="text-xl font-bold">Dashboard</h1>
+            <h1 class="text-xl font-bold text-slate-800">Agent Portal - Order Submission</h1>
             <button onclick="handleLogout()" class="bg-red-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-600 transition">Logout</button>
         </header>
-
-        <main class="p-6">
-            <!-- Agent View -->
-            <div id="agentView" class="hidden space-y-6">
-                <div class="bg-white p-6 rounded-xl shadow">
-                    <h3 class="text-lg font-semibold mb-4 text-slate-800">Agent Order Submission Portal</h3>
-                    <p class="text-slate-600 mb-4">Here agents can create and submit new orders into the system.</p>
-                    <!-- Agent form placeholder / integration -->
-                    <div class="p-4 bg-slate-50 border rounded-lg">
-                        <p class="text-sm text-slate-500">Order form fields will appear here.</p>
+        <main class="p-6 flex-grow">
+            <div class="bg-white p-6 rounded-xl shadow max-w-2xl mx-auto">
+                <h3 class="text-lg font-semibold mb-4 text-slate-800">Submit New Order</h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Customer Name</label>
+                        <input type="text" id="agentCustName" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Customer name">
                     </div>
-                </div>
-            </div>
-
-            <!-- Manager View -->
-            <div id="managerView" class="hidden space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                    <div class="bg-white p-6 rounded-xl shadow border-l-4 border-blue-500">
-                        <h4 class="text-sm font-medium text-slate-500">Total Orders</h4>
-                        <p class="text-2xl font-bold text-slate-800 mt-1">0</p>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Order Details</label>
+                        <textarea id="agentOrderDetails" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Order details"></textarea>
                     </div>
-                    <div class="bg-white p-6 rounded-xl shadow border-l-4 border-emerald-500">
-                        <h4 class="text-sm font-medium text-slate-500">Completed Orders</h4>
-                        <p class="text-2xl font-bold text-slate-800 mt-1">0</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow border-l-4 border-amber-500">
-                        <h4 class="text-sm font-medium text-slate-500">Pending Review</h4>
-                        <p class="text-2xl font-bold text-slate-800 mt-1">0</p>
-                    </div>
-                </div>
-
-                <div class="bg-white p-6 rounded-xl shadow">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-semibold text-slate-800">Manager Order Control & Analytics</h3>
-                        <button onclick="alert('Refreshing data...')" class="bg-slate-800 text-white px-3 py-1.5 rounded text-sm hover:bg-slate-700">Refresh Data</button>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <thead>
-                                <tr class="bg-slate-100 border-b text-slate-600 text-sm">
-                                    <th class="p-3">Order ID</th>
-                                    <th class="p-3">Customer Name</th>
-                                    <th class="p-3">Details</th>
-                                    <th class="p-3">Status</th>
-                                    <th class="p-3">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="managerOrdersTable" class="text-sm text-slate-700">
-                                <tr>
-                                    <td colspan="5" class="p-4 text-center text-slate-500">No orders loaded yet or connecting to backend...</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <button onclick="submitAgentOrder()" class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition">Submit Order</button>
                 </div>
             </div>
         </main>
     </div>
 
+    <!-- Manager Portal Dashboard with Sidebar -->
+    <div id="managerApp" class="hidden min-h-screen bg-slate-100 text-slate-800 flex">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-slate-900 text-slate-300 flex flex-col justify-between hidden md:flex">
+            <div>
+                <div class="p-6 border-b border-slate-800">
+                    <h2 class="text-xl font-bold text-white">Manager Portal</h2>
+                </div>
+                <nav class="p-4 space-y-2">
+                    <button onclick="switchManagerTab('profiles')" id="tabProfiles" class="w-full text-left px-4 py-2.5 rounded-lg transition hover:bg-slate-800 hover:text-white flex items-center space-x-3">Profiles</button>
+                    <button onclick="switchManagerTab('users')" id="tabUsers" class="w-full text-left px-4 py-2.5 rounded-lg transition hover:bg-slate-800 hover:text-white flex items-center space-x-3">Users Management</button>
+                    <button onclick="switchManagerTab('orders')" id="tabOrders" class="w-full text-left px-4 py-2.5 rounded-lg transition hover:bg-slate-800 hover:text-white flex items-center space-x-3">Orders</button>
+                    <button onclick="switchManagerTab('summary')" id="tabSummary" class="w-full text-left px-4 py-2.5 rounded-lg transition hover:bg-slate-800 hover:text-white flex items-center space-x-3">Orders Summary</button>
+                </nav>
+            </div>
+            <div class="p-4 border-t border-slate-800">
+                <button onclick="handleLogout()" class="w-full bg-red-600/20 text-red-400 border border-red-500/30 px-4 py-2 rounded-lg text-sm hover:bg-red-600 hover:text-white transition">Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="flex-grow flex flex-col min-h-screen">
+            <header class="bg-white shadow px-6 py-4 flex justify-between items-center md:hidden">
+                <h1 class="text-lg font-bold">Manager Portal</h1>
+                <button onclick="handleLogout()" class="bg-red-500 text-white px-3 py-1.5 rounded text-sm">Logout</button>
+            </header>
+
+            <main class="p-6 flex-grow overflow-y-auto">
+                <!-- Mobile Navigation Tabs -->
+                <div class="flex flex-wrap gap-2 mb-6 md:hidden">
+                    <button onclick="switchManagerTab('profiles')" class="px-3 py-1.5 bg-slate-800 text-white rounded text-sm">Profiles</button>
+                    <button onclick="switchManagerTab('users')" class="px-3 py-1.5 bg-slate-800 text-white rounded text-sm">Users</button>
+                    <button onclick="switchManagerTab('orders')" class="px-3 py-1.5 bg-slate-800 text-white rounded text-sm">Orders</button>
+                    <button onclick="switchManagerTab('summary')" class="px-3 py-1.5 bg-slate-800 text-white rounded text-sm">Summary</button>
+                </div>
+
+                <!-- Profiles Tab -->
+                <div id="mSectionProfiles" class="manager-section space-y-6">
+                    <div class="bg-white p-6 rounded-xl shadow">
+                        <h3 class="text-xl font-bold mb-4 text-slate-800">Manager Profile</h3>
+                        <p class="text-slate-600">Username: <strong>manager01</strong></p>
+                        <p class="text-slate-600">Role: System Administrator / Manager</p>
+                    </div>
+                </div>
+
+                <!-- Users Management Tab -->
+                <div id="mSectionUsers" class="manager-section hidden space-y-6">
+                    <div class="bg-white p-6 rounded-xl shadow">
+                        <h3 class="text-xl font-bold mb-4 text-slate-800">Agent Accounts Management</h3>
+                        <p class="text-slate-600 mb-4 text-sm">Ekhane apni notun agent-der username ebong password set ba create korte parben. Ei list-e thaka user chara keu agent portal-e login korte parbe na.</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                            <input type="text" id="newAgentUser" placeholder="Agent Username" class="px-4 py-2 border rounded-lg">
+                            <input type="password" id="newAgentPass" placeholder="Agent Password" class="px-4 py-2 border rounded-lg">
+                            <button onclick="addNewAgent()" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition">Add Agent User</button>
+                        </div>
+
+                        <h4 class="font-semibold text-slate-700 mb-2">Active Agent Credentials List:</h4>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-100 border-b text-slate-600 text-sm">
+                                        <th class="p-3">Username</th>
+                                        <th class="p-3">Password</th>
+                                        <th class="p-3">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="agentUsersTable" class="text-sm text-slate-700">
+                                    <!-- Dynamic rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Orders Tab -->
+                <div id="mSectionOrders" class="manager-section hidden space-y-6">
+                    <div class="bg-white p-6 rounded-xl shadow">
+                        <h3 class="text-xl font-bold mb-4 text-slate-800">All Submitted Orders</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-100 border-b text-slate-600 text-sm">
+                                        <th class="p-3">Order ID</th>
+                                        <th class="p-3">Customer Name</th>
+                                        <th class="p-3">Details</th>
+                                        <th class="p-3">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="managerOrdersTable" class="text-sm text-slate-700">
+                                    <tr><td colspan="4" class="p-4 text-center text-slate-500">No orders found.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Orders Summary Tab -->
+                <div id="mSectionSummary" class="manager-section hidden space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-white p-6 rounded-xl shadow border-l-4 border-blue-500">
+                            <h4 class="text-sm font-medium text-slate-500">Total Orders</h4>
+                            <p id="sumTotalOrders" class="text-2xl font-bold text-slate-800 mt-1">0</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow border-l-4 border-emerald-500">
+                            <h4 class="text-sm font-medium text-slate-500">Completed Orders</h4>
+                            <p id="sumCompletedOrders" class="text-2xl font-bold text-slate-800 mt-1">0</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow border-l-4 border-amber-500">
+                            <h4 class="text-sm font-medium text-slate-500">Pending Orders</h4>
+                            <p id="sumPendingOrders" class="text-2xl font-bold text-slate-800 mt-1">0</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
     <script>
         let activeRole = '';
+        
+        // LocalStorage ba default credentials
+        let agentUsers = JSON.parse(localStorage.getItem('agentUsers')) || [
+            { user: "agentadmin01", pass: "agentadmin01" }
+        ];
 
-        const credentials = {
-            agent: { user: "agentadmin01", pass: "agentadmin01" },
-            manager: { user: "manager01", pass: "manager01" }
-        };
+        let managerCreds = { user: "manager01", pass: "manager01" };
+
+        let ordersList = JSON.parse(localStorage.getItem('ordersList')) || [];
 
         function showLogin(role) {
             activeRole = role;
@@ -168,29 +249,151 @@
             const passInput = document.getElementById('loginPass').value.trim();
             const errorDiv = document.getElementById('loginError');
 
-            if (userInput === credentials[activeRole].user && passInput === credentials[activeRole].pass) {
-                errorDiv.classList.add('hidden');
-                document.getElementById('loginScreen').classList.add('hidden');
-                document.getElementById('mainApp').classList.remove('hidden');
-
-                if (activeRole === 'agent') {
-                    document.getElementById('appTitle').innerText = 'Agent Portal';
-                    document.getElementById('agentView').classList.remove('hidden');
-                    document.getElementById('managerView').classList.add('hidden');
+            if (activeRole === 'manager') {
+                if (userInput === managerCreds.user && passInput === managerCreds.pass) {
+                    errorDiv.classList.add('hidden');
+                    document.getElementById('loginScreen').classList.add('hidden');
+                    document.getElementById('managerApp').classList.remove('hidden');
+                    switchManagerTab('profiles');
+                    renderAgentUsersTable();
+                    renderManagerOrders();
                 } else {
-                    document.getElementById('managerView').classList.remove('hidden');
-                    document.getElementById('agentView').classList.add('hidden');
-                    document.getElementById('appTitle').innerText = 'Manager Portal Overview';
+                    errorDiv.innerText = 'Invalid Manager username or password!';
+                    errorDiv.classList.remove('hidden');
                 }
-            } else {
-                errorDiv.innerText = 'Invalid username or password!';
-                errorDiv.classList.remove('hidden');
+            } else if (activeRole === 'agent') {
+                const foundAgent = agentUsers.find(a => a.user === userInput && a.pass === passInput);
+                if (foundAgent) {
+                    errorDiv.classList.add('hidden');
+                    document.getElementById('loginScreen').classList.add('hidden');
+                    document.getElementById('agentApp').classList.remove('hidden');
+                } else {
+                    errorDiv.innerText = 'Invalid Agent username or password (or not authorized by Manager)!';
+                    errorDiv.classList.remove('hidden');
+                }
             }
         }
 
         function handleLogout() {
-            document.getElementById('mainApp').classList.add('hidden');
+            document.getElementById('agentApp').classList.add('hidden');
+            document.getElementById('managerApp').classList.add('hidden');
             document.getElementById('landingScreen').classList.remove('hidden');
+        }
+
+        function switchManagerTab(tabName) {
+            document.querySelectorAll('.manager-section').forEach(sec => sec.classList.add('hidden'));
+            if (tabName === 'profiles') document.getElementById('mSectionProfiles').classList.remove('hidden');
+            if (tabName === 'users') {
+                document.getElementById('mSectionUsers').classList.remove('hidden');
+                renderAgentUsersTable();
+            }
+            if (tabName === 'orders') {
+                document.getElementById('mSectionOrders').classList.remove('hidden');
+                renderManagerOrders();
+            }
+            if (tabName === 'summary') {
+                document.getElementById('mSectionSummary').classList.remove('hidden');
+                updateSummaryStats();
+            }
+        }
+
+        function addNewAgent() {
+            const u = document.getElementById('newAgentUser').value.trim();
+            const p = document.getElementById('newAgentPass').value.trim();
+            if (!u || !p) {
+                alert('Please enter both username and password.');
+                return;
+            }
+            agentUsers.push({ user: u, pass: p });
+            localStorage.setItem('agentUsers', JSON.stringify(agentUsers));
+            document.getElementById('newAgentUser').value = '';
+            document.getElementById('newAgentPass').value = '';
+            renderAgentUsersTable();
+            alert('Agent user created successfully!');
+        }
+
+        function deleteAgent(index) {
+            if (agentUsers.length <= 1) {
+                alert('You must keep at least one agent account.');
+                return;
+            }
+            agentUsers.splice(index, 1);
+            localStorage.setItem('agentUsers', JSON.stringify(agentUsers));
+            renderAgentUsersTable();
+        }
+
+        function renderAgentUsersTable() {
+            const tbody = document.getElementById('agentUsersTable');
+            tbody.innerHTML = '';
+            agentUsers.forEach((agent, index) => {
+                tbody.innerHTML += `
+                    <tr class="border-b">
+                        <td class="p-3">${agent.user}</td>
+                        <td class="p-3">••••••••</td>
+                        <td class="p-3">
+                            <button onclick="deleteAgent(${index})" class="text-red-500 hover:text-red-700 text-sm">Delete</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function submitAgentOrder() {
+            const name = document.getElementById('agentCustName').value.trim();
+            const details = document.getElementById('agentOrderDetails').value.trim();
+            if (!name || !details) {
+                alert('Please fill out all order fields.');
+                return;
+            }
+            const newOrder = {
+                id: 'ORD-' + Math.floor(1000 + Math.random() * 9000),
+                customer: name,
+                details: details,
+                status: 'Pending'
+            };
+            ordersList.push(newOrder);
+            localStorage.setItem('ordersList', JSON.stringify(ordersList));
+            document.getElementById('agentCustName').value = '';
+            document.getElementById('agentOrderDetails').value = '';
+            alert('Order submitted successfully!');
+        }
+
+        function renderManagerOrders() {
+            const tbody = document.getElementById('managerOrdersTable');
+            tbody.innerHTML = '';
+            if (ordersList.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-500">No orders found.</td></tr>';
+                return;
+            }
+            ordersList.forEach((ord, idx) => {
+                tbody.innerHTML += `
+                    <tr class="border-b">
+                        <td class="p-3 font-medium">${ord.id}</td>
+                        <td class="p-3">${ord.customer}</td>
+                        <td class="p-3">${ord.details}</td>
+                        <td class="p-3">
+                            <select onchange="updateOrderStatus(${idx}, this.value)" class="border rounded px-2 py-1 text-xs">
+                                <option value="Pending" ${ord.status==='Pending'?'selected':''}>Pending</option>
+                                <option value="Completed" ${ord.status==='Completed'?'selected':''}>Completed</option>
+                            </select>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function updateOrderStatus(index, newStatus) {
+            ordersList[index].status = newStatus;
+            localStorage.setItem('ordersList', JSON.stringify(ordersList));
+        }
+
+        function updateSummaryStats() {
+            const total = ordersList.length;
+            const completed = ordersList.filter(o => o.status === 'Completed').length;
+            const pending = total - completed;
+            document.getElementById('sumTotalOrders').innerText = total;
+            document.getElementById('sumCompletedOrders').innerText = completed;
+            document.getElementById('sumPendingOrders').innerText = pending;
         }
     </script>
 </body>
