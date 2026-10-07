@@ -348,7 +348,7 @@
                     </div>
                 </div>
 
-                <!-- Manager Orders Tab -->
+                <!-- Manager Orders Tab (Sticky Header) -->
                 <div id="mSectionOrders" class="manager-section hidden space-y-6">
                     <div class="bg-white p-6 rounded-xl shadow flex justify-between items-center">
                         <h3 class="text-xl font-bold text-slate-800">Orders Details</h3>
@@ -368,10 +368,10 @@
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-xl shadow overflow-x-auto">
+                    <div class="bg-white rounded-xl shadow overflow-y-auto max-h-[600px]">
                         <table class="w-full text-left border-collapse text-sm">
-                            <thead>
-                                <tr class="bg-slate-100 border-b text-slate-700">
+                            <thead class="sticky top-0 bg-slate-100 border-b text-slate-700 z-10 shadow-sm">
+                                <tr>
                                     <th class="p-3">Order Id</th>
                                     <th class="p-3">Customer Name</th>
                                     <th class="p-3">Customer Contact</th>
@@ -662,9 +662,7 @@
         ];
 
         let allOrdersData = JSON.parse(localStorage.getItem('allOrdersData')) || [
-            { id: 1, customerName: "Abujar", customerContact: "1952980445", gender: "Male", createDate: "2026-10-03 14:34:09", orderChannel: "Acquisition", createdByNum: "aqn02", createdByName: "Acquisition Agent 02", city: "Dhaka", deliveryArea: "Badda", addressDetails: "Flat: 02\nHouse: 02\nRoad: 123\nBlock/Sector: D\nOther Details:", scheduleDate: "2026-10-09" },
-            { id: 2, customerName: "Test", customerContact: "123456789", gender: "Male", createDate: "2026-10-04 14:41:40", orderChannel: "Retention", createdByNum: "aqn03", createdByName: "Acquisition Agent 03", city: "Dhaka", deliveryArea: "Banani", addressDetails: "Flat: 02\nHouse: 04\nRoad: 456\nBlock/Sector: A\nOther Details:", scheduleDate: "2026-10-20" },
-            { id: 3, customerName: "Test2", customerContact: "777", gender: "Female", createDate: "2026-10-05 14:48:23", orderChannel: "KAM", createdByNum: "aqn05", createdByName: "Acquisition Agent 05", city: "Chittagong", deliveryArea: "Pahartali", addressDetails: "Flat: 5\nHouse: \nRoad: 5\nBlock/Sector: S\nOther Details:", scheduleDate: "2026-10-15" }
+            { id: 1, customerName: "Abujar", customerContact: "1952980445", gender: "Male", createDate: "2026-10-03 14:34:09", orderChannel: "Acquisition", createdByNum: "aqn02", createdByName: "Acquisition Agent 02", city: "Dhaka", deliveryArea: "Badda", addressDetails: "Flat: 02\nHouse: 02\nRoad: 123\nBlock/Sector: D\nOther Details:", scheduleDate: "2026-10-09" }
         ];
 
         const scriptURL = 'https://script.google.com/macros/s/AKfycbznJBoaggkUhg0ztkcmJpEyeaiuJRVRJX7oItiIgzWqhNPkYIbG3zjnEe2Hn1voDFFg/exec';
@@ -871,8 +869,8 @@
         }
 
         function loadOrdersData() {
-            // Try fetching from Google Sheet via GET if supported, otherwise use local storage
-            fetch(scriptURL)
+            // Fetching live data from Google Apps Script endpoint
+            fetch(scriptURL, { method: 'GET', redirect: 'follow' })
                 .then(res => res.json())
                 .then(data => {
                     if (Array.isArray(data) && data.length > 0) {
@@ -883,6 +881,7 @@
                     renderOrderSummary();
                 })
                 .catch(() => {
+                    // Fallback to local storage if offline or CORS restricted
                     renderOrdersTable(allOrdersData);
                     renderOrderSummary();
                 });
@@ -891,7 +890,7 @@
         function renderOrdersTable(data) {
             const tbody = document.getElementById('ordersTableBody');
             tbody.innerHTML = '';
-            if (data.length === 0) {
+            if (!data || data.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="12" class="p-4 text-center text-slate-500">No orders found.</td></tr>`;
                 return;
             }
