@@ -278,7 +278,8 @@
                 <nav class="p-4 space-y-2">
                     <button onclick="switchManagerTab('profiles')" class="w-full text-left px-4 py-2.5 rounded-lg transition hover:bg-slate-800 hover:text-white flex items-center space-x-3 cursor-pointer">Profiles</button>
                     <button onclick="switchManagerTab('users')" class="w-full text-left px-4 py-2.5 rounded-lg transition hover:bg-slate-800 hover:text-white flex items-center space-x-3 cursor-pointer">Users Management</button>
-                    <button onclick="switchManagerTab('addOrder')" class="w-full text-left px-4 py-2.5 rounded-lg transition hover:bg-slate-800 hover:text-white flex items-center space-x-3 cursor-pointer">Add Order</button>
+                    <button onclick="switchManagerTab('orders')" class="w-full text-left px-4 py-2.5 rounded-lg transition hover:bg-slate-800 hover:text-white flex items-center space-x-3 cursor-pointer">Orders</button>
+                    <button onclick="switchManagerTab('summary')" class="w-full text-left px-4 py-2.5 rounded-lg transition hover:bg-slate-800 hover:text-white flex items-center space-x-3 cursor-pointer">Orders Summary</button>
                 </nav>
             </div>
             <div class="p-4 border-t border-slate-800">
@@ -296,7 +297,8 @@
                 <div class="flex flex-wrap gap-2 mb-6 md:hidden">
                     <button onclick="switchManagerTab('profiles')" class="px-3 py-1.5 bg-slate-800 text-white rounded text-sm">Profiles</button>
                     <button onclick="switchManagerTab('users')" class="px-3 py-1.5 bg-slate-800 text-white rounded text-sm">Users</button>
-                    <button onclick="switchManagerTab('addOrder')" class="px-3 py-1.5 bg-slate-800 text-white rounded text-sm">Add Order</button>
+                    <button onclick="switchManagerTab('orders')" class="px-3 py-1.5 bg-slate-800 text-white rounded text-sm">Orders</button>
+                    <button onclick="switchManagerTab('summary')" class="px-3 py-1.5 bg-slate-800 text-white rounded text-sm">Summary</button>
                 </div>
 
                 <!-- Manager Profiles Tab -->
@@ -346,10 +348,19 @@
                     </div>
                 </div>
 
-                <!-- Manager Add Order Tab -->
-                <div id="mSectionAddOrder" class="manager-section hidden space-y-6">
-                    <div class="max-w-4xl mx-auto w-full">
-                        <div id="managerOrderFormContainer"></div>
+                <!-- Manager Orders Tab -->
+                <div id="mSectionOrders" class="manager-section hidden space-y-6">
+                    <div class="bg-white p-6 rounded-xl shadow">
+                        <h3 class="text-xl font-bold mb-4 text-slate-800">All Orders</h3>
+                        <p class="text-slate-600">Ekhane system-er shob orders list dekha jabe.</p>
+                    </div>
+                </div>
+
+                <!-- Manager Orders Summary Tab -->
+                <div id="mSectionSummary" class="manager-section hidden space-y-6">
+                    <div class="bg-white p-6 rounded-xl shadow">
+                        <h3 class="text-xl font-bold mb-4 text-slate-800">Orders Summary & Analytics</h3>
+                        <p class="text-slate-600">Ekhane orders-er summary ebong reports dekha jabe.</p>
                     </div>
                 </div>
             </main>
@@ -565,7 +576,6 @@
         document.getElementById('loginSubmitBtn').addEventListener('click', handleLogin);
         document.getElementById('addAgentBtn').addEventListener('click', addNewAgent);
 
-        // Enter key navigation on login inputs
         document.getElementById('loginUser').addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
@@ -660,7 +670,6 @@
                 document.getElementById('aSectionProfiles').classList.remove('hidden');
             } else if (tabName === 'addOrder') {
                 document.getElementById('aSectionAddOrder').classList.remove('hidden');
-                
                 initOrderForm('agentOrderFormContainer', currentAgentObj.user, currentAgentObj.user);
             }
         }
@@ -672,9 +681,10 @@
             } else if (tabName === 'users') {
                 document.getElementById('mSectionUsers').classList.remove('hidden');
                 renderAgentUsersTable();
-            } else if (tabName === 'addOrder') {
-                document.getElementById('mSectionAddOrder').classList.remove('hidden');
-                initOrderForm('managerOrderFormContainer', 'manager01', 'manager01');
+            } else if (tabName === 'orders') {
+                document.getElementById('mSectionOrders').classList.remove('hidden');
+            } else if (tabName === 'summary') {
+                document.getElementById('mSectionSummary').classList.remove('hidden');
             }
         }
 
@@ -685,17 +695,15 @@
             if (!u || !p) return;
             
             const existingIndex = agentUsers.findIndex(a => a.user === u);
-            if (existingIndex >= -1) {
-                if (existingIndex >= 0) {
-                    agentUsers[existingIndex] = { user: u, pass: p, team: t };
-                } else {
-                    agentUsers.push({ user: u, pass: p, team: t });
-                }
-                localStorage.setItem('agentUsers', JSON.stringify(agentUsers));
-                document.getElementById('newAgentUser').value = '';
-                document.getElementById('newAgentPassword').value = '';
-                renderAgentUsersTable();
+            if (existingIndex >= 0) {
+                agentUsers[existingIndex] = { user: u, pass: p, team: t };
+            } else {
+                agentUsers.push({ user: u, pass: p, team: t });
             }
+            localStorage.setItem('agentUsers', JSON.stringify(agentUsers));
+            document.getElementById('newAgentUser').value = '';
+            document.getElementById('newAgentPassword').value = '';
+            renderAgentUsersTable();
         }
 
         function editAgent(index) {
@@ -853,6 +861,7 @@
             fetch(scriptURL, { method: 'POST', body: formData})
                 .then(response => response.json())
                 .then(data => {
+                    statusStyle = '#16a34a';
                     statusMessage.style.color = '#16a34a';
                     statusMessage.innerText = '✓ Order placed successfully to Google Sheet!';
 
