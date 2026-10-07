@@ -366,7 +366,7 @@
                         <td class="input-cell"><input type="text" name="customerName" required placeholder="Enter customer name" class="w-full p-2 border rounded text-slate-900 customerName"></td>
                     </tr>
                     <tr>
-                        <td class="label-cell">Customer Contact</td>
+                        <td class="label-cell">Customer Number</td>
                         <td class="input-cell"><input type="tel" name="customerContact" required placeholder="Enter contact number" class="w-full p-2 border rounded text-slate-900 customerContact"></td>
                     </tr>
                     <tr>
@@ -400,11 +400,11 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="label-cell">Created By</td>
+                        <td class="label-cell">Agent Id</td>
                         <td class="input-cell"><input type="text" name="createdByNum" readonly class="w-full p-2 border rounded bg-slate-100 text-slate-700 createdByNum"></td>
                     </tr>
                     <tr>
-                        <td class="label-cell">Created By Name</td>
+                        <td class="label-cell">Agent Name</td>
                         <td class="input-cell"><input type="text" name="createdByName" readonly class="w-full p-2 border rounded bg-slate-100 text-slate-700 createdByName"></td>
                     </tr>
                     <tr>
@@ -474,7 +474,7 @@
 
             <div class="mt-6 flex items-center justify-between">
                 <p class="text-sm font-semibold status-message"></p>
-                <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition cursor-pointer submitBtn">Save Order</button>
+                <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition cursor-pointer submitBtn">Placed Order</button>
             </div>
         </form>
 
@@ -482,11 +482,11 @@
             <h3>Order Preview & Summary <span>Live Auto-Update</span></h3>
             <div class="summary-grid">
                 <div class="summary-item"><span>Customer Name</span><strong class="sumCustomerName">-</strong></div>
-                <div class="summary-item"><span>Customer Contact</span><strong class="sumCustomerContact">-</strong></div>
+                <div class="summary-item"><span>Customer Number</span><strong class="sumCustomerContact">-</strong></div>
                 <div class="summary-item"><span>Gender</span><strong class="sumGender">-</strong></div>
                 <div class="summary-item"><span>Create Date</span><strong class="sumCreateDate">-</strong></div>
                 <div class="summary-item"><span>Order Channel</span><strong class="sumOrderChannel">-</strong></div>
-                <div class="summary-item"><span>Created By</span><strong class="sumCreatedBy">-</strong></div>
+                <div class="summary-item"><span>Agent Id & Name</span><strong class="sumCreatedBy">-</strong></div>
                 <div class="summary-item"><span>City</span><strong class="sumCity">-</strong></div>
                 <div class="summary-item"><span>Delivery Area</span><strong class="sumDeliveryArea">-</strong></div>
                 <div class="summary-item"><span>Address Details</span><strong class="sumAddressDetails">-</strong></div>
@@ -802,7 +802,7 @@
             const statusMessage = container.querySelector('.status-message');
 
             submitBtn.disabled = true;
-            submitBtn.innerText = 'Saving...';
+            submitBtn.innerText = 'Placing Order...';
 
             const formData = new FormData(form);
             formData.append('createdByNum', userId);
@@ -823,7 +823,7 @@
                 .then(response => response.json())
                 .then(data => {
                     statusMessage.style.color = '#16a34a';
-                    statusMessage.innerText = '✓ Order saved successfully to Google Sheet!';
+                    statusMessage.innerText = '✓ Order placed successfully to Google Sheet!';
 
                     form.reset();
                     container.querySelector('.createdByNum').value = userId;
@@ -837,13 +837,13 @@
                     updateLiveSummary(container);
 
                     submitBtn.disabled = false;
-                    submitBtn.innerText = 'Save Order';
+                    submitBtn.innerText = 'Placed Order';
                 })
                 .catch(error => {
                     statusMessage.style.color = '#dc2626';
                     statusMessage.innerText = '✕ Something went wrong, please try again!';
                     submitBtn.disabled = false;
-                    submitBtn.innerText = 'Save Order';
+                    submitBtn.innerText = 'Placed Order';
                     console.error('Error!', error.message);
                 });
         }
