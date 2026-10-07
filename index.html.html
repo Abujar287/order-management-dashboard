@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Order & Admin Management Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #0f172a;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --border-color: #cbd5e1;
+            --label-bg: #f8fafc;
+            --text-main: #334155;
+            --sidebar-width: 240px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            min-height: 100vh;
+            color: var(--text-main);
+            background-color: #f1f5f9;
+        }
+
+        /* Login Modal Overlay */
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .login-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 400px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        .login-card h2 {
+            font-size: 22px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .login-field {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .login-field label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #475569;
+        }
+
+        .login-field input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            outline: none;
+            font-family: 'Exo 2', sans-serif;
+        }
+
+        .login-btn {
+            width: 100%;
+            background-color: var(--accent);
+            color: #ffffff;
+            padding: 11px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.2s;
+        }
+
+        .login-btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        #login-error {
+            color: #dc2626;
+            font-size: 13px;
+            font-weight: 600;
+            margin-top: 12px;
+            display: none;
+        }
+
+        /* ==================== 1. AGENT CONTAINER STYLES ==================== */
+        .agent-container {
+            display: none;
+            max-width: 900px;
+            margin: 40px auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .panel-header {
+            background-color: var(--primary);
+            color: #ffffff;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .badge {
+            background-color: var(--accent);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .logout-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .panel-body { padding: 24px; }
+
+        .table-form {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .table-form tr { border-bottom: 1px solid var(--border-color); }
+        .table-form tr:last-child { border-bottom: none; }
+
+        .table-form td.label-cell {
+            width: 220px;
+            background-color: var(--label-bg);
+            padding: 12px 18px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #1e293b;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .table-form td.input-cell { padding: 8px 12px; }
+
+        input[type="text"], input[type="tel"], input[type="date"], select {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-family: 'Exo 2', sans-serif;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input[readonly], select[disabled] {
+            background-color: #f1f5f9;
+            color: #64748b;
+            cursor: not-allowed;
+        }
+
+        .address-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .address-item {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .address-item span {
+            background: #f1f5f9;
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #475569;
+            border-right: 1px solid var(--border-color);
+            white-space: nowrap;
+            min-width: 100px;
+        }
+
+        .address-item input { border: none; padding: 8px 10px; }
+        .address-item.full-width { grid-column: span 2; }
+        .custom-area-wrapper { margin-top: 8px; display: none; }
+
+        .action-bar {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        button[type="submit"] {
+            background-color: var(--accent);
+            color: #ffffff;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .summary-card {
+            margin-top: 30px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .summary-card h3 {
+            font-size: 16px;
+            color: var(--primary);
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+        }
+
+        .summary-item {
+            background: #f8fafc;
+            padding: 10px 14px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .summary-item span { display: block; font-size: 12px; color: #64748b; font-weight: 600; }
+        .summary-item strong { display: block; font-size: 14px; color: #0f172a; margin-top: 2px; white-space: pre-line; }
+
+        /* ==================== 2. MANAGER ADMIN LAYOUT ==================== */
+        .admin-layout {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--primary);
+            color: #ffffff;
+            position: fixed;
+            top: 0; bottom: 0; left: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .sidebar-brand {
+            padding: 24px 20px;
+            font-size: 18px;
+            font-weight: 700;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-menu { list-style: none; padding: 20px 0; flex: 1; }
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 20px;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .sidebar-menu li.active a, .sidebar-menu li a:hover {
+            color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.08);
+            border-left: 4px solid var(--accent);
+        }
+
+        .sidebar-footer { padding: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 30px;
+            width: calc(100% - var(--sidebar-width));
+        }
+
+        .top-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            background: #ffffff;
+            padding: 16px 24px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .refresh-btn {
+            background: #0284c7;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-spinner {
+            width: 12px; height: 12px;
+            border: 2px solid #ffffff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: none;
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .filter-section {
+            background: #ffffff;
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group { display: flex; align-items: center; gap: 8px; }
+        .filter-group label { font-weight: 600; font-size: 13px; color: #1e293b; }
+        .custom-date-container { display: none; gap: 6px; align-items: center; }
+
+        .total-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            padding: 18px;
+            border-radius: 8px;
+            border-left: 5px solid var(--accent);
+            margin-bottom: 24px;
+        }
+
+        .total-card span { font-size: 12px; font-weight: 700; color: #64748b; }
+        .total-card h3 { font-size: 32px; color: var(--primary); margin-top: 4px; }
+
+        .summary-tables-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .summary-box { background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; }
+        .summary-box h4 { font-size: 15px; color: var(--primary); margin-bottom: 12px; border-bottom: 2px solid var(--accent); padding-bottom: 6px; }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: #ffffff;
+            position: relative;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 13px;
+            text-align: left;
+        }
+
+        th { background-color: #f1f5f9; color: #1e293b; padding: 10px 12px; font-weight: 700; border-bottom: 2px solid var(--border-color); white-space: nowrap; }
+        td { padding: 9px 12px; border-bottom: 1px solid #e2e8f0; vertical-align: top; white-space: pre-line; }
+
+        /* Sticky Freeze Column Styles */
+        th.sticky-col, td.sticky-col {
+            position: sticky;
+            background-color: #ffffff;
+            z-index: 2;
+        }
+
+        th.sticky-col { background-color: #f1f5f9; z-index: 3; }
+        .col-1 { left: 0px; }
+        .col-2 { left: 70px; }
+        .col-3 { left: 190px; }
+
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 50px 20px;
+            gap: 12px;
+        }
+
+        .spinner {
+            width: 42px; height: 42px;
+            border: 4px solid #e2e8f0;
+            border-top: 4px solid var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<!-- Global Authentication Modal -->
+<div id="loginOverlay" class="login-overlay">
+    <div class="login-card">
+        <h2>System Portal Login</h2>
+        <form id="loginForm">
+            <div class="login-field">
+                <label for="userId">User ID</label>
+                <input type="text" id="userId" placeholder="aqn01 / manager01" required>
+            </div>
+            <div class="login-field">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter Password" required>
+            </div>
+            <button type="submit" class="login-btn">Login</button>
+            <p id="login-error">Invalid Credentials!</p>
+        </form>
+    </div>
+</div>
+
+<!-- ==================== AGENT INTERFACE ==================== -->
+<div id="agentContainer" class="agent-container">
+    <div class="panel-header">
+        <h2>Order Entry Dashboard</h2>
+        <div class="user-info">
+            <span class="badge" id="activeUserBadge">Agent Portal</span>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <form id="orderForm">
+            <table class="table-form">
+                <tbody>
+                    <tr>
+                        <td class="label-cell">Customer Name</td>
+                        <td class="input-cell"><input type="text" id="customerName" name="customerName" required placeholder="Enter customer name"></td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Customer Contact</td>
+                        <td class="input-cell"><input type="tel" id="customerContact" name="customerContact" required placeholder="Enter contact number"></td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Gender</td>
+                        <td class="input-cell">
+                            <select id="gender" name="gender" required>
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Create Date</td>
+                        <td class="input-cell"><input type="text" id="createDate" name="createDate" readonly></td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Order Channel</td>
+                        <td class="input-cell">
+                            <select id="orderChannel" name="orderChannel" required>
+                                <option value="">Select Channel</option>
+                                <option value="Acquisition">Acquisition</option>
+                                <option value="Retention">Retention</option>
+                                <option value="KAM">KAM</option>
+                                <option value="Call-Center">Call-Center</option>
+                                <option value="Facebook">Facebook</option>
+                                <option value="Back-Office">Back-Office</option>
+                                <option value="VOC">VOC</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Created By</td>
+                        <td class="input-cell">
+                            <select id="createdByNum" name="createdByNum" required disabled>
+                                <option value="aqn01">aqn01</option>
+                                <option value="aqn02">aqn02</option>
+                                <option value="aqn03">aqn03</option>
+                                <option value="aqn04">aqn04</option>
+                                <option value="aqn05">aqn05</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Created By Name</td>
+                        <td class="input-cell"><input type="text" id="createdByName" name="createdByName" readonly></td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">City</td>
+                        <td class="input-cell">
+                            <select id="city" name="city" required onchange="handleCityChange()">
+                                <option value="">Select City</option>
+                                <option value="Dhaka">Dhaka</option>
+                                <option value="Chittagong">Chittagong</option>
+                                <option value="Jashore">Jashore</option>
+                                <option value="Others">Others</option>
+                            </select>
+                            <div id="customCityWrapper" class="custom-area-wrapper"><input type="text" id="customCity" placeholder="Type custom city name"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Delivery Area</td>
+                        <td class="input-cell">
+                            <select id="deliveryAreaSelect" required onchange="handleAreaChange()">
+                                <option value="">Select City First</option>
+                            </select>
+                            <div id="customAreaWrapper" class="custom-area-wrapper"><input type="text" id="customArea" placeholder="Type custom area location"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Address Details</td>
+                        <td class="input-cell">
+                            <div class="address-grid">
+                                <div class="address-item"><span>Flat:</span><input type="text" id="addrFlat" placeholder="e.g. 02"></div>
+                                <div class="address-item"><span>House:</span><input type="text" id="addrHouse" placeholder="e.g. 02"></div>
+                                <div class="address-item"><span>Road:</span><input type="text" id="addrRoad" placeholder="e.g. 123"></div>
+                                <div class="address-item"><span>Block/Sector:</span><input type="text" id="addrBlock" placeholder="e.g. D"></div>
+                                <div class="address-item full-width"><span>Other Details:</span><input type="text" id="addrOthers" placeholder="Additional details..."></div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Schedule Date</td>
+                        <td class="input-cell"><input type="date" id="scheduleDate" name="scheduleDate" required></td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Scheduled Time</td>
+                        <td class="input-cell">
+                            <select id="scheduledTime" name="scheduledTime" required>
+                                <option value="">Select Time Slot</option>
+                                <option value="9AM to 10AM">9 AM to 10 AM</option>
+                                <option value="10AM to 11AM">10 AM to 11 AM</option>
+                                <option value="11AM to 12PM">11 AM to 12 PM</option>
+                                <option value="12PM to 1PM">12 PM to 1 PM</option>
+                                <option value="1PM to 2PM">1 PM to 2 PM</option>
+                                <option value="2PM to 3PM">2 PM to 3 PM</option>
+                                <option value="3PM to 4PM">3 PM to 4 PM</option>
+                                <option value="4PM to 5PM">4 PM to 5 PM</option>
+                                <option value="5PM to 6PM">5 PM to 6 PM</option>
+                                <option value="6PM to 7PM">6 PM to 7 PM</option>
+                                <option value="7PM to 8PM">7 PM to 8 PM</option>
+                                <option value="8PM to 9PM">8 PM to 9 PM</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="action-bar">
+                <p id="status-message"></p>
+                <button type="submit" id="submitBtn">Save Order</button>
+            </div>
+        </form>
+
+        <div id="summaryCard" class="summary-card">
+            <h3>Order Preview & Summary <span>Live Auto-Update</span></h3>
+            <div class="summary-grid">
+                <div class="summary-item"><span>Customer Name</span><strong id="sumCustomerName">-</strong></div>
+                <div class="summary-item"><span>Customer Contact</span><strong id="sumCustomerContact">-</strong></div>
+                <div class="summary-item"><span>Gender</span><strong id="sumGender">-</strong></div>
+                <div class="summary-item"><span>Create Date</span><strong id="sumCreateDate">-</strong></div>
+                <div class="summary-item"><span>Order Channel</span><strong id="sumOrderChannel">-</strong></div>
+                <div class="summary-item"><span>Created By</span><strong id="sumCreatedBy">-</strong></div>
+                <div class="summary-item"><span>City</span><strong id="sumCity">-</strong></div>
+                <div class="summary-item"><span>Delivery Area</span><strong id="sumDeliveryArea">-</strong></div>
+                <div class="summary-item"><span>Address Details</span><strong id="sumAddressDetails">-</strong></div>
+                <div class="summary-item"><span>Schedule Date & Time</span><strong id="sumSchedule">-</strong></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== MANAGER ADMIN INTERFACE ==================== -->
+<div id="adminLayout" class="admin-layout">
+    <div class="sidebar">
+        <div class="sidebar-brand">📊 <span>Admin Portal</span></div>
+        <ul class="sidebar-menu">
+            <li class="active" id="navSummary" onclick="switchTab('summaryTab')">
+                <a href="javascript:void(0)">📁 <span>Order Summary</span></a>
+            </li>
+            <li id="navOrders" onclick="switchTab('ordersTab')">
+                <a href="javascript:void(0)">📦 <span>Orders Details</span></a>
+            </li>
+        </ul>
+        <div class="sidebar-footer">
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="top-header">
+            <h2 id="pageTitle">Order Summary</h2>
+            <button class="refresh-btn" id="refreshBtn" onclick="fetchOrders()">
+                <div class="btn-spinner" id="btnSpinner"></div>
+                <span id="refreshBtnText">🔄 Refresh Data</span>
+            </button>
+        </div>
+
+        <!-- TAB 1: SUMMARY -->
+        <div id="summaryTab" class="tab-content active">
+            <div class="filter-section">
+                <div class="filter-group">
+                    <label>Create Date:</label>
+                    <select id="createDateFilter" onchange="handleFilterTypeChange('createDate')">
+                        <option value="all">All Time</option>
+                        <option value="today">Today</option>
+                        <option value="yesterday">Yesterday</option>
+                        <option value="last7">Last 7 Days</option>
+                        <option value="last30">Last 30 Days</option>
+                        <option value="thisMonth">This Month</option>
+                        <option value="lastMonth">Last Month</option>
+                        <option value="lastYear">Last Year</option>
+                        <option value="custom">Custom Date Range</option>
+                    </select>
+                    <div id="customCreateDateContainer" class="custom-date-container">
+                        <input type="date" id="createStartDate" onchange="applyFilters()">
+                        <span>to</span>
+                        <input type="date" id="createEndDate" onchange="applyFilters()">
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label>Schedule Date:</label>
+                    <select id="scheduleDateFilter" onchange="handleFilterTypeChange('scheduleDate')">
+                        <option value="all">All Time</option>
+                        <option value="today">Today</option>
+                        <option value="yesterday">Yesterday</option>
+                        <option value="last7">Last 7 Days</option>
+                        <option value="last30">Last 30 Days</option>
+                        <option value="thisMonth">This Month</option>
+                        <option value="lastMonth">Last Month</option>
+                        <option value="lastYear">Last Year</option>
+                        <option value="custom">Custom Date Range</option>
+                    </select>
+                    <div id="customScheduleDateContainer" class="custom-date-container">
+                        <input type="date" id="scheduleStartDate" onchange="applyFilters()">
+                        <span>to</span>
+                        <input type="date" id="scheduleEndDate" onchange="applyFilters()">
+                    </div>
+                </div>
+            </div>
+
+            <div class="total-card">
+                <span>Total Orders (Summary Count)</span>
+                <h3 id="totalOrdersSummary">0</h3>
+            </div>
+
+            <div class="summary-tables-grid">
+                <div class="summary-box">
+                    <h4>City Wise Summary</h4>
+                    <div class="table-responsive">
+                        <table>
+                            <thead><tr><th>City</th><th style="text-align: right;">Order Count</th></tr></thead>
+                            <tbody id="citySummaryBody"></tbody>
+                            <tfoot id="citySummaryFoot"></tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="summary-box">
+                    <h4>Channel Wise Summary</h4>
+                    <div class="table-responsive">
+                        <table>
+                            <thead><tr><th>Channel</th><th style="text-align: right;">Order Count</th></tr></thead>
+                            <tbody id="channelSummaryBody"></tbody>
+                            <tfoot id="channelSummaryFoot"></tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="summary-box">
+                    <h4>Delivery Area Wise Summary</h4>
+                    <div class="table-responsive">
+                        <table>
+                            <thead><tr><th>Delivery Area</th><th style="text-align: right;">Order Count</th></tr></thead>
+                            <tbody id="areaSummaryBody"></tbody>
+                            <tfoot id="areaSummaryFoot"></tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: ORDERS DETAILS -->
+        <div id="ordersTab" class="tab-content">
+            <div class="filter-section">
+                <div class="filter-group">
+                    <label>Search Order ID:</label>
+                    <input type="text" id="orderIdSearchInput" placeholder="Enter Order ID..." onkeyup="applyFilters()" style="width: 140px;">
+                </div>
+                <div class="filter-group">
+                    <label>Search Contact:</label>
+                    <input type="text" id="contactSearchInput" placeholder="Mobile Number..." onkeyup="applyFilters()" style="width: 160px;">
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <div id="loadingContainer" class="loading-container">
+                    <div class="spinner"></div>
+                    <div class="loading-text">Fetching latest orders data...</div>
+                </div>
+                <table id="ordersTable" style="display: none;">
+                    <thead><tr id="tableHeader"></tr></thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbznJBoaggkUhg0ztkcmJpEyeaiuJRVRJX7oItiIgzWqhNPkYIbG3zjnEe2Hn1voDFFg/exec';
+
+    const cityAreaMap = {
+        'Dhaka': ['Azimpur', 'Badda', 'Banani', 'Banani DOHS', 'Baridhara', 'Baridhara DOHS', 'Bashabo', 'Bashundhara R/A', 'Cantonment', 'Dakshinkhan', 'Dhanmondi', 'Farmgate', 'Gulshan', 'Jatrabari', 'Kafrul', 'Kakrail', 'Kamalapur', 'Kamrangirchor', 'Khilgaon', 'Khilgoan', 'Khilkhet', 'Lalbagh', 'Laxmibazar', 'Malibag', 'Mirpur', 'Mirpur 2', 'Mirpur DOHS', 'Mogbazar', 'Mohakhali', 'Mohakhali DOHS', 'Mohammadpur', 'Motijheel', 'Nikunjo', 'Old Town (Dhaka)', 'Ramna', 'Rampura', 'Rest Of Dhaka', 'Sabujbagh', 'Savar', 'Shahbag', 'Tejgaon', 'Uttara', 'Uttarkhan', 'Vatara', 'Wari', 'Others'],
+        'Chittagong': ['Anwara', 'Badurdola', 'Bakalia', 'Bandar', 'Bayejid bostami', 'Bou Bazar', 'Chadgaon', 'Colony', 'Double Mooring', 'Halishahar', 'Hathazari', 'Khulshi', 'Kotwali (Chittagong)', 'Nasirabad', 'Pachlaish', 'Pahartali', 'Patenga', 'Sugandha', 'Others'],
+        'Jashore': ['Chowrasta', 'Doratana', 'Jessore', 'New Market', 'Palbari', 'Kharki', 'Puratan Kasba', 'Others'],
+        'Others': ['Barisal', 'Comilla', 'Gazipur', 'Jowelasory Tola', 'Joydebpur', 'Kaliakor', 'Kaliganj', 'Khandar', 'Koigari', 'Kotwali', 'Narayanganj', 'Sath Matha', 'Sheujgari', 'Sreepur', 'Sylhet', 'Sylhet Metro', 'Tongi', 'Others']
+    };
+
+    const agentUsers = {
+        'aqn01': 'aqnpass01', 'aqn02': 'aqnpass02', 'aqn03': 'aqnpass03', 'aqn04': 'aqnpass04', 'aqn05': 'aqnpass05'
+    };
+
+    const managerUsers = {
+        'manager01': 'managerpass01'
+    };
+
+    let rawSheetData = [];
+
+    // Dual Authentication Logic
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const userVal = document.getElementById('userId').value.trim().toLowerCase();
+        const passVal = document.getElementById('password').value.trim();
+        const loginError = document.getElementById('login-error');
+
+        if (agentUsers[userVal] && agentUsers[userVal] === passVal) {
+            document.getElementById('loginOverlay').style.display = 'none';
+            document.getElementById('agentContainer').style.display = 'block';
+            document.getElementById('adminLayout').style.display = 'none';
+            document.getElementById('activeUserBadge').innerText = 'Agent: ' + userVal;
+            loginError.style.display = 'none';
+
+            document.getElementById('createdByNum').value = userVal;
+            document.getElementById('createdByName').value = 'Acquisition Agent ' + userVal.replace(/\D/g, '');
+            setFormattedDate();
+            updateLiveSummary();
+        } 
+        else if (managerUsers[userVal] && managerUsers[userVal] === passVal) {
+            document.getElementById('loginOverlay').style.display = 'none';
+            document.getElementById('agentContainer').style.display = 'none';
+            document.getElementById('adminLayout').style.display = 'flex';
+            loginError.style.display = 'none';
+            fetchOrders();
+        } 
+        else {
+            loginError.style.display = 'block';
+        }
+    });
+
+    function logout() {
+        document.getElementById('loginOverlay').style.display = 'flex';
+        document.getElementById('agentContainer').style.display = 'none';
+        document.getElementById('adminLayout').style.display = 'none';
+        document.getElementById('userId').value = '';
+        document.getElementById('password').value = '';
+    }
+
+    /* ================= AGENT FUNCTIONS ================= */
+    function setFormattedDate() {
+        const today = new Date();
+        document.getElementById('createDate').value = today.toISOString().split('T')[0] + ' ' + today.toLocaleTimeString();
+    }
+
+    function handleCityChange() {
+        const selectedCity = document.getElementById('city').value;
+        const areaSelect = document.getElementById('deliveryAreaSelect');
+        areaSelect.innerHTML = '';
+
+        if (selectedCity === 'Others') {
+            document.getElementById('customCityWrapper').style.display = 'block';
+            const opt = document.createElement('option'); opt.value = 'Others'; opt.innerText = 'Others';
+            areaSelect.appendChild(opt);
+            document.getElementById('customAreaWrapper').style.display = 'block';
+        } else if (cityAreaMap[selectedCity]) {
+            document.getElementById('customCityWrapper').style.display = 'none';
+            document.getElementById('customAreaWrapper').style.display = 'none';
+            const defaultOpt = document.createElement('option'); defaultOpt.value = ''; defaultOpt.innerText = 'Select Area';
+            areaSelect.appendChild(defaultOpt);
+            cityAreaMap[selectedCity].forEach(area => {
+                const opt = document.createElement('option'); opt.value = area; opt.innerText = area;
+                areaSelect.appendChild(opt);
+            });
+        }
+        updateLiveSummary();
+    }
+
+    function handleAreaChange() {
+        const areaVal = document.getElementById('deliveryAreaSelect').value;
+        document.getElementById('customAreaWrapper').style.display = (areaVal === 'Others') ? 'block' : 'none';
+        updateLiveSummary();
+    }
+
+    function getFormattedAddress() {
+        return `Flat: ${document.getElementById('addrFlat').value.trim()}\nHouse: ${document.getElementById('addrHouse').value.trim()}\nRoad: ${document.getElementById('addrRoad').value.trim()}\nBlock/Sector: ${document.getElementById('addrBlock').value.trim()}\nOther Details: ${document.getElementById('addrOthers').value.trim()}`;
+    }
+
+    function updateLiveSummary() {
+        document.getElementById('sumCustomerName').innerText = document.getElementById('customerName').value || '-';
+        document.getElementById('sumCustomerContact').innerText = document.getElementById('customerContact').value || '-';
+        document.getElementById('sumGender').innerText = document.getElementById('gender').value || '-';
+        document.getElementById('sumCreateDate').innerText = document.getElementById('createDate').value || '-';
+        document.getElementById('sumOrderChannel').innerText = document.getElementById('orderChannel').value || '-';
+        document.getElementById('sumCreatedBy').innerText = document.getElementById('createdByNum').value || '-';
+
+        let cityVal = document.getElementById('city').value;
+        if (cityVal === 'Others') cityVal = document.getElementById('customCity').value.trim() || 'Others';
+        document.getElementById('sumCity').innerText = cityVal || '-';
+
+        let areaVal = document.getElementById('deliveryAreaSelect').value;
+        if (areaVal === 'Others') areaVal = document.getElementById('customArea').value.trim() || 'Others';
+        document.getElementById('sumDeliveryArea').innerText = areaVal || '-';
+
+        document.getElementById('sumAddressDetails').innerText = getFormattedAddress();
+        document.getElementById('sumSchedule').innerText = `${document.getElementById('scheduleDate').value} (${document.getElementById('scheduledTime').value})`;
+    }
+
+    document.getElementById('orderForm').addEventListener('input', updateLiveSummary);
+
+    document.getElementById('orderForm').addEventListener('submit', e => {
+        e.preventDefault();
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.disabled = true; submitBtn.innerText = 'Saving...';
+
+        const formData = new FormData(e.target);
+        formData.append('createdByNum', document.getElementById('createdByNum').value);
+        formData.append('addressDetails', getFormattedAddress());
+
+        fetch(scriptURL, { method: 'POST', body: formData })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('status-message').innerText = '✓ Order saved successfully!';
+                e.target.reset();
+                setFormattedDate();
+                submitBtn.disabled = false; submitBtn.innerText = 'Save Order';
+            })
+            .catch(err => {
+                document.getElementById('status-message').innerText = '✕ Error saving order!';
+                submitBtn.disabled = false; submitBtn.innerText = 'Save Order';
+            });
+    });
+
+    /* ================= MANAGER FUNCTIONS ================= */
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.sidebar-menu li').forEach(el => el.classList.remove('active'));
+
+        document.getElementById(tabId).classList.add('active');
+        if (tabId === 'summaryTab') {
+            document.getElementById('navSummary').classList.add('active');
+            document.getElementById('pageTitle').innerText = 'Order Summary';
+        } else {
+            document.getElementById('navOrders').classList.add('active');
+            document.getElementById('pageTitle').innerText = 'Orders Details';
+        }
+    }
+
+    function fetchOrders() {
+        document.getElementById('loadingContainer').style.display = 'flex';
+        document.getElementById('ordersTable').style.display = 'none';
+
+        fetch(scriptURL)
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('loadingContainer').style.display = 'none';
+                document.getElementById('ordersTable').style.display = 'table';
+                rawSheetData = data;
+                renderTableHeader(data[0] || []);
+                applyFilters();
+            });
+    }
+
+    function renderTableHeader(headers) {
+        const headerTr = document.getElementById('tableHeader');
+        headerTr.innerHTML = '';
+        headers.forEach((h, idx) => {
+            const th = document.createElement('th');
+            th.innerText = h;
+            if (idx <= 2) th.classList.add('sticky-col', 'col-' + (idx + 1));
+            headerTr.appendChild(th);
+        });
+    }
+
+    function handleFilterTypeChange(type) {
+        if (type === 'createDate') {
+            const val = document.getElementById('createDateFilter').value;
+            document.getElementById('customCreateDateContainer').style.display = (val === 'custom') ? 'inline-flex' : 'none';
+        } else {
+            const val = document.getElementById('scheduleDateFilter').value;
+            document.getElementById('customScheduleDateContainer').style.display = (val === 'custom') ? 'inline-flex' : 'none';
+        }
+        applyFilters();
+    }
+
+    function applyFilters() {
+        if (!rawSheetData || rawSheetData.length <= 1) return;
+        const rows = rawSheetData.slice(1);
+
+        const orderIdSearch = document.getElementById('orderIdSearchInput').value.trim().toLowerCase();
+        const contactSearch = document.getElementById('contactSearchInput').value.trim().toLowerCase();
+
+        let detailFilteredRows = rows.filter(r => {
+            if (orderIdSearch !== "" && !(r[0] || "").toString().toLowerCase().includes(orderIdSearch)) return false;
+            if (contactSearch !== "" && !(r[2] || "").toString().toLowerCase().includes(contactSearch)) return false;
+            return true;
+        });
+
+        renderDashboard(rows, detailFilteredRows);
+    }
+
+    function renderDashboard(summaryRows, detailRows) {
+        document.getElementById('totalOrdersSummary').innerText = summaryRows.length;
+        const cityMap = {}, channelMap = {}, areaMap = {};
+
+        summaryRows.forEach(r => {
+            cityMap[r[8] || 'Unknown'] = (cityMap[r[8] || 'Unknown'] || 0) + 1;
+            channelMap[r[5] || 'Unknown'] = (channelMap[r[5] || 'Unknown'] || 0) + 1;
+            areaMap[r[9] || 'Unknown'] = (areaMap[r[9] || 'Unknown'] || 0) + 1;
+        });
+
+        renderSummaryTable('citySummaryBody', 'citySummaryFoot', cityMap);
+        renderSummaryTable('channelSummaryBody', 'channelSummaryFoot', channelMap);
+        renderSummaryTable('areaSummaryBody', 'areaSummaryFoot', areaMap);
+        renderTableRows(detailRows);
+    }
+
+    function renderSummaryTable(bodyId, footId, mapData) {
+        const tbody = document.getElementById(bodyId);
+        const tfoot = document.getElementById(footId);
+        tbody.innerHTML = ''; tfoot.innerHTML = '';
+
+        const sorted = Object.keys(mapData).map(k => ({ name: k, count: mapData[k] })).sort((a, b) => b.count - a.count);
+        let total = 0;
+
+        sorted.forEach(item => {
+            total += item.count;
+            tbody.innerHTML += `<tr><td>${item.name}</td><td style="text-align: right; font-weight: 600;">${item.count}</td></tr>`;
+        });
+        tfoot.innerHTML = `<tr><td>Grand Total</td><td style="text-align: right;">${total}</td></tr>`;
+    }
+
+    function renderTableRows(rows) {
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '';
+        rows.forEach(r => {
+            const tr = document.createElement('tr');
+            r.forEach((cell, idx) => {
+                const td = document.createElement('td');
+                if (idx <= 2) td.classList.add('sticky-col', 'col-' + (idx + 1));
+                td.innerText = cell !== undefined ? cell : '';
+                tr.appendChild(td);
+            });
+            tbody.appendChild(tr);
+        });
+    }
+</script>
+</body>
+</html>
