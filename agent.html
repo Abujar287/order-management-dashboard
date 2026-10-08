@@ -42,7 +42,6 @@
             font-weight: 700;
         }
 
-        /* Login Screen */
         .login-overlay {
             position: fixed;
             inset: 0;
@@ -134,7 +133,6 @@
             box-shadow: 0 8px 16px rgba(30, 64, 175, 0.3);
         }
 
-        /* Dashboard */
         .sidebar {
             width: 280px;
             background: linear-gradient(180deg, var(--primary-dark) 0%, var(--primary) 100%);
@@ -221,7 +219,6 @@
             color: white;
         }
 
-        /* Main Content */
         .main-content {
             flex: 1;
             display: flex;
@@ -249,7 +246,6 @@
             display: none;
         }
 
-        /* Profile Card */
         .profile-card {
             background: white;
             border-radius: 16px;
@@ -286,7 +282,6 @@
             font-weight: 700;
         }
 
-        /* Order Form Section */
         .order-container {
             max-width: 1400px;
             margin: 0 auto;
@@ -322,7 +317,6 @@
             border: 1px solid var(--border);
         }
 
-        /* 3-Column Grid Layout */
         .form-grid-3 {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -507,23 +501,22 @@
             cursor: not-allowed;
         }
 
-        /* Summary Card - Compact */
         .summary-card {
-            background: linear-gradient(135deg, white 0%, var(--bg-light) 100%);
-            border-radius: 12px;
-            padding: 16px;
-            box-shadow: var(--shadow-md);
+            background: transparent;
+            border-radius: 10px;
             border: 1px solid var(--border);
+            padding: 14px 14px 6px;
             position: sticky;
             top: 32px;
             max-height: calc(100vh - 100px);
             overflow-y: auto;
+            box-shadow: none;
         }
 
         .summary-header {
             margin-bottom: 12px;
-            padding-bottom: 12px;
-            border-bottom: 2px solid var(--primary);
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
         }
 
         .summary-header h3 {
@@ -533,11 +526,16 @@
         }
 
         .summary-item {
-            margin-bottom: 10px;
-            padding: 8px 10px;
-            background: white;
-            border-radius: 8px;
-            border: 1px solid var(--border);
+            margin-bottom: 0;
+            padding: 10px 0;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--border);
+            border-radius: 0;
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
         }
 
         .summary-label {
@@ -562,7 +560,6 @@
             font-weight: 500;
         }
 
-        /* Responsive */
         @media (max-width: 1024px) {
             .form-wrapper {
                 grid-template-columns: 1fr;
@@ -628,7 +625,6 @@
 </head>
 <body>
 
-    <!-- Login Screen -->
     <div id="loginScreen" class="login-overlay">
         <div class="login-card">
             <h2>Welcome</h2>
@@ -646,9 +642,7 @@
         </div>
     </div>
 
-    <!-- Dashboard -->
     <div id="agentApp" class="hidden flex min-h-screen bg-gray-50">
-        <!-- Sidebar -->
         <aside class="sidebar hidden md:flex">
             <div class="sidebar-header">
                 <h2>Agent Portal</h2>
@@ -669,7 +663,6 @@
             </div>
         </aside>
 
-        <!-- Main Content -->
         <div class="main-content">
             <div class="top-bar md:hidden">
                 <h1 class="text-lg font-bold">Agent Portal</h1>
@@ -677,7 +670,6 @@
             </div>
 
             <div class="content-area">
-                <!-- Profile Section -->
                 <div id="aSectionProfiles" class="agent-section">
                     <div class="profile-card">
                         <h3>Your Profile</h3>
@@ -696,7 +688,6 @@
                     </div>
                 </div>
 
-                <!-- Order Form Section -->
                 <div id="aSectionAddOrder" class="agent-section section-hidden">
                     <div class="order-container">
                         <div class="form-header">
@@ -710,11 +701,9 @@
         </div>
     </div>
 
-    <!-- Order Form Template -->
     <template id="orderFormTemplate">
         <div class="form-wrapper">
             <form class="form-card orderForm">
-                <!-- Row 1: Customer Info (3 columns) -->
                 <div class="form-grid-3">
                     <div class="input-group">
                         <label class="input-label">Customer Name <span class="required">*</span></label>
@@ -735,7 +724,6 @@
                     </div>
                 </div>
 
-                <!-- Row 2: Agent Info (2 columns) -->
                 <div class="form-grid-2">
                     <div class="input-group">
                         <label class="input-label">Agent ID</label>
@@ -747,7 +735,6 @@
                     </div>
                 </div>
 
-                <!-- Row 3: Order Channel + City + Delivery Area (3 columns) -->
                 <div class="form-grid-3">
                     <div class="input-group">
                         <label class="input-label">Order Channel <span class="required">*</span></label>
@@ -786,7 +773,6 @@
                     </div>
                 </div>
 
-                <!-- Row 4: Address Details (Full width) -->
                 <div class="form-grid-1">
                     <div class="input-group">
                         <label class="input-label">Address Details</label>
@@ -815,7 +801,6 @@
                     </div>
                 </div>
 
-                <!-- Row 5: Dates (3 columns) -->
                 <div class="form-grid-3">
                     <div class="input-group">
                         <label class="input-label">Create Date</label>
@@ -845,14 +830,12 @@
                     </div>
                 </div>
 
-                <!-- Submit -->
                 <div class="submit-section">
                     <p class="status-text"></p>
                     <button type="submit" class="submit-btn">Place Order</button>
                 </div>
             </form>
 
-            <!-- Summary Card - Compact -->
             <div class="summary-card">
                 <div class="summary-header">
                     <h3>Order Summary</h3>
@@ -943,7 +926,6 @@
         const scriptURL = 'https://script.google.com/macros/s/AKfycbznJBoaggkUhg0ztkcmJpEyeaiuJRVRJX7oItiIgzWqhNPkYIbG3zjnEe2Hn1voDFFg/exec';
         let currentAgentObj = null;
 
-        // Event Listeners
         document.getElementById('loginSubmitBtn').addEventListener('click', handleAgentLogin);
         document.getElementById('loginUser').addEventListener('keydown', (e) => {
             if (e.key === 'Enter') { e.preventDefault(); document.getElementById('loginPass').focus(); }
