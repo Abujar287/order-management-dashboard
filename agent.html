@@ -6,7 +6,7 @@
     <title>Agent Portal System</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         * { box-sizing: border-box; }
@@ -14,37 +14,30 @@
             --primary: #1e40af;
             --primary-light: #dbeafe;
             --primary-dark: #1e3a8a;
-            --accent: #0ea5e9;
             --text-primary: #0f172a;
             --text-secondary: #475569;
             --text-light: #64748b;
-            --bg-light: #f8fafc;
             --bg-lighter: #f1f5f9;
-            --border: #e2e8f0;
-            --border-dark: #cbd5e1;
+            --border: #cbd5e1;
+            --border-light: #e2e8f0;
             --success: #10b981;
             --danger: #ef4444;
             --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.1);
         }
 
         body {
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
             color: var(--text-primary);
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            background: #f8fafc;
         }
 
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 700;
-        }
+        h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; }
 
         .login-overlay {
             position: fixed;
             inset: 0;
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%);
-            backdrop-filter: blur(4px);
+            background: rgba(15, 23, 42, 0.95);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -53,577 +46,250 @@
 
         .login-card {
             background: white;
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 420px;
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 380px;
             width: 100%;
-            box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.15);
-            border: 1px solid rgba(226, 232, 240, 0.5);
-        }
-
-        .login-card h2 {
-            font-size: 28px;
-            margin-bottom: 8px;
-            color: var(--primary-dark);
-        }
-
-        .login-card p {
-            color: var(--text-light);
-            margin-bottom: 24px;
-            font-size: 14px;
-        }
-
-        .login-error {
-            background: #fee2e2;
-            color: #991b1b;
-            padding: 12px 16px;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            border: 1px solid #fecaca;
-            display: none;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px 14px;
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            background: white;
-        }
-
-        .form-group input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
-            outline: none;
-        }
-
-        .login-btn {
-            width: 100%;
-            padding: 12px 16px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 15px;
-        }
-
-        .login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(30, 64, 175, 0.3);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
 
         .sidebar {
-            width: 280px;
+            width: 260px;
             background: linear-gradient(180deg, var(--primary-dark) 0%, var(--primary) 100%);
             color: white;
             display: flex;
             flex-direction: column;
-            padding: 24px;
-        }
-
-        .sidebar-header {
-            margin-bottom: 32px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            padding-bottom: 16px;
-        }
-
-        .sidebar-header h2 {
-            font-size: 22px;
-            margin-bottom: 8px;
-        }
-
-        .sidebar-badge {
-            display: inline-block;
-            background: rgba(14, 165, 233, 0.2);
-            color: #06b6d4;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .sidebar-nav {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+            padding: 20px;
         }
 
         .sidebar-nav button {
             background: transparent;
-            border: 2px solid transparent;
+            border: none;
             color: rgba(255, 255, 255, 0.8);
-            padding: 12px 16px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 15px;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .sidebar-nav button:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-        }
-
-        .sidebar-nav button.active {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 255, 255, 0.3);
-            color: white;
-        }
-
-        .sidebar-footer {
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-            padding-top: 16px;
-        }
-
-        .logout-btn {
-            width: 100%;
-            background: rgba(239, 68, 68, 0.2);
-            border: 2px solid rgba(239, 68, 68, 0.3);
-            color: #fca5a5;
-            padding: 10px 16px;
-            border-radius: 12px;
+            padding: 10px 14px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
             font-size: 14px;
-            transition: all 0.3s ease;
+            width: 100%;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s;
         }
 
-        .logout-btn:hover {
-            background: rgba(239, 68, 68, 0.3);
+        .sidebar-nav button:hover, .sidebar-nav button.active {
+            background: rgba(255, 255, 255, 0.15);
             color: white;
         }
 
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .top-bar {
-            background: white;
-            padding: 16px 24px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .content-area {
-            flex: 1;
-            overflow-y: auto;
-            padding: 32px;
-        }
-
-        .section-hidden {
-            display: none;
-        }
+        .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        .content-area { flex: 1; overflow-y: auto; padding: 24px; width: 100%; }
+        .section-hidden { display: none; }
 
         .profile-card {
             background: white;
-            border-radius: 16px;
-            padding: 32px;
-            max-width: 500px;
-            box-shadow: var(--shadow-md);
-            border: 1px solid var(--border);
-        }
-
-        .profile-card h3 {
-            font-size: 22px;
-            margin-bottom: 24px;
-            color: var(--primary);
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 450px;
+            border: 1px solid var(--border-light);
         }
 
         .profile-item {
             display: flex;
             justify-content: space-between;
-            padding: 16px 0;
-            border-bottom: 1px solid var(--border);
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-light);
+            font-size: 14px;
         }
+        .profile-item:last-child { border-bottom: none; }
 
-        .profile-item:last-child {
-            border-bottom: none;
-        }
-
-        .profile-item span {
-            color: var(--text-light);
-            font-weight: 600;
-        }
-
-        .profile-item strong {
-            color: var(--text-primary);
-            font-weight: 700;
-        }
-
-        .order-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+        .order-container { width: 100%; }
 
         .form-header {
-            margin-bottom: 32px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .form-header h2 { font-size: 22px; color: var(--primary-dark); font-weight: 700; }
+        .form-header p { color: var(--text-light); font-size: 13px; }
+
+        .refresh-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .form-header h2 {
-            font-size: 28px;
-            color: var(--primary-dark);
-            margin-bottom: 8px;
-        }
-
-        .form-header p {
-            color: var(--text-light);
-            font-size: 15px;
-        }
-
-        .form-wrapper {
+        .form-grid-4 {
             display: grid;
-            grid-template-columns: 1fr 280px;
-            gap: 28px;
-            align-items: start;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 14px;
         }
-
-        .form-card {
-            background: white;
-            border-radius: 12px;
-            padding: 28px;
-            box-shadow: var(--shadow-md);
-            border: 1px solid var(--border);
-        }
-
         .form-grid-3 {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 18px;
-            margin-bottom: 24px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 14px;
         }
-
         .form-grid-2 {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 18px;
-            margin-bottom: 24px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
         }
 
-        .form-grid-1 {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 18px;
-            margin-bottom: 24px;
-        }
+        .input-group { display: flex; flex-direction: column; }
+        .input-label { font-weight: 600; font-size: 12px; color: var(--text-primary); margin-bottom: 4px; }
+        .input-label .required { color: var(--danger); }
 
-        .input-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .input-label {
-            font-weight: 600;
+        .input-field, .select-field {
+            padding: 10px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
             font-size: 13px;
-            color: var(--text-primary);
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .input-label .required {
-            color: var(--danger);
-        }
-
-        .input-field,
-        .select-field {
-            padding: 10px 12px;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 13px;
-            font-family: 'Inter', sans-serif;
-            transition: all 0.3s ease;
             background: white;
             color: var(--text-primary);
+            width: 100%;
         }
-
-        .input-field:focus,
-        .select-field:focus {
+        .input-field:focus, .select-field:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.08);
             outline: none;
-        }
-
-        .input-field:disabled,
-        .select-field:disabled {
-            background: var(--bg-lighter);
-            color: var(--text-light);
-            cursor: not-allowed;
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
         }
 
         .address-group {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
         }
-
         .address-field {
             display: flex;
-            border: 1px solid var(--border);
+            border: 1.5px solid var(--border);
             border-radius: 6px;
             overflow: hidden;
+            background: white;
         }
-
-        .address-field:focus-within {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.08);
-        }
-
         .address-label {
             background: var(--bg-lighter);
-            padding: 10px 11px;
+            padding: 6px 8px;
             font-weight: 700;
-            font-size: 12px;
+            font-size: 10px;
             color: var(--text-light);
-            border-right: 1px solid var(--border);
-            min-width: 80px;
+            border-right: 1.5px solid var(--border);
             display: flex;
             align-items: center;
-            white-space: nowrap;
         }
-
         .address-input {
-            flex: 1;
-            border: none;
-            padding: 10px 11px;
-            font-size: 13px;
-            outline: none;
+            flex: 1; border: none; padding: 6px 8px; font-size: 12px; outline: none; width: 100%;
+        }
+
+        .custom-input-wrapper { margin-top: 6px; display: none; }
+        .custom-input-wrapper input { padding: 8px 10px; font-size: 12px; border: 1.5px solid var(--border); border-radius: 6px; width: 100%; }
+
+        .form-section-card {
             background: white;
-            color: var(--text-primary);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+            margin-bottom: 16px;
         }
-
-        .address-input::placeholder {
-            color: var(--text-light);
-        }
-
-        .custom-input-wrapper {
-            margin-top: 8px;
-            display: none;
-        }
-
-        .custom-input-wrapper input {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid var(--border);
-            border-radius: 6px;
+        .section-title {
             font-size: 13px;
-            transition: all 0.3s ease;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 12px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid var(--primary-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .custom-input-wrapper input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.08);
-            outline: none;
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
         }
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+        }
+        .stat-label { font-size: 11px; font-weight: 700; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-value { font-size: 22px; font-weight: 700; color: var(--primary-dark); margin-top: 8px; }
+
+        .summary-card {
+            background: #ffffff;
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 16px 20px;
+            box-shadow: var(--shadow-sm);
+            margin-top: 16px;
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+        }
+        .summary-item { font-size: 12px; }
+        .summary-label { font-size: 10px; color: var(--text-light); font-weight: 700; text-transform: uppercase; }
+        .summary-value { font-weight: 600; color: var(--text-primary); margin-top: 2px; }
+        .summary-value.empty { color: var(--text-light); font-weight: 400; font-style: italic; }
 
         .submit-section {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 16px;
-            margin-top: 24px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 1px solid var(--border-light);
         }
-
-        .status-text {
-            min-height: 18px;
-            font-size: 12px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .status-text.success {
-            color: var(--success);
-        }
-
-        .status-text.error {
-            color: var(--danger);
-        }
+        .status-text { font-size: 13px; font-weight: 700; }
+        .status-text.success { color: var(--success); }
+        .status-text.error { color: var(--danger); }
 
         .submit-btn {
-            padding: 10px 22px;
+            padding: 10px 28px;
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-weight: 700;
             font-size: 13px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
+            transition: all 0.2s;
         }
+        .submit-btn:hover:not(:disabled) { transform: translateY(-1px); }
+        .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; }
 
-        .submit-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(30, 64, 175, 0.25);
+        .orders-table-wrapper {
+            background: white; border-radius: 12px; border: 1px solid var(--border-light); overflow-x: auto;
         }
-
-        .submit-btn:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-
-        /* Compact Summary Card */
-        .summary-card {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 16px;
-            position: sticky;
-            top: 32px;
-            max-height: calc(100vh - 100px);
-            overflow-y: auto;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .summary-header {
-            margin-bottom: 14px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--primary);
-        }
-
-        .summary-header h3 {
-            font-size: 14px;
-            color: var(--primary);
-            margin: 0;
-            font-weight: 700;
-        }
-
-        .summary-item {
-            margin-bottom: 0;
-            padding: 10px 0;
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .summary-item:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-
-        .summary-label {
-            font-size: 11px;
-            color: var(--text-light);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-            margin-bottom: 3px;
-            display: block;
-        }
-
-        .summary-value {
-            font-size: 13px;
-            color: var(--text-primary);
-            font-weight: 600;
-            word-break: break-word;
-            line-height: 1.4;
-        }
-
-        .summary-value.empty {
-            color: var(--text-light);
-            font-weight: 500;
-            font-size: 12px;
-        }
+        .orders-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 12px; }
+        .orders-table th { background: var(--bg-lighter); color: var(--text-secondary); font-weight: 700; padding: 12px 14px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+        .orders-table td { padding: 12px 14px; border-bottom: 1px solid var(--border-light); white-space: nowrap; }
+        .badge-pending { background: #fef3c7; color: #d97706; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; }
+        .badge-delivered { background: #d1fae5; color: #065f46; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; }
 
         @media (max-width: 1024px) {
-            .form-wrapper {
-                grid-template-columns: 1fr;
-            }
-
-            .summary-card {
-                position: relative;
-                top: 0;
-                max-height: none;
-            }
-
-            .form-grid-3 {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                position: fixed;
-                left: 0;
-                top: 0;
-                height: 100vh;
-                z-index: 40;
-                transform: translateX(-100%);
-                transition: transform 0.3s ease;
-                width: 250px;
-            }
-
-            .form-grid-3,
-            .form-grid-2 {
-                grid-template-columns: 1fr;
-            }
-
-            .form-card {
-                padding: 16px;
-            }
-
-            .form-grid-3 {
-                gap: 14px;
-                margin-bottom: 18px;
-            }
-
-            .form-grid-2 {
-                gap: 14px;
-                margin-bottom: 18px;
-            }
-
-            .content-area {
-                padding: 16px;
-            }
-
-            .address-group {
-                grid-template-columns: 1fr;
-            }
-
-            .submit-section {
-                flex-direction: column;
-            }
-
-            .submit-btn {
-                width: 100%;
-            }
-
-            .form-header h2 {
-                font-size: 24px;
-            }
+            .form-grid-4, .form-grid-3 { grid-template-columns: repeat(2, 1fr); }
+            .summary-grid { grid-template-columns: repeat(2, 1fr); }
+            .address-group { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
@@ -631,74 +297,138 @@
 
     <div id="loginScreen" class="login-overlay">
         <div class="login-card">
-            <h2>Welcome</h2>
-            <p>Agent Portal Login</p>
-            <div id="loginError" class="login-error"></div>
-            <div class="form-group">
-                <label>User ID</label>
-                <input type="text" id="loginUser" class="form-group input" placeholder="Enter your user ID">
+            <h2 style="font-size: 22px; color: var(--primary-dark); margin-bottom: 4px;">Welcome</h2>
+            <p style="color: var(--text-light); font-size: 13px; margin-bottom: 16px;">Agent Portal Login</p>
+            <div id="loginError" style="background:#fee2e2; color:#991b1b; padding:8px; border-radius:6px; font-size:12px; margin-bottom:12px; display:none;"></div>
+            <div class="input-group" style="margin-bottom: 12px;">
+                <label class="input-label">User ID</label>
+                <input type="text" id="loginUser" class="input-field" placeholder="Enter user ID">
             </div>
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" id="loginPass" class="form-group input" placeholder="Enter your password">
+            <div class="input-group" style="margin-bottom: 16px;">
+                <label class="input-label">Password</label>
+                <input type="password" id="loginPass" class="input-field" placeholder="Enter password">
             </div>
-            <button id="loginSubmitBtn" class="login-btn">Sign In</button>
+            <button id="loginSubmitBtn" class="submit-btn" style="width: 100%;">Sign In</button>
         </div>
     </div>
 
     <div id="agentApp" class="hidden flex min-h-screen bg-gray-50">
         <aside class="sidebar hidden md:flex">
-            <div class="sidebar-header">
-                <h2>Agent Portal</h2>
-                <span id="activeAgentBadge" class="sidebar-badge">User: agent01</span>
+            <div style="margin-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 12px;">
+                <h2 style="font-size: 18px; margin-bottom: 4px;">Agent Portal</h2>
+                <span id="activeAgentBadge" style="background: rgba(14,165,233,0.2); color: #38bdf8; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600;">agent01</span>
             </div>
-            <nav class="sidebar-nav">
-                <button onclick="switchAgentTab('profiles')" class="nav-btn active" data-tab="profiles">
-                    <span>👤</span>
-                    <span>Profile</span>
-                </button>
-                <button onclick="switchAgentTab('addOrder')" class="nav-btn" data-tab="addOrder">
-                    <span>📋</span>
-                    <span>Create Order</span>
-                </button>
+            <nav class="sidebar-nav" style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+                <button onclick="switchAgentTab('profiles')" class="nav-btn active" data-tab="profiles">👤 Profile</button>
+                <button onclick="switchAgentTab('addOrder')" class="nav-btn" data-tab="addOrder">📋 Create Order</button>
+                <button onclick="switchAgentTab('orders')" class="nav-btn" data-tab="orders">📦 My Orders</button>
+                <button onclick="switchAgentTab('dashboard')" class="nav-btn" data-tab="dashboard">📊 Performance Dashboard</button>
             </nav>
-            <div class="sidebar-footer">
-                <button class="logoutBtn logout-btn">Sign Out</button>
+            <div style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 12px;">
+                <button class="logoutBtn" style="background: rgba(239,68,68,0.2); color: #fca5a5; border: none; padding: 8px; border-radius: 8px; width: 100%; font-weight: 600; cursor: pointer; font-size: 13px;">Sign Out</button>
             </div>
         </aside>
 
         <div class="main-content">
-            <div class="top-bar md:hidden">
-                <h1 class="text-lg font-bold">Agent Portal</h1>
-                <button class="logoutBtn logout-btn" style="width: auto; padding: 8px 16px;">Sign Out</button>
-            </div>
-
             <div class="content-area">
                 <div id="aSectionProfiles" class="agent-section">
                     <div class="profile-card">
-                        <h3>Your Profile</h3>
-                        <div class="profile-item">
-                            <span>Agent ID</span>
-                            <strong id="profileAgentUserId">agent01</strong>
-                        </div>
-                        <div class="profile-item">
-                            <span>Name</span>
-                            <strong id="profileAgentUsername">agent01</strong>
-                        </div>
-                        <div class="profile-item">
-                            <span>Team</span>
-                            <strong id="profileAgentTeam">Acquisition</strong>
-                        </div>
+                        <h3 style="font-size: 16px; margin-bottom: 16px; color: var(--primary);">Your Profile</h3>
+                        <div class="profile-item"><span>Agent ID</span><strong id="profileAgentUserId">agent01</strong></div>
+                        <div class="profile-item"><span>Name</span><strong id="profileAgentUsername">agent01</strong></div>
+                        <div class="profile-item"><span>Team</span><strong id="profileAgentTeam">Acquisition</strong></div>
                     </div>
                 </div>
 
                 <div id="aSectionAddOrder" class="agent-section section-hidden">
                     <div class="order-container">
                         <div class="form-header">
-                            <h2>Create New Order</h2>
-                            <p>Fill in the details below to create a new customer order</p>
+                            <div>
+                                <h2>Create New Order</h2>
+                                <p>Fill out the details below compactly</p>
+                            </div>
                         </div>
                         <div id="agentOrderFormContainer"></div>
+                    </div>
+                </div>
+
+                <div id="aSectionOrders" class="agent-section section-hidden">
+                    <div class="order-container">
+                        <div class="form-header">
+                            <div>
+                                <h2>My Orders</h2>
+                                <p>Orders placed by your account</p>
+                            </div>
+                            <button class="refresh-btn" onclick="fetchOrdersData(true)">🔄 Refresh</button>
+                        </div>
+                        <div class="orders-table-wrapper">
+                            <table class="orders-table">
+                                <thead>
+                                    <tr>
+                                        <th>Order Id</th>
+                                        <th>Customer Name</th>
+                                        <th>Customer Contact</th>
+                                        <th>Gender</th>
+                                        <th>Create Date</th>
+                                        <th>Order Channel</th>
+                                        <th>Agent ID</th>
+                                        <th>Agent Name</th>
+                                        <th>Product Category</th>
+                                        <th>Product Name</th>
+                                        <th>City</th>
+                                        <th>Delivery Area</th>
+                                        <th>Address Details</th>
+                                        <th>Schedule Date</th>
+                                        <th>Scheduled Time</th>
+                                        <th>Order Value</th>
+                                        <th>Profit</th>
+                                        <th>Final Status</th>
+                                        <th>Followup Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="agentOrdersTableBody">
+                                    <tr><td colspan="19" style="text-align: center; color: var(--text-light); padding: 20px;">Loading...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="aSectionDashboard" class="agent-section section-hidden">
+                    <div class="order-container">
+                        <div class="form-header">
+                            <div>
+                                <h2>Performance Dashboard</h2>
+                                <p>Lifetime order statistics and profit analytics</p>
+                            </div>
+                            <button class="refresh-btn" onclick="fetchOrdersData(true)">🔄 Refresh Stats</button>
+                        </div>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <span class="stat-label">Total Created Orders</span>
+                                <div class="stat-value" id="statTotalCreated">0</div>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-label">Delivered Orders</span>
+                                <div class="stat-value" id="statDelivered" style="color: var(--success);">0</div>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-label">Open / Pending Orders</span>
+                                <div class="stat-value" id="statOpen" style="color: #d97706;">0</div>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-label">Total Order Value</span>
+                                <div class="stat-value" id="statTotalVal">0.00</div>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-label">Delivered Value</span>
+                                <div class="stat-value" id="statDeliveredVal" style="color: var(--success);">0.00</div>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-label">Delivered Profit</span>
+                                <div class="stat-value" id="statDeliveredProfit" style="color: var(--success);">0.00</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -706,16 +436,18 @@
     </div>
 
     <template id="orderFormTemplate">
-        <div class="form-wrapper">
-            <form class="form-card orderForm">
+        <form class="orderForm">
+            
+            <div class="form-section-card">
+                <div class="section-title">Informations</div>
                 <div class="form-grid-3">
                     <div class="input-group">
                         <label class="input-label">Customer Name <span class="required">*</span></label>
                         <input type="text" name="customerName" required placeholder="Full name" class="input-field customerName">
                     </div>
                     <div class="input-group">
-                        <label class="input-label">Customer Number <span class="required">*</span></label>
-                        <input type="tel" name="customerContact" required placeholder="Contact" class="input-field customerContact">
+                        <label class="input-label">Customer Contact <span class="required">*</span></label>
+                        <input type="tel" name="customerContact" required placeholder="Phone number" class="input-field customerContact">
                     </div>
                     <div class="input-group">
                         <label class="input-label">Gender <span class="required">*</span></label>
@@ -727,23 +459,6 @@
                         </select>
                     </div>
                 </div>
-
-                <div class="form-grid-1">
-                    <div class="input-group">
-                        <label class="input-label">Channel <span class="required">*</span></label>
-                        <select name="orderChannel" required class="select-field orderChannel">
-                            <option value="">Select</option>
-                            <option value="Acquisition">Acquisition</option>
-                            <option value="Retention">Retention</option>
-                            <option value="KAM">KAM</option>
-                            <option value="Call-Center">Call-Center</option>
-                            <option value="Facebook">Facebook</option>
-                            <option value="Back-Office">Back-Office</option>
-                            <option value="VOC">VOC</option>
-                        </select>
-                    </div>
-                </div>
-
                 <div class="form-grid-2">
                     <div class="input-group">
                         <label class="input-label">Agent ID</label>
@@ -754,8 +469,24 @@
                         <input type="text" name="createdByName" readonly class="input-field createdByName" style="background: var(--bg-lighter);">
                     </div>
                 </div>
+            </div>
 
-                <div class="form-grid-2">
+            <div class="form-section-card">
+                <div class="section-title">Source & Products</div>
+                <div class="form-grid-3">
+                    <div class="input-group">
+                        <label class="input-label">Order Channel <span class="required">*</span></label>
+                        <select name="orderChannel" required class="select-field orderChannel">
+                            <option value="">Select Channel</option>
+                            <option value="Acquisition">Acquisition</option>
+                            <option value="Retention">Retention</option>
+                            <option value="KAM">KAM</option>
+                            <option value="Call-Center">Call-Center</option>
+                            <option value="Facebook">Facebook</option>
+                            <option value="Back-Office">Back-Office</option>
+                            <option value="VOC">VOC</option>
+                        </select>
+                    </div>
                     <div class="input-group">
                         <label class="input-label">Product Category <span class="required">*</span></label>
                         <select name="productCategory" required class="select-field productCategory">
@@ -769,100 +500,80 @@
                     </div>
                     <div class="input-group">
                         <label class="input-label">Product Name <span class="required">*</span></label>
-                        <input type="text" name="productName" required placeholder="Enter product name" class="input-field productName">
+                        <input type="text" name="productName" required placeholder="Product name" class="input-field productName">
                     </div>
                 </div>
+            </div>
 
-                <div class="form-grid-2">
+            <div class="form-section-card">
+                <div class="section-title">Locations Details</div>
+                <div class="form-grid-3">
                     <div class="input-group">
                         <label class="input-label">City <span class="required">*</span></label>
                         <select name="city" required class="select-field citySelect" onchange="handleCityChange(event)">
-                            <option value="">Select</option>
+                            <option value="">Select City</option>
                             <option value="Dhaka">Dhaka</option>
                             <option value="Chittagong">Chittagong</option>
                             <option value="Jashore">Jashore</option>
                             <option value="Others">Others</option>
                         </select>
                         <div class="custom-input-wrapper customCityWrapper">
-                            <input type="text" placeholder="Enter custom city" class="customCity">
+                            <input type="text" placeholder="Custom city" class="customCity">
                         </div>
                     </div>
                     <div class="input-group">
-                        <label class="input-label">Area <span class="required">*</span></label>
+                        <label class="input-label">Delivery Area <span class="required">*</span></label>
                         <select name="deliveryArea" required class="select-field deliveryAreaSelect" onchange="handleAreaChange(event)">
-                            <option value="">Select</option>
+                            <option value="">Select Area</option>
                         </select>
                         <div class="custom-input-wrapper customAreaWrapper">
-                            <input type="text" placeholder="Enter custom area" class="customArea">
+                            <input type="text" placeholder="Custom area" class="customArea">
                         </div>
                     </div>
-                </div>
-
-                <div class="form-grid-1">
                     <div class="input-group">
                         <label class="input-label">Address Details</label>
                         <div class="address-group">
-                            <div class="address-field">
-                                <div class="address-label">Flat</div>
-                                <input type="text" class="address-input addrFlat" placeholder="102">
-                            </div>
-                            <div class="address-field">
-                                <div class="address-label">House</div>
-                                <input type="text" class="address-input addrHouse" placeholder="45">
-                            </div>
-                            <div class="address-field">
-                                <div class="address-label">Road</div>
-                                <input type="text" class="address-input addrRoad" placeholder="15A">
-                            </div>
-                            <div class="address-field">
-                                <div class="address-label">Block</div>
-                                <input type="text" class="address-input addrBlock" placeholder="F">
-                            </div>
-                            <div class="address-field" style="grid-column: span 2;">
-                                <div class="address-label">Other</div>
-                                <input type="text" class="address-input addrOthers" placeholder="Additional info...">
-                            </div>
+                            <div class="address-field"><div class="address-label">Flat</div><input type="text" class="address-input addrFlat" placeholder="102"></div>
+                            <div class="address-field"><div class="address-label">House</div><input type="text" class="address-input addrHouse" placeholder="45"></div>
+                            <div class="address-field"><div class="address-label">Road</div><input type="text" class="address-input addrRoad" placeholder="15A"></div>
+                            <div class="address-field"><div class="address-label">Block</div><input type="text" class="address-input addrBlock" placeholder="F"></div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="form-grid-3">
+            <div class="form-section-card">
+                <div class="section-title">Date & Value</div>
+                <div class="form-grid-4">
                     <div class="input-group">
                         <label class="input-label">Create Date</label>
-                        <input type="text" name="createDate" readonly class="input-field createDate" style="background: var(--bg-lighter);">
+                        <input type="text" name="createDate" readonly class="input-field createDate" style="background: var(--bg-lighter); font-size: 12px;">
                     </div>
                     <div class="input-group">
                         <label class="input-label">Schedule Date <span class="required">*</span></label>
                         <input type="date" name="scheduleDate" required class="input-field scheduleDate">
                     </div>
                     <div class="input-group">
-                        <label class="input-label">Time Slot <span class="required">*</span></label>
+                        <label class="input-label">Scheduled Time <span class="required">*</span></label>
                         <select name="scheduledTime" required class="select-field scheduledTime">
-                            <option value="">Select</option>
-                            <option value="9AM to 10AM">9 AM - 10 AM</option>
-                            <option value="10AM to 11AM">10 AM - 11 AM</option>
-                            <option value="11AM to 12PM">11 AM - 12 PM</option>
-                            <option value="12PM to 1PM">12 PM - 1 PM</option>
-                            <option value="1PM to 2PM">1 PM - 2 PM</option>
-                            <option value="2PM to 3PM">2 PM - 3 PM</option>
-                            <option value="3PM to 4PM">3 PM - 4 PM</option>
-                            <option value="4PM to 5PM">4 PM - 5 PM</option>
-                            <option value="5PM to 6PM">5 PM - 6 PM</option>
-                            <option value="6PM to 7PM">6 PM - 7 PM</option>
-                            <option value="7PM to 8PM">7 PM - 8 PM</option>
-                            <option value="8PM to 9PM">8 PM - 9 PM</option>
+                            <option value="">Time Slot</option>
+                            <option value="9AM to 10AM">9-10 AM</option>
+                            <option value="10AM to 11AM">10-11 AM</option>
+                            <option value="11AM to 12PM">11-12 PM</option>
+                            <option value="12PM to 1PM">12-1 PM</option>
+                            <option value="1PM to 2PM">1-2 PM</option>
+                            <option value="2PM to 3PM">2-3 PM</option>
+                            <option value="3PM to 4PM">3-4 PM</option>
+                            <option value="4PM to 5PM">4-5 PM</option>
+                            <option value="5PM to 6PM">5-6 PM</option>
+                            <option value="6PM to 7PM">6-7 PM</option>
+                            <option value="7PM to 8PM">7-8 PM</option>
+                            <option value="8PM to 9PM">8-9 PM</option>
                         </select>
                     </div>
-                </div>
-
-                <div class="form-grid-2">
                     <div class="input-group">
                         <label class="input-label">Order Value <span class="required">*</span></label>
-                        <input type="number" name="orderValue" required placeholder="Enter order value" class="input-field orderValue">
-                    </div>
-                    <div class="input-group">
-                        <label class="input-label">Order Status</label>
-                        <input type="text" name="orderStatus" value="Pending" readonly class="input-field orderStatus" style="background: var(--bg-lighter); font-weight: 700; color: var(--primary);">
+                        <input type="number" step="any" name="orderValue" required placeholder="0.00" class="input-field orderValue">
                     </div>
                 </div>
 
@@ -870,103 +581,27 @@
                     <p class="status-text"></p>
                     <button type="submit" class="submit-btn">Place Order</button>
                 </div>
-            </form>
+            </div>
 
             <div class="summary-card">
-                <div class="summary-header">
-                    <h3>Order Summary</h3>
-                </div>
-
-                <div class="summary-item">
-                    <span class="summary-label">Customer Name</span>
-                    <div class="summary-value empty sumCustomerName">-</div>
-                </div>
-
-                <div class="summary-item">
-                    <span class="summary-label">Customer Number</span>
-                    <div class="summary-value empty sumCustomerContact">-</div>
-                </div>
-
-                <div class="summary-item">
-                    <span class="summary-label">Gender</span>
-                    <div class="summary-value empty sumGender">-</div>
-                </div>
-
-                <div class="summary-item">
-                    <span class="summary-label">Channel</span>
-                    <div class="summary-value empty sumOrderChannel">-</div>
-                </div>
-
-                <div class="summary-item">
-                    <span class="summary-label">Agent ID & Name</span>
-                    <div class="summary-value empty sumCreatedBy">-</div>
-                </div>
-
-                <div class="summary-item">
-                    <span class="summary-label">Product Category</span>
-                    <div class="summary-value empty sumProductCategory">-</div>
-                </div>
-
-                <div class="summary-item">
-                    <span class="summary-label">Product Name</span>
-                    <div class="summary-value empty sumProductName">-</div>
-                </div>
-
-                <div class="summary-item">
-                    <span class="summary-label">City</span>
-                    <div class="summary-value empty sumCity">-</div>
-                </div>
-
-                <div class="summary-item">
-                    <span class="summary-label">Area</span>
-                    <div class="summary-value empty sumDeliveryArea">-</div>
-                </div>
-
-                <div class="summary-item">
-                    <span class="summary-label">Address</span>
-                    <div class="summary-value empty sumAddressDetails">-</div>
-                </div>
-
-                <div class="summary-item">
-                    <span class="summary-label">Order Value</span>
-                    <div class="summary-value empty sumOrderValue">-</div>
-                </div>
-
-                <div class="summary-item">
-                    <span class="summary-label">Order Status</span>
-                    <div class="summary-value sumOrderStatus" style="color: var(--primary); font-weight: 700;">Pending</div>
+                <div style="font-size: 13px; font-weight: 700; color: var(--primary-dark); margin-bottom: 8px;">Live Summary</div>
+                <div class="summary-grid">
+                    <div class="summary-item"><span class="summary-label">Customer</span><div class="summary-value empty sumCustomerInfo">-</div></div>
+                    <div class="summary-item"><span class="summary-label">Product</span><div class="summary-value empty sumProductDetails">-</div></div>
+                    <div class="summary-item"><span class="summary-label">Schedule</span><div class="summary-value empty sumDateTime">-</div></div>
+                    <div class="summary-item"><span class="summary-label">Location</span><div class="summary-value empty sumCityArea">-</div></div>
+                    <div class="summary-item"><span class="summary-label">Order Value</span><div class="summary-value empty sumOrderValue">-</div></div>
                 </div>
             </div>
-        </div>
+        </form>
     </template>
 
     <script>
         const cityAreaMap = {
-            'Dhaka': [
-                'Azimpur', 'Badda', 'Banani', 'Banani DOHS', 'Baridhara', 'Baridhara DOHS', 
-                'Bashabo', 'Bashundhara R/A', 'Cantonment', 'Dakshinkhan', 'Dhanmondi', 
-                'Farmgate', 'Gulshan', 'Jatrabari', 'Kafrul', 'Kakrail', 'Kamalapur', 
-                'Kamrangirchor', 'Khilgaon', 'Khilgoan', 'Khilkhet', 'Lalbagh', 'Laxmibazar', 
-                'Malibag', 'Mirpur', 'Mirpur 2', 'Mirpur DOHS', 'Mogbazar', 'Mohakhali', 
-                'Mohakhali DOHS', 'Mohammadpur', 'Motijheel', 'Nikunjo', 'Old Town (Dhaka)', 
-                'Ramna', 'Rampura', 'Rest Of Dhaka', 'Sabujbagh', 'Savar', 'Shahbag', 
-                'Tejgaon', 'Uttara', 'Uttarkhan', 'Vatara', 'Wari', 'Others'
-            ],
-            'Chittagong': [
-                'Anwara', 'Badurdola', 'Bakalia', 'Bandar', 'Bayejid bostami', 'Bou Bazar', 
-                'Chadgaon', 'Colony', 'Double Mooring', 'Halishahar', 'Hathazari', 'Khulshi', 
-                'Kotwali (Chittagong)', 'Nasirabad', 'Pachlaish', 'Pahartali', 'Patenga', 
-                'Sugandha', 'Others'
-            ],
-            'Jashore': [
-                'Chowrasta', 'Doratana', 'Jessore', 'New Market', 'Palbari', 'Kharki', 
-                'Puratan Kasba', 'Others'
-            ],
-            'Others': [
-                'Barisal', 'Comilla', 'Gazipur', 'Jowelasory Tola', 'Joydebpur', 'Kaliakor', 
-                'Kaliganj', 'Khandar', 'Koigari', 'Kotwali', 'Narayanganj', 'Sath Matha', 
-                'Sheujgari', 'Sreepur', 'Sylhet', 'Sylhet Metro', 'Tongi', 'Others'
-            ]
+            'Dhaka': ['Azimpur', 'Badda', 'Banani', 'Bashundhara R/A', 'Dhanmondi', 'Gulshan', 'Mirpur', 'Mohakhali', 'Mohammadpur', 'Motijheel', 'Rampura', 'Uttara', 'Wari', 'Others'],
+            'Chittagong': ['Agrabad', 'Bayezid', 'Halishahar', 'Khulshi', 'Nasirabad', 'Pachlaish', 'Others'],
+            'Jashore': ['Chowrasta', 'Doratana', 'Jessore Sadar', 'New Market', 'Palbari', 'Others'],
+            'Others': ['Barisal', 'Comilla', 'Gazipur', 'Narayanganj', 'Sylhet', 'Tongi', 'Others']
         };
 
         let agentUsers = JSON.parse(localStorage.getItem('agentUsers')) || [
@@ -974,16 +609,13 @@
             { user: "aqn01", pass: "aqn01", team: "Acquisition" }
         ];
 
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbznJBoaggkUhg0ztkcmJpEyeaiuJRVRJX7oItiIgzWqhNPkYIbG3zjnEe2Hn1voDFFg/exec';
+        const scriptURL = 'YOUR_DEPLOYED_WEB_APP_URL_HERE'; // Replace with your web app /exec URL
         let currentAgentObj = null;
+        let cachedOrdersData = null;
 
         document.getElementById('loginSubmitBtn').addEventListener('click', handleAgentLogin);
-        document.getElementById('loginUser').addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') { e.preventDefault(); document.getElementById('loginPass').focus(); }
-        });
-        document.getElementById('loginPass').addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') { e.preventDefault(); handleAgentLogin(); }
-        });
+        document.getElementById('loginUser').addEventListener('keydown', (e) => { if (e.key === 'Enter') document.getElementById('loginPass').focus(); });
+        document.getElementById('loginPass').addEventListener('keydown', (e) => { if (e.key === 'Enter') handleAgentLogin(); });
         document.querySelectorAll('.logoutBtn').forEach(btn => btn.addEventListener('click', logout));
 
         function handleAgentLogin() {
@@ -996,16 +628,14 @@
                 errorDiv.style.display = 'none';
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('agentApp').classList.remove('hidden');
-                
                 currentAgentObj = found;
-                document.getElementById('activeAgentBadge').innerText = 'User: ' + found.user;
+                document.getElementById('activeAgentBadge').innerText = found.user;
                 document.getElementById('profileAgentUserId').innerText = found.user;
                 document.getElementById('profileAgentUsername').innerText = found.user;
                 document.getElementById('profileAgentTeam').innerText = found.team;
-                
                 switchAgentTab('profiles');
             } else {
-                errorDiv.innerText = 'Invalid credentials. Please try again.';
+                errorDiv.innerText = 'Invalid credentials.';
                 errorDiv.style.display = 'block';
             }
         }
@@ -1015,12 +645,12 @@
             document.getElementById('loginScreen').style.display = 'flex';
             document.getElementById('loginUser').value = '';
             document.getElementById('loginPass').value = '';
+            cachedOrdersData = null;
         }
 
         function switchAgentTab(tabName) {
             document.querySelectorAll('.agent-section').forEach(sec => sec.classList.add('section-hidden'));
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-            
             if (tabName === 'profiles') {
                 document.getElementById('aSectionProfiles').classList.remove('section-hidden');
                 document.querySelector('[data-tab="profiles"]').classList.add('active');
@@ -1028,7 +658,129 @@
                 document.getElementById('aSectionAddOrder').classList.remove('section-hidden');
                 document.querySelector('[data-tab="addOrder"]').classList.add('active');
                 initOrderForm('agentOrderFormContainer', currentAgentObj.user, currentAgentObj.user);
+            } else if (tabName === 'orders') {
+                document.getElementById('aSectionOrders').classList.remove('section-hidden');
+                document.querySelector('[data-tab="orders"]').classList.add('active');
+                fetchOrdersData(false);
+            } else if (tabName === 'dashboard') {
+                document.getElementById('aSectionDashboard').classList.remove('section-hidden');
+                document.querySelector('[data-tab="dashboard"]').classList.add('active');
+                fetchOrdersData(false);
             }
+        }
+
+        function fetchOrdersData(forceRefresh = false) {
+            if (cachedOrdersData && !forceRefresh) {
+                processOrdersData(cachedOrdersData);
+                return;
+            }
+
+            const tbody = document.getElementById('agentOrdersTableBody');
+            if(tbody) tbody.innerHTML = `<tr><td colspan="19" style="text-align: center; color: var(--text-light); padding: 20px;">Loading orders...</td></tr>`;
+
+            fetch(scriptURL)
+                .then(res => res.json())
+                .then(data => {
+                    cachedOrdersData = data;
+                    processOrdersData(data);
+                })
+                .catch(err => {
+                    console.error('Fetch error:', err);
+                    if(tbody) tbody.innerHTML = `<tr><td colspan="19" style="text-align: center; color: var(--danger); padding: 20px;">Failed to load. Check Web App URL.</td></tr>`;
+                    document.getElementById('statTotalCreated').innerText = '0';
+                    document.getElementById('statDelivered').innerText = '0';
+                    document.getElementById('statOpen').innerText = '0';
+                    document.getElementById('statTotalVal').innerText = '0.00';
+                    document.getElementById('statDeliveredVal').innerText = '0.00';
+                    document.getElementById('statDeliveredProfit').innerText = '0.00';
+                });
+        }
+
+        function processOrdersData(data) {
+            const tbody = document.getElementById('agentOrdersTableBody');
+            
+            if (!Array.isArray(data) || data.length <= 1) {
+                if(tbody) tbody.innerHTML = `<tr><td colspan="19" style="text-align: center; color: var(--text-light); padding: 20px;">No orders found.</td></tr>`;
+                document.getElementById('statTotalCreated').innerText = '0';
+                document.getElementById('statDelivered').innerText = '0';
+                document.getElementById('statOpen').innerText = '0';
+                document.getElementById('statTotalVal').innerText = '0.00';
+                document.getElementById('statDeliveredVal').innerText = '0.00';
+                document.getElementById('statDeliveredProfit').innerText = '0.00';
+                return;
+            }
+
+            const rows = data.slice(1);
+            const agentId = currentAgentObj.user.toLowerCase();
+            const myOrders = rows.filter(row => String(row[6] || '').trim().toLowerCase() === agentId);
+
+            // Render Orders Table (19 Columns Schema mapping)
+            if(tbody) {
+                if (myOrders.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="19" style="text-align: center; color: var(--text-light); padding: 20px;">No orders found for your ID.</td></tr>`;
+                } else {
+                    tbody.innerHTML = '';
+                    myOrders.reverse().forEach(row => {
+                        const tr = document.createElement('tr');
+                        const finalStatus = String(row[17] || 'Pending').trim();
+                        const followupStatus = String(row[18] || 'Pending').trim();
+                        const statusClass = finalStatus.toLowerCase() === 'delivered' ? 'badge-delivered' : 'badge-pending';
+                        
+                        tr.innerHTML = `
+                            <td><strong>#${row[0] || '-'}</strong></td>
+                            <td>${row[1] || '-'}</td>
+                            <td>${row[2] || '-'}</td>
+                            <td>${row[3] || '-'}</td>
+                            <td>${row[4] || '-'}</td>
+                            <td>${row[5] || '-'}</td>
+                            <td>${row[6] || '-'}</td>
+                            <td>${row[7] || '-'}</td>
+                            <td>${row[8] || '-'}</td>
+                            <td>${row[9] || '-'}</td>
+                            <td>${row[10] || '-'}</td>
+                            <td>${row[11] || '-'}</td>
+                            <td>${row[12] || '-'}</td>
+                            <td>${row[13] || '-'}</td>
+                            <td>${row[14] || '-'}</td>
+                            <td>${row[15] || '0'}</td>
+                            <td><strong>${row[16] || '0'}</strong></td>
+                            <td><span class="${statusClass}">${finalStatus}</span></td>
+                            <td>${followupStatus}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
+            }
+
+            // Render Performance Dashboard Stats
+            let totalCreated = myOrders.length;
+            let deliveredCount = 0;
+            let openCount = 0;
+            let totalVal = 0;
+            let deliveredVal = 0;
+            let deliveredProfit = 0;
+
+            myOrders.forEach(row => {
+                const val = parseFloat(row[15]) || 0;
+                const profit = parseFloat(row[16]) || 0;
+                const finalStatus = String(row[17] || '').trim().toLowerCase();
+                
+                totalVal += val;
+                if (finalStatus === 'delivered') {
+                    deliveredCount++;
+                    deliveredVal += val;
+                    deliveredProfit += profit;
+                } else {
+                    openCount++;
+                }
+            });
+
+            document.getElementById('statTotalCreated').innerText = totalCreated;
+            document.getElementById('statDelivered').innerText = deliveredCount;
+            document.getElementById('statOpen').innerText = openCount;
+            document.getElementById('statTotalVal').innerText = totalVal.toFixed(2);
+            document.getElementById('statDeliveredVal').innerText = deliveredVal.toFixed(2);
+            document.getElementById('statDeliveredProfit').innerText = deliveredProfit.toFixed(2);
         }
 
         function initOrderForm(containerId, userId, userName) {
@@ -1042,18 +794,18 @@
             container.querySelector('.createdByNum').value = userId;
             container.querySelector('.createdByName').value = userName;
             
-            const today = new Date();
-            const formattedDate = today.toISOString().split('T')[0] + ' ' + today.toLocaleTimeString();
-            container.querySelector('.createDate').value = formattedDate;
+            const now = new Date();
+            const yyyy = now.getFullYear();
+            const mm = String(now.getMonth() + 1).padStart(2, '0');
+            const dd = String(now.getDate()).padStart(2, '0');
+            const hh = String(now.getHours()).padStart(2, '0');
+            const min = String(now.getMinutes()).padStart(2, '0');
+            const ss = String(now.getSeconds()).padStart(2, '0');
+            container.querySelector('.createDate').value = `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
 
             form.addEventListener('input', () => updateLiveSummary(container));
             form.addEventListener('change', () => updateLiveSummary(container));
-            
-            form.addEventListener('submit', e => {
-                e.preventDefault();
-                handleFormSubmit(container, userId, userName);
-            });
-
+            form.addEventListener('submit', e => { e.preventDefault(); handleFormSubmit(container, userId, userName); });
             updateLiveSummary(container);
         }
 
@@ -1063,97 +815,45 @@
             const areaSelect = form.querySelector('.deliveryAreaSelect');
             const customCityWrapper = form.querySelector('.customCityWrapper');
             const customAreaWrapper = form.querySelector('.customAreaWrapper');
-            const customCityInput = form.querySelector('.customCity');
-            const customAreaInput = form.querySelector('.customArea');
-
-            areaSelect.innerHTML = '';
-            customCityWrapper.style.display = 'none';
+            
+            areaSelect.innerHTML = '<option value="">Select Area</option>';
+            customCityWrapper.style.display = selectedCity === 'Others' ? 'block' : 'none';
             customAreaWrapper.style.display = 'none';
-            customCityInput.required = false;
-            customAreaInput.required = false;
 
-            if (selectedCity === 'Others') {
-                customCityWrapper.style.display = 'block';
-                customCityInput.required = true;
-                const opt = document.createElement('option');
-                opt.value = 'Others'; opt.innerText = 'Others';
-                areaSelect.appendChild(opt);
-                customAreaWrapper.style.display = 'block';
-                customAreaInput.required = true;
-            } else if (cityAreaMap[selectedCity]) {
-                const defaultOpt = document.createElement('option');
-                defaultOpt.value = ''; defaultOpt.innerText = 'Select';
-                areaSelect.appendChild(defaultOpt);
-
+            if (cityAreaMap[selectedCity]) {
                 cityAreaMap[selectedCity].forEach(area => {
                     const opt = document.createElement('option');
                     opt.value = area; opt.innerText = area;
                     areaSelect.appendChild(opt);
                 });
-            } else {
-                const defaultOpt = document.createElement('option');
-                defaultOpt.value = ''; defaultOpt.innerText = 'Select';
-                areaSelect.appendChild(defaultOpt);
             }
-            updateLiveSummary(form.closest('div'));
+            updateLiveSummary(form);
         }
 
         function handleAreaChange(e) {
             const form = e.target.closest('form');
-            const areaSelect = form.querySelector('.deliveryAreaSelect');
-            const customAreaWrapper = form.querySelector('.customAreaWrapper');
-            const customAreaInput = form.querySelector('.customArea');
-
-            if (areaSelect.value === 'Others') {
-                customAreaWrapper.style.display = 'block';
-                customAreaInput.required = true;
-            } else {
-                customAreaWrapper.style.display = 'none';
-                customAreaInput.required = false;
-            }
-            updateLiveSummary(form.closest('div'));
-        }
-
-        function getFormattedAddress(container) {
-            const flat = container.querySelector('.addrFlat').value.trim() || '-';
-            const house = container.querySelector('.addrHouse').value.trim() || '-';
-            const road = container.querySelector('.addrRoad').value.trim() || '-';
-            const block = container.querySelector('.addrBlock').value.trim() || '-';
-            return `Flat: ${flat} | House: ${house} | Road: ${road} | Block: ${block}`;
+            form.querySelector('.customAreaWrapper').style.display = e.target.value === 'Others' ? 'block' : 'none';
+            updateLiveSummary(form);
         }
 
         function updateLiveSummary(container) {
-            const updateSummaryValue = (selector, value) => {
-                const elem = container.querySelector(selector);
-                if (elem) {
-                    elem.innerText = value || '-';
-                    if (value && value !== '-') elem.classList.remove('empty');
-                    else elem.classList.add('empty');
-                }
+            const getVal = (cls) => container.querySelector(cls).value || '';
+            const setSum = (cls, val) => {
+                const el = container.querySelector(cls);
+                el.innerText = val || '-';
+                if (val) el.classList.remove('empty'); else el.classList.add('empty');
             };
 
-            updateSummaryValue('.sumCustomerName', container.querySelector('.customerName').value);
-            updateSummaryValue('.sumCustomerContact', container.querySelector('.customerContact').value);
-            updateSummaryValue('.sumGender', container.querySelector('.gender').value);
-            updateSummaryValue('.sumOrderChannel', container.querySelector('.orderChannel').value);
+            setSum('.sumCustomerInfo', getVal('.customerName') ? `${getVal('.customerName')} (${getVal('.customerContact')})` : '');
+            setSum('.sumProductDetails', getVal('.productName') ? `${getVal('.productCategory')} : ${getVal('.productName')}` : '');
+            setSum('.sumDateTime', getVal('.scheduleDate') ? `${getVal('.scheduleDate')} [${getVal('.scheduledTime')}]` : '');
             
-            const createdByNum = container.querySelector('.createdByNum').value;
-            const createdByName = container.querySelector('.createdByName').value;
-            updateSummaryValue('.sumCreatedBy', createdByNum ? `${createdByNum} (${createdByName})` : '');
-
-            updateSummaryValue('.sumProductCategory', container.querySelector('.productCategory').value);
-            updateSummaryValue('.sumProductName', container.querySelector('.productName').value);
-
-            let cityVal = container.querySelector('.citySelect').value;
-            if (cityVal === 'Others') cityVal = container.querySelector('.customCity').value.trim();
-            updateSummaryValue('.sumCity', cityVal);
-
-            let areaVal = container.querySelector('.deliveryAreaSelect').value;
-            if (areaVal === 'Others') areaVal = container.querySelector('.customArea').value.trim();
-            updateSummaryValue('.sumDeliveryArea', areaVal);
-
-            updateSummaryValue('.sumAddressDetails', getFormattedAddress(container));
-            updateSummaryValue('.sumOrderValue', container.querySelector('.orderValue').value);
+            let city = getVal('.citySelect') === 'Others' ? getVal('.customCity') : getVal('.citySelect');
+            let area = getVal('.deliveryAreaSelect') === 'Others' ? getVal('.customArea') : getVal('.deliveryAreaSelect');
+            setSum('.sumCityArea', city ? `${city} > ${area}` : '');
+            
+            let val = getVal('.orderValue');
+            setSum('.sumOrderValue', val ? `Value: ${val}` : '');
         }
 
         function handleFormSubmit(container, userId, userName) {
@@ -1162,51 +862,38 @@
             const statusText = container.querySelector('.status-text');
 
             submitBtn.disabled = true;
-            submitBtn.innerText = '⏳ Processing...';
+            submitBtn.innerText = 'Saving...';
 
-            let finalCity = container.querySelector('.citySelect').value;
-            if (finalCity === 'Others') finalCity = container.querySelector('.customCity').value.trim();
-
-            let finalArea = container.querySelector('.deliveryAreaSelect').value;
-            if (finalArea === 'Others') finalArea = container.querySelector('.customArea').value.trim();
+            let city = container.querySelector('.citySelect').value === 'Others' ? container.querySelector('.customCity').value : container.querySelector('.citySelect').value;
+            let area = container.querySelector('.deliveryAreaSelect').value === 'Others' ? container.querySelector('.customArea').value : container.querySelector('.deliveryAreaSelect').value;
+            
+            const flat = container.querySelector('.addrFlat').value;
+            const house = container.querySelector('.addrHouse').value;
+            const road = container.querySelector('.addrRoad').value;
+            const block = container.querySelector('.addrBlock').value;
+            let address = [flat ? `Flat:${flat}` : '', house ? `House:${house}` : '', road ? `Road:${road}` : '', block ? `Block:${block}` : ''].filter(Boolean).join(', ');
 
             const formData = new FormData(form);
-            formData.set('city', finalCity);
-            formData.set('deliveryArea', finalArea);
-            formData.append('addressDetails', getFormattedAddress(container));
-            formData.append('createdByNum', userId);
+            formData.set('city', city);
+            formData.set('deliveryArea', area);
+            formData.set('addressDetails', address);
+            formData.append('profit', '0'); 
             formData.append('orderStatus', 'Pending');
+            formData.append('followupStatus', 'Pending');
 
-            fetch(scriptURL, { method: 'POST', body: formData})
-                .then(response => response.json())
-                .then(data => {
+            fetch(scriptURL, { method: 'POST', body: formData })
+                .then(res => res.json())
+                .then(() => {
                     statusText.className = 'status-text success';
-                    statusText.innerText = '✓ Order placed successfully!';
-
-                    form.reset();
-                    container.querySelector('.createdByNum').value = userId;
-                    container.querySelector('.createdByName').value = userName;
-                    container.querySelector('.orderStatus').value = 'Pending';
-                    container.querySelector('.customCityWrapper').style.display = 'none';
-                    container.querySelector('.customAreaWrapper').style.display = 'none';
-                    container.querySelector('.deliveryAreaSelect').innerHTML = '<option value="">Select</option>';
-                    
-                    const today = new Date();
-                    container.querySelector('.createDate').value = today.toISOString().split('T')[0] + ' ' + today.toLocaleTimeString();
-                    updateLiveSummary(container);
-
-                    setTimeout(() => {
-                        submitBtn.disabled = false;
-                        submitBtn.innerText = 'Place Order';
-                        statusText.innerText = '';
-                    }, 2000);
+                    statusText.innerText = '✓ Success!';
+                    cachedOrdersData = null; // Reset cache so next fetch syncs fresh data
+                    setTimeout(() => initOrderForm('agentOrderFormContainer', userId, userName), 1200);
                 })
-                .catch(error => {
+                .catch(() => {
                     statusText.className = 'status-text error';
-                    statusText.innerText = '✕ Error placing order. Try again.';
+                    statusText.innerText = '✕ Error!';
                     submitBtn.disabled = false;
                     submitBtn.innerText = 'Place Order';
-                    console.error('Error!', error.message);
                 });
         }
     </script>
