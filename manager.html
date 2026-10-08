@@ -566,7 +566,7 @@
                 const matchesCreateDate = matchDateCriteria(r[4], detailCreateFilterType, detailCreateStart, detailCreateEnd);
                 if (!matchesCreateDate) return false;
 
-                const matchesScheduleDate = matchDateCriteria(r[11], detailScheduleFilterType, detailScheduleStart, detailScheduleEnd);
+                const matchesScheduleDate = matchDateCriteria(r[11], detailScheduleFilterType, detailScheduleStart, detailScheduleEndDate);
                 if (!matchesScheduleDate) return false;
 
                 if (orderIdSearch !== "") {
@@ -615,7 +615,7 @@
             tbody.innerHTML = '';
             tfoot.innerHTML = '';
 
-            const sorted = Object.keys(mapData)
+            const, sorted = Object.keys(mapData)
                 .map(key => ({ name: key, count: mapData[key] }))
                 .sort((a, b) => b.count - a.count);
 
