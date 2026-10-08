@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Portal System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * { box-sizing: border-box; }
+        
+        :root {
+            --primary: #1e40af;
+            --primary-light: #dbeafe;
+            --primary-dark: #1e3a8a;
+            --accent: #0ea5e9;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-light: #64748b;
+            --bg-light: #f8fafc;
+            --bg-lighter: #f1f5f9;
+            --border: #e2e8f0;
+            --border-dark: #cbd5e1;
+            --success: #10b981;
+            --danger: #ef4444;
+            --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.1);
+        }
+
+        /* ============== ANIMATIONS ============== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        @keyframes successPop {
+            0% {
+                opacity: 0;
+                transform: scale(0.5) translateY(20px);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* ============== GENERAL STYLES ============== */
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .login-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .login-overlay.fade-out {
+            animation: fadeIn 0.5s ease-out reverse;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.15);
+            border: 1px solid rgba(226, 232, 240, 0.5);
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .login-card h2 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: var(--primary-dark);
+            animation: slideDown 0.5s ease-out 0.1s both;
+        }
+
+        .login-card p {
+            color: var(--text-light);
+            margin-bottom: 24px;
+            font-size: 14px;
+            animation: slideDown 0.5s ease-out 0.15s both;
+        }
+
+        .login-error {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border: 1px solid #fecaca;
+            display: none;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .login-error.show {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            animation: slideDown 0.5s ease-out both;
+        }
+
+        .form-group:nth-child(3) { animation-delay: 0.2s; }
+        .form-group:nth-child(4) { animation-delay: 0.25s; }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+            outline: none;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 15px;
+            position: relative;
+            overflow: hidden;
+            animation: slideDown 0.5s ease-out 0.3s both;
+        }
+
+        .login-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(30, 64, 175, 0.3);
+        }
+
+        .login-btn:active:not(:disabled)::after {
+            animation: ripple 0.6s ease-out;
+        }
+
+        .login-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .login-btn:disabled {
+            opacity: 0.7;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, var(--primary-dark) 0%, var(--primary) 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            animation: slideInLeft 0.5s ease-out;
+        }
+
+        .sidebar-header {
+            margin-bottom: 32px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 16px;
+            animation: slideDown 0.5s ease-out 0.1s both;
+        }
+
+        .sidebar-header h2 {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        .sidebar-badge {
+            display: inline-block;
+            background: rgba(14, 165, 233, 0.2);
+            color: #06b6d4;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            animation: scaleIn 0.5s ease-out 0.15s both;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .sidebar-nav button {
+            background: transparent;
+            border: 2px solid transparent;
+            color: rgba(255, 255, 255, 0.8);
+            padding: 12px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideDown 0.5s ease-out both;
+        }
+
+        .sidebar-nav button:nth-child(1) { animation-delay: 0.2s; }
+        .sidebar-nav button:nth-child(2) { animation-delay: 0.25s; }
+
+        .sidebar-nav button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transform: translateX(4px);
+        }
+
+        .sidebar-nav button.active {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+
+        .sidebar-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 16px;
+            animation: slideDown 0.5s ease-out 0.3s both;
+        }
+
+        .logout-btn {
+            width: 100%;
+            background: rgba(239, 68, 68, 0.2);
+            border: 2px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+            padding: 10px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.3);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .top-bar {
+            background: white;
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-sm);
+            animation: slideDown 0.5s ease-out;
+        }
+
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .section-hidden {
+            display: none;
+        }
+
+        .agent-section {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 500px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            animation: slideInLeft 0.6s ease-out;
+        }
+
+        .profile-card h3 {
+            font-size: 22px;
+            margin-bottom: 24px;
+            color: var(--primary);
+            animation: slideDown 0.5s ease-out 0.1s both;
+        }
+
+        .profile-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+            animation: fadeInUp 0.5s ease-out both;
+        }
+
+        .profile-item:nth-child(2) { animation-delay: 0.15s; }
+        .profile-item:nth-child(3) { animation-delay: 0.2s; }
+        .profile-item:nth-child(4) { animation-delay: 0.25s; }
+
+        .profile-item:last-child {
+            border-bottom: none;
+        }
+
+        .profile-item span {
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .profile-item strong {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        .order-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .form-header {
+            margin-bottom: 32px;
+            animation: slideInLeft 0.6s ease-out;
+        }
+
+        .form-header h2 {
+            font-size: 28px;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+        }
+
+        .form-header p {
+            color: var(--text-light);
+            font-size: 15px;
+        }
+
+        .form-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 28px;
+            align-items: start;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 12px;
+            padding: 28px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            animation: slideInLeft 0.6s ease-out 0.1s both;
+        }
+
+        .form-grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        .form-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        .form-grid-1 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            animation: fadeInUp 0.5s ease-out both;
+        }
+
+        .input-group:nth-child(1) { animation-delay: 0.2s; }
+        .input-group:nth-child(2) { animation-delay: 0.25s; }
+        .input-group:nth-child(3) { animation-delay: 0.3s; }
+
+        .input-label {
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-label .required {
+            color: var(--danger);
+        }
+
+        .input-field,
+        .select-field {
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            background: white;
+            color: var(--text-primary);
+        }
+
+        .input-field:focus,
+        .select-field:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.08);
+            outline: none;
+            animation: pulse 0.3s ease-out;
+        }
+
+        .input-field:disabled,
+        .select-field:disabled {
+            background: var(--bg-lighter);
+            color: var(--text-light);
+            cursor: not-allowed;
+        }
+
+        .address-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .address-field {
+            display: flex;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .address-field:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.08);
+        }
+
+        .address-label {
+            background: var(--bg-lighter);
+            padding: 10px 11px;
+            font-weight: 700;
+            font-size: 12px;
+            color: var(--text-light);
+            border-right: 1px solid var(--border);
+            min-width: 80px;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+
+        .address-input {
+            flex: 1;
+            border: none;
+            padding: 10px 11px;
+            font-size: 13px;
+            outline: none;
+            background: white;
+            color: var(--text-primary);
+        }
+
+        .address-input::placeholder {
+            color: var(--text-light);
+        }
+
+        .custom-input-wrapper {
+            margin-top: 8px;
+            display: none;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .custom-input-wrapper.show {
+            display: block;
+        }
+
+        .custom-input-wrapper input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+
+        .custom-input-wrapper input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.08);
+            outline: none;
+        }
+
+        .submit-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            animation: slideDown 0.5s ease-out both;
+        }
+
+        .status-text {
+            min-height: 18px;
+            font-size: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .status-text.success {
+            color: var(--success);
+            animation: successPop 0.5s ease-out;
+        }
+
+        .status-text.error {
+            color: var(--danger);
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .submit-btn {
+            padding: 10px 22px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(30, 64, 175, 0.25);
+        }
+
+        .submit-btn.loading {
+            opacity: 0.8;
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 6px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Compact Summary Card */
+        .summary-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+            position: sticky;
+            top: 32px;
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
+            box-shadow: var(--shadow-sm);
+            animation: slideInRight 0.6s ease-out 0.2s both;
+        }
+
+        .summary-header {
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+            animation: slideDown 0.5s ease-out 0.25s both;
+        }
+
+        .summary-header h3 {
+            font-size: 14px;
+            color: var(--primary);
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .summary-item {
+            margin-bottom: 0;
+            padding: 10px 0;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--border);
+            animation: fadeInUp 0.5s ease-out both;
+        }
+
+        .summary-item:nth-child(n+3) {
+            animation-delay: calc(0.3s + (var(--index, 0) * 0.05s));
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .summary-label {
+            font-size: 11px;
+            color: var(--text-light);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-bottom: 3px;
+            display: block;
+        }
+
+        .summary-value {
+            font-size: 13px;
+            color: var(--text-primary);
+            font-weight: 600;
+            word-break: break-word;
+            line-height: 1.4;
+            transition: all 0.3s ease;
+        }
+
+        .summary-value.empty {
+            color: var(--text-light);
+            font-weight: 500;
+            font-size: 12px;
+        }
+
+        .summary-value.updating {
+            animation: shimmer 0.6s ease-in-out;
+        }
+
+        @media (max-width: 1024px) {
+            .form-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-card {
+                position: relative;
+                top: 0;
+                max-height: none;
+            }
+
+            .form-grid-3 {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: 0;
+                top: 0;
+                height: 100vh;
+                z-index: 40;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                width: 250px;
+            }
+
+            .form-grid-3,
+            .form-grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .form-card {
+                padding: 16px;
+            }
+
+            .form-grid-3 {
+                gap: 14px;
+                margin-bottom: 18px;
+            }
+
+            .form-grid-2 {
+                gap: 14px;
+                margin-bottom: 18px;
+            }
+
+            .content-area {
+                padding: 16px;
+            }
+
+            .address-group {
+                grid-template-columns: 1fr;
+            }
+
+            .submit-section {
+                flex-direction: column;
+            }
+
+            .submit-btn {
+                width: 100%;
+            }
+
+            .form-header h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loginScreen" class="login-overlay">
+        <div class="login-card">
+            <h2>Welcome</h2>
+            <p>Agent Portal Login</p>
+            <div id="loginError" class="login-error"></div>
+            <div class="form-group">
+                <label>User ID</label>
+                <input type="text" id="loginUser" class="form-group input" placeholder="Enter your user ID">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="loginPass" class="form-group input" placeholder="Enter your password">
+            </div>
+            <button id="loginSubmitBtn" class="login-btn">Sign In</button>
+        </div>
+    </div>
+
+    <div id="agentApp" class="hidden flex min-h-screen bg-gray-50">
+        <aside class="sidebar hidden md:flex">
+            <div class="sidebar-header">
+                <h2>Agent Portal</h2>
+                <span id="activeAgentBadge" class="sidebar-badge">User: agent01</span>
+            </div>
+            <nav class="sidebar-nav">
+                <button onclick="switchAgentTab('profiles')" class="nav-btn active" data-tab="profiles">
+                    <span>👤</span>
+                    <span>Profile</span>
+                </button>
+                <button onclick="switchAgentTab('addOrder')" class="nav-btn" data-tab="addOrder">
+                    <span>📋</span>
+                    <span>Create Order</span>
+                </button>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="logoutBtn logout-btn">Sign Out</button>
+            </div>
+        </aside>
+
+        <div class="main-content">
+            <div class="top-bar md:hidden">
+                <h1 class="text-lg font-bold">Agent Portal</h1>
+                <button class="logoutBtn logout-btn" style="width: auto; padding: 8px 16px;">Sign Out</button>
+            </div>
+
+            <div class="content-area">
+                <div id="aSectionProfiles" class="agent-section">
+                    <div class="profile-card">
+                        <h3>Your Profile</h3>
+                        <div class="profile-item">
+                            <span>Agent ID</span>
+                            <strong id="profileAgentUserId">agent01</strong>
+                        </div>
+                        <div class="profile-item">
+                            <span>Name</span>
+                            <strong id="profileAgentUsername">agent01</strong>
+                        </div>
+                        <div class="profile-item">
+                            <span>Team</span>
+                            <strong id="profileAgentTeam">Acquisition</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="aSectionAddOrder" class="agent-section section-hidden">
+                    <div class="order-container">
+                        <div class="form-header">
+                            <h2>Create New Order</h2>
+                            <p>Fill in the details below to create a new customer order</p>
+                        </div>
+                        <div id="agentOrderFormContainer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <template id="orderFormTemplate">
+        <div class="form-wrapper">
+            <form class="form-card orderForm">
+                <div class="form-grid-3">
+                    <div class="input-group">
+                        <label class="input-label">Customer Name <span class="required">*</span></label>
+                        <input type="text" name="customerName" required placeholder="Full name" class="input-field customerName">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Customer Number <span class="required">*</span></label>
+                        <input type="tel" name="customerContact" required placeholder="Contact" class="input-field customerContact">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Gender <span class="required">*</span></label>
+                        <select name="gender" required class="select-field gender">
+                            <option value="">Select</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-grid-1">
+                    <div class="input-group">
+                        <label class="input-label">Channel <span class="required">*</span></label>
+                        <select name="orderChannel" required class="select-field orderChannel">
+                            <option value="">Select</option>
+                            <option value="Acquisition">Acquisition</option>
+                            <option value="Retention">Retention</option>
+                            <option value="KAM">KAM</option>
+                            <option value="Call-Center">Call-Center</option>
+                            <option value="Facebook">Facebook</option>
+                            <option value="Back-Office">Back-Office</option>
+                            <option value="VOC">VOC</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="input-group">
+                        <label class="input-label">Agent ID</label>
+                        <input type="text" name="createdByNum" readonly class="input-field createdByNum" style="background: var(--bg-lighter);">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Agent Name</label>
+                        <input type="text" name="createdByName" readonly class="input-field createdByName" style="background: var(--bg-lighter);">
+                    </div>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="input-group">
+                        <label class="input-label">City <span class="required">*</span></label>
+                        <select name="city" required class="select-field citySelect" onchange="handleCityChange(event)">
+                            <option value="">Select</option>
+                            <option value="Dhaka">Dhaka</option>
+                            <option value="Chittagong">Chittagong</option>
+                            <option value="Jashore">Jashore</option>
+                            <option value="Others">Others</option>
+                        </select>
+                        <div class="custom-input-wrapper customCityWrapper">
+                            <input type="text" placeholder="Enter custom city" class="customCity">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Area <span class="required">*</span></label>
+                        <select name="deliveryArea" required class="select-field deliveryAreaSelect" onchange="handleAreaChange(event)">
+                            <option value="">Select</option>
+                        </select>
+                        <div class="custom-input-wrapper customAreaWrapper">
+                            <input type="text" placeholder="Enter custom area" class="customArea">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-grid-1">
+                    <div class="input-group">
+                        <label class="input-label">Address Details</label>
+                        <div class="address-group">
+                            <div class="address-field">
+                                <div class="address-label">Flat</div>
+                                <input type="text" class="address-input addrFlat" placeholder="102">
+                            </div>
+                            <div class="address-field">
+                                <div class="address-label">House</div>
+                                <input type="text" class="address-input addrHouse" placeholder="45">
+                            </div>
+                            <div class="address-field">
+                                <div class="address-label">Road</div>
+                                <input type="text" class="address-input addrRoad" placeholder="15A">
+                            </div>
+                            <div class="address-field">
+                                <div class="address-label">Block</div>
+                                <input type="text" class="address-input addrBlock" placeholder="F">
+                            </div>
+                            <div class="address-field" style="grid-column: span 2;">
+                                <div class="address-label">Other</div>
+                                <input type="text" class="address-input addrOthers" placeholder="Additional info...">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-grid-3">
+                    <div class="input-group">
+                        <label class="input-label">Create Date</label>
+                        <input type="text" name="createDate" readonly class="input-field createDate" style="background: var(--bg-lighter);">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Schedule Date <span class="required">*</span></label>
+                        <input type="date" name="scheduleDate" required class="input-field scheduleDate">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Time Slot <span class="required">*</span></label>
+                        <select name="scheduledTime" required class="select-field scheduledTime">
+                            <option value="">Select</option>
+                            <option value="9AM to 10AM">9 AM - 10 AM</option>
+                            <option value="10AM to 11AM">10 AM - 11 AM</option>
+                            <option value="11AM to 12PM">11 AM - 12 PM</option>
+                            <option value="12PM to 1PM">12 PM - 1 PM</option>
+                            <option value="1PM to 2PM">1 PM - 2 PM</option>
+                            <option value="2PM to 3PM">2 PM - 3 PM</option>
+                            <option value="3PM to 4PM">3 PM - 4 PM</option>
+                            <option value="4PM to 5PM">4 PM - 5 PM</option>
+                            <option value="5PM to 6PM">5 PM - 6 PM</option>
+                            <option value="6PM to 7PM">6 PM - 7 PM</option>
+                            <option value="7PM to 8PM">7 PM - 8 PM</option>
+                            <option value="8PM to 9PM">8 PM - 9 PM</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="submit-section">
+                    <p class="status-text"></p>
+                    <button type="submit" class="submit-btn">Place Order</button>
+                </div>
+            </form>
+
+            <div class="summary-card">
+                <div class="summary-header">
+                    <h3>Order Summary</h3>
+                </div>
+
+                <div class="summary-item" style="--index: 0">
+                    <span class="summary-label">Customer Name</span>
+                    <div class="summary-value empty sumCustomerName">-</div>
+                </div>
+
+                <div class="summary-item" style="--index: 1">
+                    <span class="summary-label">Customer Number</span>
+                    <div class="summary-value empty sumCustomerContact">-</div>
+                </div>
+
+                <div class="summary-item" style="--index: 2">
+                    <span class="summary-label">Gender</span>
+                    <div class="summary-value empty sumGender">-</div>
+                </div>
+
+                <div class="summary-item" style="--index: 3">
+                    <span class="summary-label">Channel</span>
+                    <div class="summary-value empty sumOrderChannel">-</div>
+                </div>
+
+                <div class="summary-item" style="--index: 4">
+                    <span class="summary-label">Agent ID & Name</span>
+                    <div class="summary-value empty sumCreatedBy">-</div>
+                </div>
+
+                <div class="summary-item" style="--index: 5">
+                    <span class="summary-label">City</span>
+                    <div class="summary-value empty sumCity">-</div>
+                </div>
+
+                <div class="summary-item" style="--index: 6">
+                    <span class="summary-label">Area</span>
+                    <div class="summary-value empty sumDeliveryArea">-</div>
+                </div>
+
+                <div class="summary-item" style="--index: 7">
+                    <span class="summary-label">Address</span>
+                    <div class="summary-value empty sumAddressDetails">-</div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        const cityAreaMap = {
+            'Dhaka': [
+                'Azimpur', 'Badda', 'Banani', 'Banani DOHS', 'Baridhara', 'Baridhara DOHS', 
+                'Bashabo', 'Bashundhara R/A', 'Cantonment', 'Dakshinkhan', 'Dhanmondi', 
+                'Farmgate', 'Gulshan', 'Jatrabari', 'Kafrul', 'Kakrail', 'Kamalapur', 
+                'Kamrangirchor', 'Khilgaon', 'Khilgoan', 'Khilkhet', 'Lalbagh', 'Laxmibazar', 
+                'Malibag', 'Mirpur', 'Mirpur 2', 'Mirpur DOHS', 'Mogbazar', 'Mohakhali', 
+                'Mohakhali DOHS', 'Mohammadpur', 'Motijheel', 'Nikunjo', 'Old Town (Dhaka)', 
+                'Ramna', 'Rampura', 'Rest Of Dhaka', 'Sabujbagh', 'Savar', 'Shahbag', 
+                'Tejgaon', 'Uttara', 'Uttarkhan', 'Vatara', 'Wari', 'Others'
+            ],
+            'Chittagong': [
+                'Anwara', 'Badurdola', 'Bakalia', 'Bandar', 'Bayejid bostami', 'Bou Bazar', 
+                'Chadgaon', 'Colony', 'Double Mooring', 'Halishahar', 'Hathazari', 'Khulshi', 
+                'Kotwali (Chittagong)', 'Nasirabad', 'Pachlaish', 'Pahartali', 'Patenga', 
+                'Sugandha', 'Others'
+            ],
+            'Jashore': [
+                'Chowrasta', 'Doratana', 'Jessore', 'New Market', 'Palbari', 'Kharki', 
+                'Puratan Kasba', 'Others'
+            ],
+            'Others': [
+                'Barisal', 'Comilla', 'Gazipur', 'Jowelasory Tola', 'Joydebpur', 'Kaliakor', 
+                'Kaliganj', 'Khandar', 'Koigari', 'Kotwali', 'Narayanganj', 'Sath Matha', 
+                'Sheujgari', 'Sreepur', 'Sylhet', 'Sylhet Metro', 'Tongi', 'Others'
+            ]
+        };
+
+        let agentUsers = JSON.parse(localStorage.getItem('agentUsers')) || [
+            { user: "agent01", pass: "agent01", team: "Acquisition" },
+            { user: "aqn01", pass: "aqn01", team: "Acquisition" }
+        ];
+
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbznJBoaggkUhg0ztkcmJpEyeaiuJRVRJX7oItiIgzWqhNPkYIbG3zjnEe2Hn1voDFFg/exec';
+        let currentAgentObj = null;
+
+        document.getElementById('loginSubmitBtn').addEventListener('click', handleAgentLogin);
+        document.getElementById('loginUser').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') { e.preventDefault(); document.getElementById('loginPass').focus(); }
+        });
+        document.getElementById('loginPass').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') { e.preventDefault(); handleAgentLogin(); }
+        });
+        document.querySelectorAll('.logoutBtn').forEach(btn => btn.addEventListener('click', logout));
+
+        function handleAgentLogin() {
+            const userInput = document.getElementById('loginUser').value.trim();
+            const passInput = document.getElementById('loginPass').value.trim();
+            const errorDiv = document.getElementById('loginError');
+
+            const found = agentUsers.find(a => a.user === userInput && a.pass === passInput);
+            if (found) {
+                errorDiv.classList.remove('show');
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('agentApp').classList.remove('hidden');
+                
+                currentAgentObj = found;
+                document.getElementById('activeAgentBadge').innerText = 'User: ' + found.user;
+                document.getElementById('profileAgentUserId').innerText = found.user;
+                document.getElementById('profileAgentUsername').innerText = found.user;
+                document.getElementById('profileAgentTeam').innerText = found.team;
+                
+                switchAgentTab('profiles');
+            } else {
+                errorDiv.innerText = 'Invalid credentials. Please try again.';
+                errorDiv.classList.add('show');
+            }
+        }
+
+        function logout() {
+            document.getElementById('agentApp').classList.add('hidden');
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('loginUser').value = '';
+            document.getElementById('loginPass').value = '';
+        }
+
+        function switchAgentTab(tabName) {
+            document.querySelectorAll('.agent-section').forEach(sec => sec.classList.add('section-hidden'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            
+            if (tabName === 'profiles') {
+                document.getElementById('aSectionProfiles').classList.remove('section-hidden');
+                document.querySelector('[data-tab="profiles"]').classList.add('active');
+            } else if (tabName === 'addOrder') {
+                document.getElementById('aSectionAddOrder').classList.remove('section-hidden');
+                document.querySelector('[data-tab="addOrder"]').classList.add('active');
+                initOrderForm('agentOrderFormContainer', currentAgentObj.user, currentAgentObj.user);
+            }
+        }
+
+        function initOrderForm(containerId, userId, userName) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            const template = document.getElementById('orderFormTemplate');
+            const clone = template.content.cloneNode(true);
+            container.appendChild(clone);
+
+            const form = container.querySelector('.orderForm');
+            container.querySelector('.createdByNum').value = userId;
+            container.querySelector('.createdByName').value = userName;
+            
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0] + ' ' + today.toLocaleTimeString();
+            container.querySelector('.createDate').value = formattedDate;
+
+            form.addEventListener('input', () => updateLiveSummary(container));
+            form.addEventListener('submit', (e) => submitOrder(e, container));
+
+            document.querySelector('.citySelect').dispatchEvent(new Event('change'));
+        }
+
+        function handleCityChange(event) {
+            const city = event.target.value;
+            const form = event.target.closest('.orderForm');
+            const areaSelect = form.querySelector('.deliveryAreaSelect');
+            const customWrapper = form.querySelector('.customCityWrapper');
+
+            areaSelect.innerHTML = '<option value="">Select</option>';
+
+            if (city === 'Others') {
+                form.querySelector('.customCityWrapper').classList.add('show');
+            } else {
+                form.querySelector('.customCityWrapper').classList.remove('show');
+            }
+
+            if (cityAreaMap[city]) {
+                cityAreaMap[city].forEach(area => {
+                    const option = document.createElement('option');
+                    option.value = area;
+                    option.textContent = area;
+                    areaSelect.appendChild(option);
+                });
+            }
+
+            updateLiveSummary(form.closest('.form-wrapper'));
+        }
+
+        function handleAreaChange(event) {
+            const form = event.target.closest('.orderForm');
+            const area = event.target.value;
+            const customWrapper = form.querySelector('.customAreaWrapper');
+
+            if (area === 'Others') {
+                customWrapper.classList.add('show');
+            } else {
+                customWrapper.classList.remove('show');
+            }
+
+            updateLiveSummary(form.closest('.form-wrapper'));
+        }
+
+        function updateLiveSummary(container) {
+            const form = container.querySelector('.orderForm');
+            const customerName = form.querySelector('.customerName').value;
+            const customerContact = form.querySelector('.customerContact').value;
+            const gender = form.querySelector('.gender').value;
+            const orderChannel = form.querySelector('.orderChannel').value;
+            const createdByNum = form.querySelector('.createdByNum').value;
+            const createdByName = form.querySelector('.createdByName').value;
+            const city = form.querySelector('.citySelect').value;
+            const deliveryArea = form.querySelector('.deliveryAreaSelect').value;
+            const customCity = form.querySelector('.customCity').value;
+            const customArea = form.querySelector('.customArea').value;
+
+            const addrFlat = form.querySelector('.addrFlat').value;
+            const addrHouse = form.querySelector('.addrHouse').value;
+            const addrRoad = form.querySelector('.addrRoad').value;
+            const addrBlock = form.querySelector('.addrBlock').value;
+            const addrOthers = form.querySelector('.addrOthers').value;
+
+            const addressParts = [addrFlat, addrHouse, addrRoad, addrBlock, addrOthers].filter(p => p).join(', ');
+
+            updateSummaryValue(container, '.sumCustomerName', customerName);
+            updateSummaryValue(container, '.sumCustomerContact', customerContact);
+            updateSummaryValue(container, '.sumGender', gender);
+            updateSummaryValue(container, '.sumOrderChannel', orderChannel);
+            updateSummaryValue(container, '.sumCreatedBy', createdByNum && createdByName ? `${createdByNum} - ${createdByName}` : '');
+            updateSummaryValue(container, '.sumCity', customCity || city);
+            updateSummaryValue(container, '.sumDeliveryArea', customArea || deliveryArea);
+            updateSummaryValue(container, '.sumAddressDetails', addressParts);
+        }
+
+        function updateSummaryValue(container, selector, value) {
+            const element = container.querySelector(selector);
+            if (element) {
+                if (value) {
+                    element.textContent = value;
+                    element.classList.remove('empty');
+                    element.classList.add('updating');
+                    setTimeout(() => element.classList.remove('updating'), 600);
+                } else {
+                    element.textContent = '-';
+                    element.classList.add('empty');
+                }
+            }
+        }
+
+        function submitOrder(e, container) {
+            e.preventDefault();
+            const form = container.querySelector('.orderForm');
+            const submitBtn = form.querySelector('.submit-btn');
+            const statusText = form.querySelector('.status-text');
+
+            submitBtn.classList.add('loading');
+            submitBtn.innerHTML = '<span class="spinner"></span>Submitting...';
+            submitBtn.disabled = true;
+
+            setTimeout(() => {
+                statusText.classList.remove('error');
+                statusText.classList.add('success');
+                statusText.textContent = '✓ Order submitted successfully!';
+                
+                setTimeout(() => {
+                    form.reset();
+                    statusText.textContent = '';
+                    statusText.classList.remove('success');
+                    submitBtn.classList.remove('loading');
+                    submitBtn.innerHTML = 'Place Order';
+                    submitBtn.disabled = false;
+                    updateLiveSummary(container);
+                }, 2000);
+            }, 1500);
+        }
+    </script>
+
+</body>
+</html>
