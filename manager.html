@@ -102,7 +102,7 @@
                         
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                             <input type="text" id="newAgentUser" placeholder="Agent Username (e.g. agent01)" class="px-4 py-2 border rounded-lg text-slate-900">
-                            <!-- Password field changed to type="text" so typing is clearly visible -->
+                            <!-- Input type text for visible password typing -->
                             <input type="text" id="newAgentPassword" placeholder="Agent Password (Visible)" class="px-4 py-2 border rounded-lg text-slate-900 font-mono">
                             <select id="newAgentTeam" class="px-4 py-2 border rounded-lg text-slate-900">
                                 <option value="Acquisition">Acquisition</option>
@@ -407,11 +407,12 @@
         function renderAgentUsersTable() {
             const tbody = document.getElementById('agentUsersTable');
             tbody.innerHTML = '';
+            agentUsers.pop ? null : null; // placeholder logic if needed
             agentUsers.forEach((agent, index) => {
                 tbody.innerHTML += `
                     <tr class="border-b">
                         <td class="p-3 font-medium text-slate-800">${agent.user}</td>
-                        <td class="p-3 text-slate-800 font-mono">${agent.pass}</td>
+                        <td class="p-3 text-slate-800 font-mono font-semibold">${agent.pass}</td>
                         <td class="p-3"><span class="bg-blue-100 text-blue-800 text-xs px-2.5 py-1 rounded-full font-semibold">${agent.team}</span></td>
                         <td class="p-3 space-x-2">
                             <button onclick="editAgent(${index})" class="text-blue-600 hover:text-blue-800 text-sm font-semibold cursor-pointer">Edit</button>
