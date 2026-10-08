@@ -6,440 +6,934 @@
     <title>Agent Portal System</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --primary: #0f172a;
-            --accent: #2563eb;
-            --accent-soft: #dbeafe;
-            --border-color: #cbd5e1;
-            --label-bg: #f8fafc;
-            --text-main: #334155;
-            --success: #16a34a;
-            --danger: #dc2626;
-            --shadow-soft: 0 12px 30px rgba(15, 23, 42, 0.12);
-        }
         * { box-sizing: border-box; }
+        :root {
+            --primary: #1e40af;
+            --primary-light: #dbeafe;
+            --primary-dark: #1e3a8a;
+            --accent: #0ea5e9;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-light: #64748b;
+            --bg-light: #f8fafc;
+            --bg-lighter: #f1f5f9;
+            --border: #e2e8f0;
+            --border-dark: #cbd5e1;
+            --success: #10b981;
+            --danger: #ef4444;
+            --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.15);
+            --shadow-xl: 0 20px 25px -5px rgba(15, 23, 42, 0.15);
+        }
+
         body {
-            font-family: 'Exo 2', sans-serif;
+            font-family: 'Inter', sans-serif;
             min-height: 100vh;
-            color: var(--text-main);
-            background: linear-gradient(-45deg, #0f172a, #1e293b, #1e1b4b, #0f172a);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-        }
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            color: var(--text-primary);
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
         }
 
-        .table-form {
-            width: 100%;
-            border-collapse: collapse;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            overflow: hidden;
-            background: #ffffff;
-            box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.2);
-        }
-        .table-form tr { border-bottom: 1px solid var(--border-color); }
-        .table-form tr:last-child { border-bottom: none; }
-        .table-form td.label-cell {
-            width: 220px;
-            background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
-            padding: 12px 18px;
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
             font-weight: 700;
-            font-size: 14px;
-            color: #1e293b;
-            border-right: 1px solid var(--border-color);
-            vertical-align: middle;
-        }
-        .table-form td.input-cell { padding: 10px 12px; }
-
-        .table-form input,
-        .table-form select {
-            transition: all 0.2s ease;
-        }
-        .table-form input:focus,
-        .table-form select:focus,
-        .table-form .customCity:focus,
-        .table-form .customArea:focus {
-            border-color: #60a5fa !important;
-            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.18);
-            outline: none;
         }
 
-        .address-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 10px;
-        }
-        .address-item {
+        /* Login Screen */
+        .login-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%);
+            backdrop-filter: blur(4px);
             display: flex;
             align-items: center;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background: #ffffff;
-            overflow: hidden;
-            min-height: 44px;
+            justify-content: center;
+            z-index: 50;
         }
-        .address-item span {
-            background: #f1f5f9;
-            padding: 8px 12px;
-            font-size: 13px;
-            font-weight: 700;
-            color: #475569;
-            border-right: 1px solid var(--border-color);
-            white-space: nowrap;
-            min-width: 110px;
-        }
-        .address-item input {
-            border: none;
-            border-radius: 0;
-            padding: 8px 10px;
-            width: 100%;
-            outline: none;
-            color: #334155;
-        }
-        .address-item.full-width { grid-column: span 2; }
-        .custom-area-wrapper { margin-top: 8px; display: none; }
 
-        .orderForm-wrapper {
+        .login-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(226, 232, 240, 0.5);
+        }
+
+        .login-card h2 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: var(--primary-dark);
+        }
+
+        .login-card p {
+            color: var(--text-light);
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        .login-error {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border: 1px solid #fecaca;
+            display: none;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+            outline: none;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 15px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(30, 64, 175, 0.3);
+        }
+
+        /* Dashboard */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, var(--primary-dark) 0%, var(--primary) 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+        }
+
+        .sidebar-header {
+            margin-bottom: 32px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 16px;
+        }
+
+        .sidebar-header h2 {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        .sidebar-badge {
+            display: inline-block;
+            background: rgba(14, 165, 233, 0.2);
+            color: #06b6d4;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .sidebar-nav button {
+            background: transparent;
+            border: 2px solid transparent;
+            color: rgba(255, 255, 255, 0.8);
+            padding: 12px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-nav button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .sidebar-nav button.active {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+
+        .sidebar-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 16px;
+        }
+
+        .logout-btn {
+            width: 100%;
+            background: rgba(239, 68, 68, 0.2);
+            border: 2px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+            padding: 10px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.3);
+            color: white;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .top-bar {
+            background: white;
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px;
+        }
+
+        .section-hidden {
+            display: none;
+        }
+
+        /* Profile Card */
+        .profile-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 500px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+        }
+
+        .profile-card h3 {
+            font-size: 22px;
+            margin-bottom: 24px;
+            color: var(--primary);
+        }
+
+        .profile-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .profile-item:last-child {
+            border-bottom: none;
+        }
+
+        .profile-item span {
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .profile-item strong {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        /* Order Form Section */
+        .order-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .form-header {
+            margin-bottom: 32px;
+        }
+
+        .form-header h2 {
+            font-size: 28px;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+        }
+
+        .form-header p {
+            color: var(--text-light);
+            font-size: 15px;
+        }
+
+        .form-container {
             display: grid;
-            gap: 24px;
+            grid-template-columns: 1fr 380px;
+            gap: 32px;
             align-items: start;
         }
-        .orderForm {
-            background: rgba(255, 255, 255, 0.96);
-            border: 1px solid rgba(148, 163, 184, 0.3);
-            border-radius: 18px;
-            padding: 18px;
-            box-shadow: var(--shadow-soft);
+
+        .form-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
         }
-        .submit-row {
+
+        .form-section {
+            margin-bottom: 32px;
+        }
+
+        .form-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(180deg, var(--primary) 0%, var(--accent) 100%);
+            border-radius: 2px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .grid-1 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-label {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .input-label .required {
+            color: var(--danger);
+        }
+
+        .input-field,
+        .select-field {
+            padding: 12px 14px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            background: white;
+            color: var(--text-primary);
+        }
+
+        .input-field:focus,
+        .select-field:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+            outline: none;
+        }
+
+        .input-field:disabled,
+        .select-field:disabled {
+            background: var(--bg-lighter);
+            color: var(--text-light);
+            cursor: not-allowed;
+        }
+
+        .address-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .address-field {
+            display: flex;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .address-field:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+        }
+
+        .address-label {
+            background: var(--bg-lighter);
+            padding: 12px 14px;
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--text-light);
+            border-right: 2px solid var(--border);
+            min-width: 100px;
+            display: flex;
+            align-items: center;
+        }
+
+        .address-input {
+            flex: 1;
+            border: none;
+            padding: 12px 14px;
+            font-size: 14px;
+            outline: none;
+            background: white;
+            color: var(--text-primary);
+        }
+
+        .address-input::placeholder {
+            color: var(--text-light);
+        }
+
+        .custom-input-wrapper {
+            margin-top: 8px;
+            display: none;
+        }
+
+        .custom-input-wrapper input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .custom-input-wrapper input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+            outline: none;
+        }
+
+        .submit-section {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 16px;
-            margin-top: 20px;
-            padding-top: 16px;
-            border-top: 1px solid #e2e8f0;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 2px solid var(--border);
         }
-        .status-message {
+
+        .status-text {
             min-height: 22px;
-            font-weight: 700;
             font-size: 14px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
-        .submitBtn {
+
+        .status-text.success {
+            color: var(--success);
+        }
+
+        .status-text.error {
+            color: var(--danger);
+        }
+
+        .submit-btn {
+            padding: 12px 28px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
             border: none;
-            box-shadow: 0 8px 18px rgba(37, 99, 235, 0.25);
-            transition: all 0.2s ease;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
         }
-        .submitBtn:hover:not(:disabled) {
-            transform: translateY(-1px);
-            box-shadow: 0 12px 22px rgba(37, 99, 235, 0.32);
+
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(30, 64, 175, 0.4);
         }
-        .submitBtn:disabled {
+
+        .submit-btn:disabled {
             opacity: 0.7;
             cursor: not-allowed;
         }
 
+        /* Summary Card */
         .summary-card {
-            margin-top: 0;
-            border: 1px solid rgba(148, 163, 184, 0.35);
-            border-radius: 18px;
-            background: rgba(255, 255, 255, 0.96);
-            padding: 20px;
-            box-shadow: var(--shadow-soft);
+            background: linear-gradient(135deg, white 0%, var(--bg-light) 100%);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            position: sticky;
+            top: 32px;
         }
-        .summary-card h3 {
-            font-size: 16px;
-            color: var(--primary);
-            border-bottom: 2px solid var(--accent);
-            padding-bottom: 8px;
-            margin-bottom: 15px;
+
+        .summary-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-        .summary-card h3 span {
-            font-size: 11px;
-            background: #e2e8f0;
-            color: #475569;
-            padding: 2px 8px;
-            border-radius: 12px;
-        }
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-            gap: 12px;
-        }
-        .summary-item {
-            background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
-            padding: 10px 14px;
-            border-radius: 10px;
-            border: 1px solid #e2e8f0;
-            min-height: 86px;
-        }
-        .summary-item span {
-            display: block;
-            font-size: 11px;
-            color: #64748b;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-        }
-        .summary-item strong {
-            display: block;
-            font-size: 14px;
-            color: #0f172a;
-            margin-top: 6px;
-            word-break: break-word;
-            white-space: pre-line;
-            line-height: 1.5;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--primary);
         }
 
-        @media (min-width: 1024px) {
-            .orderForm-wrapper {
-                grid-template-columns: minmax(0, 1.8fr) minmax(300px, 0.9fr);
-            }
+        .summary-header h3 {
+            font-size: 16px;
+            color: var(--primary);
         }
-        @media (max-width: 767px) {
-            .orderForm {
-                padding: 12px;
-            }
-            .table-form td.label-cell {
-                width: 150px;
-                padding: 10px 12px;
-                font-size: 13px;
-            }
-            .submit-row {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .status-message {
-                text-align: center;
-            }
-            .address-grid {
+
+        .summary-badge {
+            font-size: 11px;
+            background: rgba(30, 64, 175, 0.1);
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+
+        .summary-item {
+            margin-bottom: 16px;
+            padding: 12px;
+            background: white;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .summary-label {
+            font-size: 12px;
+            color: var(--text-light);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .summary-value {
+            font-size: 14px;
+            color: var(--text-primary);
+            font-weight: 600;
+            word-break: break-word;
+            white-space: pre-line;
+            line-height: 1.4;
+        }
+
+        .summary-value.empty {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .form-container {
                 grid-template-columns: 1fr;
             }
-            .address-item.full-width { grid-column: span 1; }
+
+            .summary-card {
+                position: relative;
+                top: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: 0;
+                top: 0;
+                height: 100vh;
+                z-index: 40;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                width: 250px;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .form-card {
+                padding: 20px;
+            }
+
+            .content-area {
+                padding: 16px;
+            }
+
+            .address-group {
+                grid-template-columns: 1fr;
+            }
+
+            .submit-section {
+                flex-direction: column;
+            }
+
+            .submit-btn {
+                width: 100%;
+            }
+
+            .form-header h2 {
+                font-size: 24px;
+            }
         }
     </style>
 </head>
-<body class="flex flex-col justify-between min-h-screen">
+<body>
 
-    <!-- Login Form Screen -->
-    <div id="loginScreen" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-6 z-50">
-        <div class="bg-white p-8 rounded-xl shadow-2xl max-w-md w-full relative text-center text-slate-800">
-            <h2 id="loginTitle" class="text-2xl font-bold text-slate-900 mb-6 mt-2">Agent Portal Login</h2>
-            <div id="loginError" class="hidden mb-4 p-3 bg-red-100 text-red-700 text-sm rounded-lg text-center font-semibold">Invalid Credentials!</div>
-            <div class="space-y-4 text-left">
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">User ID</label>
-                    <input type="text" id="loginUser" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900" placeholder="Enter username">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Password</label>
-                    <input type="password" id="loginPass" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900" placeholder="Enter password">
-                </div>
-                <button id="loginSubmitBtn" class="w-full py-2.5 rounded-lg font-semibold text-white bg-blue-600 hover:bg-blue-700 transition duration-200 cursor-pointer">Login</button>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-overlay">
+        <div class="login-card">
+            <h2>Welcome</h2>
+            <p>Agent Portal Login</p>
+            <div id="loginError" class="login-error"></div>
+            <div class="form-group">
+                <label>User ID</label>
+                <input type="text" id="loginUser" class="form-group input" placeholder="Enter your user ID">
             </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="loginPass" class="form-group input" placeholder="Enter your password">
+            </div>
+            <button id="loginSubmitBtn" class="login-btn">Sign In</button>
         </div>
     </div>
 
-    <!-- Agent Dashboard View with Left Sidebar -->
-    <div id="agentApp" class="hidden min-h-screen bg-slate-100 text-slate-800 flex w-full">
-        <aside class="w-64 bg-slate-900 text-slate-300 flex flex-col justify-between hidden md:flex">
-            <div>
-                <div class="p-6 border-b border-slate-800">
-                    <h2 class="text-xl font-bold text-white">Agent Portal</h2>
-                    <span id="activeAgentBadge" class="text-xs text-blue-400 mt-1 block">User: agent01</span>
-                </div>
-                <nav class="p-4 space-y-2">
-                    <button onclick="switchAgentTab('profiles')" class="w-full text-left px-4 py-2.5 rounded-lg transition hover:bg-slate-800 hover:text-white flex items-center space-x-3 cursor-pointer">
-                        <span>👤</span><span>Profiles</span>
-                    </button>
-                    <button onclick="switchAgentTab('addOrder')" class="w-full text-left px-4 py-2.5 rounded-lg transition hover:bg-slate-800 hover:text-white flex items-center space-x-3 cursor-pointer">
-                        <span>🛒</span><span>Add Order</span>
-                    </button>
-                </nav>
+    <!-- Dashboard -->
+    <div id="agentApp" class="hidden flex min-h-screen bg-gray-50">
+        <!-- Sidebar -->
+        <aside class="sidebar hidden md:flex">
+            <div class="sidebar-header">
+                <h2>Agent Portal</h2>
+                <span id="activeAgentBadge" class="sidebar-badge">User: agent01</span>
             </div>
-            <div class="p-4 border-t border-slate-800">
-                <button class="logoutBtn w-full bg-red-600/20 text-red-400 border border-red-500/30 px-4 py-2 rounded-lg text-sm hover:bg-red-600 hover:text-white transition cursor-pointer">Logout</button>
+            <nav class="sidebar-nav">
+                <button onclick="switchAgentTab('profiles')" class="nav-btn active" data-tab="profiles">
+                    <span>👤</span>
+                    <span>Profile</span>
+                </button>
+                <button onclick="switchAgentTab('addOrder')" class="nav-btn" data-tab="addOrder">
+                    <span>📋</span>
+                    <span>Create Order</span>
+                </button>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="logoutBtn logout-btn">Sign Out</button>
             </div>
         </aside>
 
-        <div class="flex-grow flex flex-col min-h-screen">
-            <header class="bg-white shadow px-6 py-4 flex justify-between items-center md:hidden">
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="top-bar md:hidden">
                 <h1 class="text-lg font-bold">Agent Portal</h1>
-                <button class="logoutBtn bg-red-500 text-white px-3 py-1.5 rounded text-sm cursor-pointer">Logout</button>
-            </header>
+                <button class="logoutBtn logout-btn" style="width: auto; padding: 8px 16px;">Sign Out</button>
+            </div>
 
-            <main class="p-6 flex-grow overflow-y-auto">
-                <div class="flex flex-wrap gap-2 mb-6 md:hidden">
-                    <button onclick="switchAgentTab('profiles')" class="px-3 py-1.5 bg-slate-800 text-white rounded text-sm">Profiles</button>
-                    <button onclick="switchAgentTab('addOrder')" class="px-3 py-1.5 bg-slate-800 text-white rounded text-sm">Add Order</button>
-                </div>
-
-                <!-- Agent Profiles Tab -->
-                <div id="aSectionProfiles" class="agent-section space-y-6">
-                    <div class="bg-white p-6 rounded-xl shadow max-w-xl">
-                        <h3 class="text-xl font-bold mb-4 text-slate-800">Agent Profile</h3>
-                        <p class="text-slate-600 mb-2">Agent Id = <strong id="profileAgentUserId">agent01</strong></p>
-                        <p class="text-slate-600 mb-2">Agent Name: <strong id="profileAgentUsername">agent01</strong></p>
-                        <p class="text-slate-600">Team: <strong id="profileAgentTeam">Acquisition</strong></p>
+            <div class="content-area">
+                <!-- Profile Section -->
+                <div id="aSectionProfiles" class="agent-section">
+                    <div class="profile-card">
+                        <h3>Your Profile</h3>
+                        <div class="profile-item">
+                            <span>Agent ID</span>
+                            <strong id="profileAgentUserId">agent01</strong>
+                        </div>
+                        <div class="profile-item">
+                            <span>Name</span>
+                            <strong id="profileAgentUsername">agent01</strong>
+                        </div>
+                        <div class="profile-item">
+                            <span>Team</span>
+                            <strong id="profileAgentTeam">Acquisition</strong>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Agent Add Order Tab -->
-                <div id="aSectionAddOrder" class="agent-section hidden space-y-6">
-                    <div class="max-w-6xl mx-auto w-full">
+                <!-- Order Form Section -->
+                <div id="aSectionAddOrder" class="agent-section section-hidden">
+                    <div class="order-container">
+                        <div class="form-header">
+                            <h2>Create New Order</h2>
+                            <p>Fill in the details below to create a new customer order</p>
+                        </div>
                         <div id="agentOrderFormContainer"></div>
                     </div>
                 </div>
-            </main>
+            </div>
         </div>
     </div>
 
-    <!-- Template for Order Form -->
+    <!-- Order Form Template -->
     <template id="orderFormTemplate">
-        <div class="orderForm-wrapper">
-            <form class="orderForm">
-                <table class="table-form">
-                    <tbody>
-                        <tr>
-                            <td class="label-cell">Customer Name</td>
-                            <td class="input-cell"><input type="text" name="customerName" required placeholder="Enter customer name" class="w-full p-2 border rounded text-slate-900 customerName"></td>
-                        </tr>
-                        <tr>
-                            <td class="label-cell">Customer Number</td>
-                            <td class="input-cell"><input type="tel" name="customerContact" required placeholder="Enter contact number" class="w-full p-2 border rounded text-slate-900 customerContact"></td>
-                        </tr>
-                        <tr>
-                            <td class="label-cell">Gender</td>
-                            <td class="input-cell">
-                                <select name="gender" required class="w-full p-2 border rounded text-slate-900 gender">
-                                    <option value="">Select Gender</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="label-cell">Create Date</td>
-                            <td class="input-cell"><input type="text" name="createDate" readonly class="w-full p-2 border rounded bg-slate-100 text-slate-700 createDate"></td>
-                        </tr>
-                        <tr>
-                            <td class="label-cell">Order Channel</td>
-                            <td class="input-cell">
-                                <select name="orderChannel" required class="w-full p-2 border rounded text-slate-900 orderChannel">
-                                    <option value="">Select Channel</option>
-                                    <option value="Acquisition">Acquisition</option>
-                                    <option value="Retention">Retention</option>
-                                    <option value="KAM">KAM</option>
-                                    <option value="Call-Center">Call-Center</option>
-                                    <option value="Facebook">Facebook</option>
-                                    <option value="Back-Office">Back-Office</option>
-                                    <option value="VOC">VOC</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="label-cell">Agent Id</td>
-                            <td class="input-cell"><input type="text" name="createdByNum" readonly class="w-full p-2 border rounded bg-slate-100 text-slate-700 createdByNum"></td>
-                        </tr>
-                        <tr>
-                            <td class="label-cell">Agent Name</td>
-                            <td class="input-cell"><input type="text" name="createdByName" readonly class="w-full p-2 border rounded bg-slate-100 text-slate-700 createdByName"></td>
-                        </tr>
-                        <tr>
-                            <td class="label-cell">City</td>
-                            <td class="input-cell">
-                                <select name="city" required class="w-full p-2 border rounded text-slate-900 citySelect" onchange="handleCityChange(event)">
-                                    <option value="">Select City</option>
-                                    <option value="Dhaka">Dhaka</option>
-                                    <option value="Chittagong">Chittagong</option>
-                                    <option value="Jashore">Jashore</option>
-                                    <option value="Others">Others</option>
-                                </select>
-                                <div class="custom-area-wrapper customCityWrapper">
-                                    <input type="text" placeholder="Type custom city name" class="w-full p-2 border rounded mt-1 text-slate-900 customCity">
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="label-cell">Delivery Area</td>
-                            <td class="input-cell">
-                                <select name="deliveryArea" required class="w-full p-2 border rounded text-slate-900 deliveryAreaSelect" onchange="handleAreaChange(event)">
-                                    <option value="">Select City First</option>
-                                </select>
-                                <div class="custom-area-wrapper customAreaWrapper">
-                                    <input type="text" placeholder="Type custom area location" class="w-full p-2 border rounded mt-1 text-slate-900 customArea">
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="label-cell">Address Details</td>
-                            <td class="input-cell">
-                                <div class="address-grid">
-                                    <div class="address-item"><span>Flat:</span><input type="text" class="addrFlat" placeholder="e.g. 02"></div>
-                                    <div class="address-item"><span>House:</span><input type="text" class="addrHouse" placeholder="e.g. 02"></div>
-                                    <div class="address-item"><span>Road:</span><input type="text" class="addrRoad" placeholder="e.g. 123"></div>
-                                    <div class="address-item"><span>Block/Sector:</span><input type="text" class="addrBlock" placeholder="e.g. D"></div>
-                                    <div class="address-item full-width"><span>Other Details:</span><input type="text" class="addrOthers" placeholder="Additional details..."></div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="label-cell">Schedule Date</td>
-                            <td class="input-cell"><input type="date" name="scheduleDate" required class="w-full p-2 border rounded text-slate-900 scheduleDate"></td>
-                        </tr>
-                        <tr>
-                            <td class="label-cell">Scheduled Time</td>
-                            <td class="input-cell">
-                                <select name="scheduledTime" required class="w-full p-2 border rounded text-slate-900 scheduledTime">
-                                    <option value="">Select Time Slot</option>
-                                    <option value="9AM to 10AM">9 AM to 10 AM</option>
-                                    <option value="10AM to 11AM">10 AM to 11 AM</option>
-                                    <option value="11AM to 12PM">11 AM to 12 PM</option>
-                                    <option value="12PM to 1PM">12 PM to 1 PM</option>
-                                    <option value="1PM to 2PM">1 PM to 2 PM</option>
-                                    <option value="2PM to 3PM">2 PM to 3 PM</option>
-                                    <option value="3PM to 4PM">3 PM to 4 PM</option>
-                                    <option value="4PM to 5PM">4 PM to 5 PM</option>
-                                    <option value="5PM to 6PM">5 PM to 6 PM</option>
-                                    <option value="6PM to 7PM">6 PM to 7 PM</option>
-                                    <option value="7PM to 8PM">7 PM to 8 PM</option>
-                                    <option value="8PM to 9PM">8 PM to 9 PM</option>
-                                </select>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div class="form-container">
+            <form class="form-card orderForm">
+                <!-- Customer Information -->
+                <div class="form-section">
+                    <div class="section-title">Customer Information</div>
+                    <div class="grid-2">
+                        <div class="input-group">
+                            <label class="input-label">Customer Name <span class="required">*</span></label>
+                            <input type="text" name="customerName" required placeholder="Full name" class="input-field customerName">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Phone Number <span class="required">*</span></label>
+                            <input type="tel" name="customerContact" required placeholder="Contact number" class="input-field customerContact">
+                        </div>
+                    </div>
+                    <div class="grid-2" style="margin-top: 16px;">
+                        <div class="input-group">
+                            <label class="input-label">Gender <span class="required">*</span></label>
+                            <select name="gender" required class="select-field gender">
+                                <option value="">Select gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Create Date</label>
+                            <input type="text" name="createDate" readonly class="input-field createDate" style="background: var(--bg-lighter);">
+                        </div>
+                    </div>
+                </div>
 
-                <div class="submit-row">
-                    <p class="text-sm font-semibold status-message"></p>
-                    <button type="submit" class="submitBtn bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition cursor-pointer">Placed Order</button>
+                <!-- Order Details -->
+                <div class="form-section">
+                    <div class="section-title">Order Details</div>
+                    <div class="grid-2">
+                        <div class="input-group">
+                            <label class="input-label">Order Channel <span class="required">*</span></label>
+                            <select name="orderChannel" required class="select-field orderChannel">
+                                <option value="">Select channel</option>
+                                <option value="Acquisition">Acquisition</option>
+                                <option value="Retention">Retention</option>
+                                <option value="KAM">KAM</option>
+                                <option value="Call-Center">Call-Center</option>
+                                <option value="Facebook">Facebook</option>
+                                <option value="Back-Office">Back-Office</option>
+                                <option value="VOC">VOC</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Agent ID</label>
+                            <input type="text" name="createdByNum" readonly class="input-field createdByNum" style="background: var(--bg-lighter);">
+                        </div>
+                    </div>
+                    <div class="input-group" style="margin-top: 16px;">
+                        <label class="input-label">Agent Name</label>
+                        <input type="text" name="createdByName" readonly class="input-field createdByName" style="background: var(--bg-lighter);">
+                    </div>
+                </div>
+
+                <!-- Delivery Location -->
+                <div class="form-section">
+                    <div class="section-title">Delivery Location</div>
+                    <div class="grid-2">
+                        <div class="input-group">
+                            <label class="input-label">City <span class="required">*</span></label>
+                            <select name="city" required class="select-field citySelect" onchange="handleCityChange(event)">
+                                <option value="">Select city</option>
+                                <option value="Dhaka">Dhaka</option>
+                                <option value="Chittagong">Chittagong</option>
+                                <option value="Jashore">Jashore</option>
+                                <option value="Others">Others</option>
+                            </select>
+                            <div class="custom-input-wrapper customCityWrapper">
+                                <input type="text" placeholder="Enter custom city name" class="customCity">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Delivery Area <span class="required">*</span></label>
+                            <select name="deliveryArea" required class="select-field deliveryAreaSelect" onchange="handleAreaChange(event)">
+                                <option value="">Select city first</option>
+                            </select>
+                            <div class="custom-input-wrapper customAreaWrapper">
+                                <input type="text" placeholder="Enter custom area" class="customArea">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Address Details -->
+                <div class="form-section">
+                    <div class="section-title">Address Details</div>
+                    <div class="address-group">
+                        <div class="address-field">
+                            <div class="address-label">Flat</div>
+                            <input type="text" class="address-input addrFlat" placeholder="e.g. 102">
+                        </div>
+                        <div class="address-field">
+                            <div class="address-label">House</div>
+                            <input type="text" class="address-input addrHouse" placeholder="e.g. 45">
+                        </div>
+                        <div class="address-field">
+                            <div class="address-label">Road</div>
+                            <input type="text" class="address-input addrRoad" placeholder="e.g. 15A">
+                        </div>
+                        <div class="address-field">
+                            <div class="address-label">Block/Sector</div>
+                            <input type="text" class="address-input addrBlock" placeholder="e.g. F">
+                        </div>
+                    </div>
+                    <div class="address-group" style="margin-top: 12px;">
+                        <div class="address-field" style="grid-column: span 2;">
+                            <div class="address-label">Other Details</div>
+                            <input type="text" class="address-input addrOthers" placeholder="Additional address information...">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Schedule -->
+                <div class="form-section">
+                    <div class="section-title">Delivery Schedule</div>
+                    <div class="grid-2">
+                        <div class="input-group">
+                            <label class="input-label">Date <span class="required">*</span></label>
+                            <input type="date" name="scheduleDate" required class="input-field scheduleDate">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Time Slot <span class="required">*</span></label>
+                            <select name="scheduledTime" required class="select-field scheduledTime">
+                                <option value="">Select time slot</option>
+                                <option value="9AM to 10AM">9 AM - 10 AM</option>
+                                <option value="10AM to 11AM">10 AM - 11 AM</option>
+                                <option value="11AM to 12PM">11 AM - 12 PM</option>
+                                <option value="12PM to 1PM">12 PM - 1 PM</option>
+                                <option value="1PM to 2PM">1 PM - 2 PM</option>
+                                <option value="2PM to 3PM">2 PM - 3 PM</option>
+                                <option value="3PM to 4PM">3 PM - 4 PM</option>
+                                <option value="4PM to 5PM">4 PM - 5 PM</option>
+                                <option value="5PM to 6PM">5 PM - 6 PM</option>
+                                <option value="6PM to 7PM">6 PM - 7 PM</option>
+                                <option value="7PM to 8PM">7 PM - 8 PM</option>
+                                <option value="8PM to 9PM">8 PM - 9 PM</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit -->
+                <div class="submit-section">
+                    <p class="status-text"></p>
+                    <button type="submit" class="submit-btn">Place Order</button>
                 </div>
             </form>
 
+            <!-- Summary Card -->
             <div class="summary-card">
-                <h3>Order Preview & Summary <span>Live Auto-Update</span></h3>
-                <div class="summary-grid">
-                    <div class="summary-item"><span>Customer Name</span><strong class="sumCustomerName">-</strong></div>
-                    <div class="summary-item"><span>Customer Number</span><strong class="sumCustomerContact">-</strong></div>
-                    <div class="summary-item"><span>Gender</span><strong class="sumGender">-</strong></div>
-                    <div class="summary-item"><span>Create Date</span><strong class="sumCreateDate">-</strong></div>
-                    <div class="summary-item"><span>Order Channel</span><strong class="sumOrderChannel">-</strong></div>
-                    <div class="summary-item"><span>Agent Id & Name</span><strong class="sumCreatedBy">-</strong></div>
-                    <div class="summary-item"><span>City</span><strong class="sumCity">-</strong></div>
-                    <div class="summary-item"><span>Delivery Area</span><strong class="sumDeliveryArea">-</strong></div>
-                    <div class="summary-item"><span>Address Details</span><strong class="sumAddressDetails">-</strong></div>
-                    <div class="summary-item"><span>Schedule Date & Time</span><strong class="sumSchedule">-</strong></div>
+                <div class="summary-header">
+                    <h3>Order Summary</h3>
+                    <span class="summary-badge">Live Preview</span>
+                </div>
+
+                <div class="summary-item">
+                    <div class="summary-label">Customer Name</div>
+                    <div class="summary-value empty sumCustomerName">-</div>
+                </div>
+
+                <div class="summary-item">
+                    <div class="summary-label">Phone</div>
+                    <div class="summary-value empty sumCustomerContact">-</div>
+                </div>
+
+                <div class="summary-item">
+                    <div class="summary-label">Gender</div>
+                    <div class="summary-value empty sumGender">-</div>
+                </div>
+
+                <div class="summary-item">
+                    <div class="summary-label">Order Channel</div>
+                    <div class="summary-value empty sumOrderChannel">-</div>
+                </div>
+
+                <div class="summary-item">
+                    <div class="summary-label">Agent</div>
+                    <div class="summary-value empty sumCreatedBy">-</div>
+                </div>
+
+                <div class="summary-item">
+                    <div class="summary-label">City</div>
+                    <div class="summary-value empty sumCity">-</div>
+                </div>
+
+                <div class="summary-item">
+                    <div class="summary-label">Area</div>
+                    <div class="summary-value empty sumDeliveryArea">-</div>
+                </div>
+
+                <div class="summary-item">
+                    <div class="summary-label">Address</div>
+                    <div class="summary-value empty sumAddressDetails">-</div>
+                </div>
+
+                <div class="summary-item">
+                    <div class="summary-label">Schedule</div>
+                    <div class="summary-value empty sumSchedule">-</div>
                 </div>
             </div>
         </div>
@@ -482,6 +976,7 @@
         const scriptURL = 'https://script.google.com/macros/s/AKfycbznJBoaggkUhg0ztkcmJpEyeaiuJRVRJX7oItiIgzWqhNPkYIbG3zjnEe2Hn1voDFFg/exec';
         let currentAgentObj = null;
 
+        // Event Listeners
         document.getElementById('loginSubmitBtn').addEventListener('click', handleAgentLogin);
         document.getElementById('loginUser').addEventListener('keydown', (e) => {
             if (e.key === 'Enter') { e.preventDefault(); document.getElementById('loginPass').focus(); }
@@ -498,8 +993,8 @@
 
             const found = agentUsers.find(a => a.user === userInput && a.pass === passInput);
             if (found) {
-                errorDiv.classList.add('hidden');
-                document.getElementById('loginScreen').classList.add('hidden');
+                errorDiv.style.display = 'none';
+                document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('agentApp').classList.remove('hidden');
                 
                 currentAgentObj = found;
@@ -510,24 +1005,28 @@
                 
                 switchAgentTab('profiles');
             } else {
-                errorDiv.innerText = 'Invalid Agent credentials or not authorized!';
-                errorDiv.classList.remove('hidden');
+                errorDiv.innerText = 'Invalid credentials. Please try again.';
+                errorDiv.style.display = 'block';
             }
         }
 
         function logout() {
             document.getElementById('agentApp').classList.add('hidden');
-            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('loginScreen').style.display = 'flex';
             document.getElementById('loginUser').value = '';
             document.getElementById('loginPass').value = '';
         }
 
         function switchAgentTab(tabName) {
-            document.querySelectorAll('.agent-section').forEach(sec => sec.classList.add('hidden'));
+            document.querySelectorAll('.agent-section').forEach(sec => sec.classList.add('section-hidden'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            
             if (tabName === 'profiles') {
-                document.getElementById('aSectionProfiles').classList.remove('hidden');
+                document.getElementById('aSectionProfiles').classList.remove('section-hidden');
+                document.querySelector('[data-tab="profiles"]').classList.add('active');
             } else if (tabName === 'addOrder') {
-                document.getElementById('aSectionAddOrder').classList.remove('hidden');
+                document.getElementById('aSectionAddOrder').classList.remove('section-hidden');
+                document.querySelector('[data-tab="addOrder"]').classList.add('active');
                 initOrderForm('agentOrderFormContainer', currentAgentObj.user, currentAgentObj.user);
             }
         }
@@ -583,7 +1082,7 @@
                 customAreaInput.required = true;
             } else if (cityAreaMap[selectedCity]) {
                 const defaultOpt = document.createElement('option');
-                defaultOpt.value = ''; defaultOpt.innerText = 'Select Area';
+                defaultOpt.value = ''; defaultOpt.innerText = 'Select area';
                 areaSelect.appendChild(defaultOpt);
 
                 cityAreaMap[selectedCity].forEach(area => {
@@ -593,7 +1092,7 @@
                 });
             } else {
                 const defaultOpt = document.createElement('option');
-                defaultOpt.value = ''; defaultOpt.innerText = 'Select City First';
+                defaultOpt.value = ''; defaultOpt.innerText = 'Select city first';
                 areaSelect.appendChild(defaultOpt);
             }
             updateLiveSummary(form.closest('div'));
@@ -616,47 +1115,55 @@
         }
 
         function getFormattedAddress(container) {
-            const flat = container.querySelector('.addrFlat').value.trim();
-            const house = container.querySelector('.addrHouse').value.trim();
-            const road = container.querySelector('.addrRoad').value.trim();
-            const block = container.querySelector('.addrBlock').value.trim();
-            const others = container.querySelector('.addrOthers').value.trim();
-            return `Flat: ${flat}\nHouse: ${house}\nRoad: ${road}\nBlock/Sector: ${block}\nOther Details: ${others}`;
+            const flat = container.querySelector('.addrFlat').value.trim() || '-';
+            const house = container.querySelector('.addrHouse').value.trim() || '-';
+            const road = container.querySelector('.addrRoad').value.trim() || '-';
+            const block = container.querySelector('.addrBlock').value.trim() || '-';
+            const others = container.querySelector('.addrOthers').value.trim() || '-';
+            return `Flat: ${flat}\nHouse: ${house}\nRoad: ${road}\nBlock: ${block}\nOther: ${others}`;
         }
 
         function updateLiveSummary(container) {
-            container.querySelector('.sumCustomerName').innerText = container.querySelector('.customerName').value || '-';
-            container.querySelector('.sumCustomerContact').innerText = container.querySelector('.customerContact').value || '-';
-            container.querySelector('.sumGender').innerText = container.querySelector('.gender').value || '-';
-            container.querySelector('.sumCreateDate').innerText = container.querySelector('.createDate').value || '-';
-            container.querySelector('.sumOrderChannel').innerText = container.querySelector('.orderChannel').value || '-';
+            const updateSummaryValue = (selector, value) => {
+                const elem = container.querySelector(selector);
+                if (elem) {
+                    elem.innerText = value || '-';
+                    if (value) elem.classList.remove('empty');
+                    else elem.classList.add('empty');
+                }
+            };
+
+            updateSummaryValue('.sumCustomerName', container.querySelector('.customerName').value);
+            updateSummaryValue('.sumCustomerContact', container.querySelector('.customerContact').value);
+            updateSummaryValue('.sumGender', container.querySelector('.gender').value);
+            updateSummaryValue('.sumOrderChannel', container.querySelector('.orderChannel').value);
             
             const createdByNum = container.querySelector('.createdByNum').value;
             const createdByName = container.querySelector('.createdByName').value;
-            container.querySelector('.sumCreatedBy').innerText = createdByNum ? (createdByNum + ' - ' + createdByName) : '-';
+            updateSummaryValue('.sumCreatedBy', createdByNum ? `${createdByNum} (${createdByName})` : '');
 
             let cityVal = container.querySelector('.citySelect').value;
-            if (cityVal === 'Others') cityVal = container.querySelector('.customCity').value.trim() || 'Others';
-            container.querySelector('.sumCity').innerText = cityVal || '-';
+            if (cityVal === 'Others') cityVal = container.querySelector('.customCity').value.trim();
+            updateSummaryValue('.sumCity', cityVal);
 
             let areaVal = container.querySelector('.deliveryAreaSelect').value;
-            if (areaVal === 'Others') areaVal = container.querySelector('.customArea').value.trim() || 'Others';
-            container.querySelector('.sumDeliveryArea').innerText = areaVal || '-';
+            if (areaVal === 'Others') areaVal = container.querySelector('.customArea').value.trim();
+            updateSummaryValue('.sumDeliveryArea', areaVal);
 
-            container.querySelector('.sumAddressDetails').innerText = getFormattedAddress(container);
+            updateSummaryValue('.sumAddressDetails', getFormattedAddress(container));
 
             const scheduleDate = container.querySelector('.scheduleDate').value;
             const scheduledTime = container.querySelector('.scheduledTime').value;
-            container.querySelector('.sumSchedule').innerText = (scheduleDate || scheduledTime) ? `${scheduleDate} (${scheduledTime})` : '-';
+            updateSummaryValue('.sumSchedule', scheduleDate && scheduledTime ? `${scheduleDate}\n${scheduledTime}` : '');
         }
 
         function handleFormSubmit(container, userId, userName) {
             const form = container.querySelector('.orderForm');
-            const submitBtn = container.querySelector('.submitBtn');
-            const statusMessage = container.querySelector('.status-message');
+            const submitBtn = container.querySelector('.submit-btn');
+            const statusText = container.querySelector('.status-text');
 
             submitBtn.disabled = true;
-            submitBtn.innerText = 'Placing Order...';
+            submitBtn.innerText = '⏳ Placing Order...';
 
             let finalCity = container.querySelector('.citySelect').value;
             if (finalCity === 'Others') finalCity = container.querySelector('.customCity').value.trim();
@@ -673,28 +1180,31 @@
             fetch(scriptURL, { method: 'POST', body: formData})
                 .then(response => response.json())
                 .then(data => {
-                    statusMessage.style.color = '#16a34a';
-                    statusMessage.innerText = '✓ Order placed successfully to Google Sheet!';
+                    statusText.className = 'status-text success';
+                    statusText.innerText = '✓ Order placed successfully!';
 
                     form.reset();
                     container.querySelector('.createdByNum').value = userId;
                     container.querySelector('.createdByName').value = userName;
                     container.querySelector('.customCityWrapper').style.display = 'none';
                     container.querySelector('.customAreaWrapper').style.display = 'none';
-                    container.querySelector('.deliveryAreaSelect').innerHTML = '<option value="">Select City First</option>';
+                    container.querySelector('.deliveryAreaSelect').innerHTML = '<option value="">Select city first</option>';
                     
                     const today = new Date();
                     container.querySelector('.createDate').value = today.toISOString().split('T')[0] + ' ' + today.toLocaleTimeString();
                     updateLiveSummary(container);
 
-                    submitBtn.disabled = false;
-                    submitBtn.innerText = 'Placed Order';
+                    setTimeout(() => {
+                        submitBtn.disabled = false;
+                        submitBtn.innerText = 'Place Order';
+                        statusText.innerText = '';
+                    }, 2000);
                 })
                 .catch(error => {
-                    statusMessage.style.color = '#dc2626';
-                    statusMessage.innerText = '✕ Something went wrong, please try again!';
+                    statusText.className = 'status-text error';
+                    statusText.innerText = '✕ Error placing order. Try again.';
                     submitBtn.disabled = false;
-                    submitBtn.innerText = 'Placed Order';
+                    submitBtn.innerText = 'Place Order';
                     console.error('Error!', error.message);
                 });
         }
