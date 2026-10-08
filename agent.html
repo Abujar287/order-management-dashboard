@@ -757,6 +757,24 @@
 
                 <div class="form-grid-2">
                     <div class="input-group">
+                        <label class="input-label">Product Category <span class="required">*</span></label>
+                        <select name="productCategory" required class="select-field productCategory">
+                            <option value="">Select Category</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Room Accessories">Room Accessories</option>
+                            <option value="Cloths">Cloths</option>
+                            <option value="Medicines">Medicines</option>
+                            <option value="Appliance">Appliance</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Product Name <span class="required">*</span></label>
+                        <input type="text" name="productName" required placeholder="Enter product name" class="input-field productName">
+                    </div>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="input-group">
                         <label class="input-label">City <span class="required">*</span></label>
                         <select name="city" required class="select-field citySelect" onchange="handleCityChange(event)">
                             <option value="">Select</option>
@@ -837,6 +855,17 @@
                     </div>
                 </div>
 
+                <div class="form-grid-2">
+                    <div class="input-group">
+                        <label class="input-label">Order Value <span class="required">*</span></label>
+                        <input type="number" name="orderValue" required placeholder="Enter order value" class="input-field orderValue">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Order Status</label>
+                        <input type="text" name="orderStatus" value="Pending" readonly class="input-field orderStatus" style="background: var(--bg-lighter); font-weight: 700; color: var(--primary);">
+                    </div>
+                </div>
+
                 <div class="submit-section">
                     <p class="status-text"></p>
                     <button type="submit" class="submit-btn">Place Order</button>
@@ -874,6 +903,16 @@
                 </div>
 
                 <div class="summary-item">
+                    <span class="summary-label">Product Category</span>
+                    <div class="summary-value empty sumProductCategory">-</div>
+                </div>
+
+                <div class="summary-item">
+                    <span class="summary-label">Product Name</span>
+                    <div class="summary-value empty sumProductName">-</div>
+                </div>
+
+                <div class="summary-item">
                     <span class="summary-label">City</span>
                     <div class="summary-value empty sumCity">-</div>
                 </div>
@@ -886,6 +925,16 @@
                 <div class="summary-item">
                     <span class="summary-label">Address</span>
                     <div class="summary-value empty sumAddressDetails">-</div>
+                </div>
+
+                <div class="summary-item">
+                    <span class="summary-label">Order Value</span>
+                    <div class="summary-value empty sumOrderValue">-</div>
+                </div>
+
+                <div class="summary-item">
+                    <span class="summary-label">Order Status</span>
+                    <div class="summary-value sumOrderStatus" style="color: var(--primary); font-weight: 700;">Pending</div>
                 </div>
             </div>
         </div>
@@ -1092,6 +1141,9 @@
             const createdByName = container.querySelector('.createdByName').value;
             updateSummaryValue('.sumCreatedBy', createdByNum ? `${createdByNum} (${createdByName})` : '');
 
+            updateSummaryValue('.sumProductCategory', container.querySelector('.productCategory').value);
+            updateSummaryValue('.sumProductName', container.querySelector('.productName').value);
+
             let cityVal = container.querySelector('.citySelect').value;
             if (cityVal === 'Others') cityVal = container.querySelector('.customCity').value.trim();
             updateSummaryValue('.sumCity', cityVal);
@@ -1101,6 +1153,7 @@
             updateSummaryValue('.sumDeliveryArea', areaVal);
 
             updateSummaryValue('.sumAddressDetails', getFormattedAddress(container));
+            updateSummaryValue('.sumOrderValue', container.querySelector('.orderValue').value);
         }
 
         function handleFormSubmit(container, userId, userName) {
@@ -1122,6 +1175,7 @@
             formData.set('deliveryArea', finalArea);
             formData.append('addressDetails', getFormattedAddress(container));
             formData.append('createdByNum', userId);
+            formData.append('orderStatus', 'Pending');
 
             fetch(scriptURL, { method: 'POST', body: formData})
                 .then(response => response.json())
@@ -1132,6 +1186,7 @@
                     form.reset();
                     container.querySelector('.createdByNum').value = userId;
                     container.querySelector('.createdByName').value = userName;
+                    container.querySelector('.orderStatus').value = 'Pending';
                     container.querySelector('.customCityWrapper').style.display = 'none';
                     container.querySelector('.customAreaWrapper').style.display = 'none';
                     container.querySelector('.deliveryAreaSelect').innerHTML = '<option value="">Select</option>';
