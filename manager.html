@@ -102,7 +102,6 @@
                         
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                             <input type="text" id="newAgentUser" placeholder="Agent Username (e.g. agent01)" class="px-4 py-2 border rounded-lg text-slate-900">
-                            <!-- Input type text for visible password typing -->
                             <input type="text" id="newAgentPassword" placeholder="Agent Password (Visible)" class="px-4 py-2 border rounded-lg text-slate-900 font-mono">
                             <select id="newAgentTeam" class="px-4 py-2 border rounded-lg text-slate-900">
                                 <option value="Acquisition">Acquisition</option>
@@ -407,7 +406,6 @@
         function renderAgentUsersTable() {
             const tbody = document.getElementById('agentUsersTable');
             tbody.innerHTML = '';
-            agentUsers.pop ? null : null; // placeholder logic if needed
             agentUsers.forEach((agent, index) => {
                 tbody.innerHTML += `
                     <tr class="border-b">
