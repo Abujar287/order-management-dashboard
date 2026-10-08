@@ -288,7 +288,7 @@
 
         /* Order Form Section */
         .order-container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
@@ -307,57 +307,41 @@
             font-size: 15px;
         }
 
-        .form-container {
+        .form-wrapper {
             display: grid;
-            grid-template-columns: 1fr 380px;
-            gap: 32px;
+            grid-template-columns: 1fr 300px;
+            gap: 24px;
             align-items: start;
         }
 
         .form-card {
             background: white;
             border-radius: 16px;
-            padding: 32px;
+            padding: 28px;
             box-shadow: var(--shadow-md);
             border: 1px solid var(--border);
         }
 
-        .form-section {
-            margin-bottom: 32px;
-        }
-
-        .form-section:last-child {
-            margin-bottom: 0;
-        }
-
-        .section-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .section-title::before {
-            content: '';
-            width: 4px;
-            height: 20px;
-            background: linear-gradient(180deg, var(--primary) 0%, var(--accent) 100%);
-            border-radius: 2px;
-        }
-
-        .grid-2 {
+        /* 3-Column Grid Layout */
+        .form-grid-3 {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 28px;
         }
 
-        .grid-1 {
+        .form-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+
+        .form-grid-1 {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 16px;
+            gap: 20px;
+            margin-bottom: 28px;
         }
 
         .input-group {
@@ -367,9 +351,11 @@
 
         .input-label {
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-primary);
-            margin-bottom: 8px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             display: flex;
             align-items: center;
             gap: 4px;
@@ -381,10 +367,10 @@
 
         .input-field,
         .select-field {
-            padding: 12px 14px;
+            padding: 10px 12px;
             border: 2px solid var(--border);
-            border-radius: 10px;
-            font-size: 14px;
+            border-radius: 8px;
+            font-size: 13px;
             font-family: 'Inter', sans-serif;
             transition: all 0.3s ease;
             background: white;
@@ -414,7 +400,7 @@
         .address-field {
             display: flex;
             border: 2px solid var(--border);
-            border-radius: 10px;
+            border-radius: 8px;
             overflow: hidden;
             transition: all 0.3s ease;
         }
@@ -426,12 +412,12 @@
 
         .address-label {
             background: var(--bg-lighter);
-            padding: 12px 14px;
+            padding: 10px 12px;
             font-weight: 700;
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-light);
             border-right: 2px solid var(--border);
-            min-width: 100px;
+            min-width: 95px;
             display: flex;
             align-items: center;
         }
@@ -439,8 +425,8 @@
         .address-input {
             flex: 1;
             border: none;
-            padding: 12px 14px;
-            font-size: 14px;
+            padding: 10px 12px;
+            font-size: 13px;
             outline: none;
             background: white;
             color: var(--text-primary);
@@ -460,7 +446,7 @@
             padding: 10px 12px;
             border: 2px solid var(--border);
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 13px;
             transition: all 0.3s ease;
         }
 
@@ -475,14 +461,14 @@
             align-items: center;
             justify-content: space-between;
             gap: 16px;
-            margin-top: 32px;
-            padding-top: 24px;
+            margin-top: 24px;
+            padding-top: 20px;
             border-top: 2px solid var(--border);
         }
 
         .status-text {
-            min-height: 22px;
-            font-size: 14px;
+            min-height: 20px;
+            font-size: 13px;
             font-weight: 700;
             display: flex;
             align-items: center;
@@ -498,13 +484,13 @@
         }
 
         .submit-btn {
-            padding: 12px 28px;
+            padding: 10px 24px;
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
             font-weight: 700;
-            font-size: 15px;
+            font-size: 14px;
             cursor: pointer;
             transition: all 0.3s ease;
             white-space: nowrap;
@@ -521,64 +507,54 @@
             cursor: not-allowed;
         }
 
-        /* Summary Card */
+        /* Summary Card - Compact */
         .summary-card {
             background: linear-gradient(135deg, white 0%, var(--bg-light) 100%);
-            border-radius: 16px;
-            padding: 24px;
+            border-radius: 12px;
+            padding: 16px;
             box-shadow: var(--shadow-md);
             border: 1px solid var(--border);
             position: sticky;
             top: 32px;
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
         }
 
         .summary-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 16px;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
             border-bottom: 2px solid var(--primary);
         }
 
         .summary-header h3 {
-            font-size: 16px;
+            font-size: 14px;
             color: var(--primary);
-        }
-
-        .summary-badge {
-            font-size: 11px;
-            background: rgba(30, 64, 175, 0.1);
-            color: var(--primary);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-weight: 700;
+            margin: 0;
         }
 
         .summary-item {
-            margin-bottom: 16px;
-            padding: 12px;
+            margin-bottom: 10px;
+            padding: 8px 10px;
             background: white;
-            border-radius: 10px;
+            border-radius: 8px;
             border: 1px solid var(--border);
         }
 
         .summary-label {
-            font-size: 12px;
+            font-size: 10px;
             color: var(--text-light);
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .summary-value {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-primary);
             font-weight: 600;
             word-break: break-word;
-            white-space: pre-line;
-            line-height: 1.4;
+            line-height: 1.3;
         }
 
         .summary-value.empty {
@@ -588,13 +564,18 @@
 
         /* Responsive */
         @media (max-width: 1024px) {
-            .form-container {
+            .form-wrapper {
                 grid-template-columns: 1fr;
             }
 
             .summary-card {
                 position: relative;
                 top: 0;
+                max-height: none;
+            }
+
+            .form-grid-3 {
+                grid-template-columns: 1fr 1fr;
             }
         }
 
@@ -614,12 +595,13 @@
                 transform: translateX(0);
             }
 
-            .grid-2 {
+            .form-grid-3,
+            .form-grid-2 {
                 grid-template-columns: 1fr;
             }
 
             .form-card {
-                padding: 20px;
+                padding: 16px;
             }
 
             .content-area {
@@ -730,150 +712,136 @@
 
     <!-- Order Form Template -->
     <template id="orderFormTemplate">
-        <div class="form-container">
+        <div class="form-wrapper">
             <form class="form-card orderForm">
-                <!-- Customer Information -->
-                <div class="form-section">
-                    <div class="section-title">Customer Information</div>
-                    <div class="grid-2">
-                        <div class="input-group">
-                            <label class="input-label">Customer Name <span class="required">*</span></label>
-                            <input type="text" name="customerName" required placeholder="Full name" class="input-field customerName">
-                        </div>
-                        <div class="input-group">
-                            <label class="input-label">Phone Number <span class="required">*</span></label>
-                            <input type="tel" name="customerContact" required placeholder="Contact number" class="input-field customerContact">
-                        </div>
+                <!-- Row 1: Customer Info (3 columns) -->
+                <div class="form-grid-3">
+                    <div class="input-group">
+                        <label class="input-label">Customer Name <span class="required">*</span></label>
+                        <input type="text" name="customerName" required placeholder="Full name" class="input-field customerName">
                     </div>
-                    <div class="grid-2" style="margin-top: 16px;">
-                        <div class="input-group">
-                            <label class="input-label">Gender <span class="required">*</span></label>
-                            <select name="gender" required class="select-field gender">
-                                <option value="">Select gender</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-                        <div class="input-group">
-                            <label class="input-label">Create Date</label>
-                            <input type="text" name="createDate" readonly class="input-field createDate" style="background: var(--bg-lighter);">
-                        </div>
+                    <div class="input-group">
+                        <label class="input-label">Phone <span class="required">*</span></label>
+                        <input type="tel" name="customerContact" required placeholder="Contact" class="input-field customerContact">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Gender <span class="required">*</span></label>
+                        <select name="gender" required class="select-field gender">
+                            <option value="">Select</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
                     </div>
                 </div>
 
-                <!-- Order Details -->
-                <div class="form-section">
-                    <div class="section-title">Order Details</div>
-                    <div class="grid-2">
-                        <div class="input-group">
-                            <label class="input-label">Order Channel <span class="required">*</span></label>
-                            <select name="orderChannel" required class="select-field orderChannel">
-                                <option value="">Select channel</option>
-                                <option value="Acquisition">Acquisition</option>
-                                <option value="Retention">Retention</option>
-                                <option value="KAM">KAM</option>
-                                <option value="Call-Center">Call-Center</option>
-                                <option value="Facebook">Facebook</option>
-                                <option value="Back-Office">Back-Office</option>
-                                <option value="VOC">VOC</option>
-                            </select>
-                        </div>
-                        <div class="input-group">
-                            <label class="input-label">Agent ID</label>
-                            <input type="text" name="createdByNum" readonly class="input-field createdByNum" style="background: var(--bg-lighter);">
-                        </div>
+                <!-- Row 2: Agent Info (2 columns) -->
+                <div class="form-grid-2">
+                    <div class="input-group">
+                        <label class="input-label">Agent ID</label>
+                        <input type="text" name="createdByNum" readonly class="input-field createdByNum" style="background: var(--bg-lighter);">
                     </div>
-                    <div class="input-group" style="margin-top: 16px;">
+                    <div class="input-group">
                         <label class="input-label">Agent Name</label>
                         <input type="text" name="createdByName" readonly class="input-field createdByName" style="background: var(--bg-lighter);">
                     </div>
                 </div>
 
-                <!-- Delivery Location -->
-                <div class="form-section">
-                    <div class="section-title">Delivery Location</div>
-                    <div class="grid-2">
-                        <div class="input-group">
-                            <label class="input-label">City <span class="required">*</span></label>
-                            <select name="city" required class="select-field citySelect" onchange="handleCityChange(event)">
-                                <option value="">Select city</option>
-                                <option value="Dhaka">Dhaka</option>
-                                <option value="Chittagong">Chittagong</option>
-                                <option value="Jashore">Jashore</option>
-                                <option value="Others">Others</option>
-                            </select>
-                            <div class="custom-input-wrapper customCityWrapper">
-                                <input type="text" placeholder="Enter custom city name" class="customCity">
-                            </div>
+                <!-- Row 3: Order Channel + City + Delivery Area (3 columns) -->
+                <div class="form-grid-3">
+                    <div class="input-group">
+                        <label class="input-label">Order Channel <span class="required">*</span></label>
+                        <select name="orderChannel" required class="select-field orderChannel">
+                            <option value="">Select</option>
+                            <option value="Acquisition">Acquisition</option>
+                            <option value="Retention">Retention</option>
+                            <option value="KAM">KAM</option>
+                            <option value="Call-Center">Call-Center</option>
+                            <option value="Facebook">Facebook</option>
+                            <option value="Back-Office">Back-Office</option>
+                            <option value="VOC">VOC</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">City <span class="required">*</span></label>
+                        <select name="city" required class="select-field citySelect" onchange="handleCityChange(event)">
+                            <option value="">Select</option>
+                            <option value="Dhaka">Dhaka</option>
+                            <option value="Chittagong">Chittagong</option>
+                            <option value="Jashore">Jashore</option>
+                            <option value="Others">Others</option>
+                        </select>
+                        <div class="custom-input-wrapper customCityWrapper">
+                            <input type="text" placeholder="Enter custom city" class="customCity">
                         </div>
-                        <div class="input-group">
-                            <label class="input-label">Delivery Area <span class="required">*</span></label>
-                            <select name="deliveryArea" required class="select-field deliveryAreaSelect" onchange="handleAreaChange(event)">
-                                <option value="">Select city first</option>
-                            </select>
-                            <div class="custom-input-wrapper customAreaWrapper">
-                                <input type="text" placeholder="Enter custom area" class="customArea">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Area <span class="required">*</span></label>
+                        <select name="deliveryArea" required class="select-field deliveryAreaSelect" onchange="handleAreaChange(event)">
+                            <option value="">Select</option>
+                        </select>
+                        <div class="custom-input-wrapper customAreaWrapper">
+                            <input type="text" placeholder="Enter custom area" class="customArea">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 4: Address Details (Full width) -->
+                <div class="form-grid-1">
+                    <div class="input-group">
+                        <label class="input-label">Address Details</label>
+                        <div class="address-group">
+                            <div class="address-field">
+                                <div class="address-label">Flat</div>
+                                <input type="text" class="address-input addrFlat" placeholder="e.g. 102">
+                            </div>
+                            <div class="address-field">
+                                <div class="address-label">House</div>
+                                <input type="text" class="address-input addrHouse" placeholder="e.g. 45">
+                            </div>
+                            <div class="address-field">
+                                <div class="address-label">Road</div>
+                                <input type="text" class="address-input addrRoad" placeholder="e.g. 15A">
+                            </div>
+                            <div class="address-field">
+                                <div class="address-label">Block</div>
+                                <input type="text" class="address-input addrBlock" placeholder="e.g. F">
+                            </div>
+                            <div class="address-field" style="grid-column: span 2;">
+                                <div class="address-label">Other</div>
+                                <input type="text" class="address-input addrOthers" placeholder="Additional info...">
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Address Details -->
-                <div class="form-section">
-                    <div class="section-title">Address Details</div>
-                    <div class="address-group">
-                        <div class="address-field">
-                            <div class="address-label">Flat</div>
-                            <input type="text" class="address-input addrFlat" placeholder="e.g. 102">
-                        </div>
-                        <div class="address-field">
-                            <div class="address-label">House</div>
-                            <input type="text" class="address-input addrHouse" placeholder="e.g. 45">
-                        </div>
-                        <div class="address-field">
-                            <div class="address-label">Road</div>
-                            <input type="text" class="address-input addrRoad" placeholder="e.g. 15A">
-                        </div>
-                        <div class="address-field">
-                            <div class="address-label">Block/Sector</div>
-                            <input type="text" class="address-input addrBlock" placeholder="e.g. F">
-                        </div>
+                <!-- Row 5: Dates (3 columns) -->
+                <div class="form-grid-3">
+                    <div class="input-group">
+                        <label class="input-label">Create Date</label>
+                        <input type="text" name="createDate" readonly class="input-field createDate" style="background: var(--bg-lighter);">
                     </div>
-                    <div class="address-group" style="margin-top: 12px;">
-                        <div class="address-field" style="grid-column: span 2;">
-                            <div class="address-label">Other Details</div>
-                            <input type="text" class="address-input addrOthers" placeholder="Additional address information...">
-                        </div>
+                    <div class="input-group">
+                        <label class="input-label">Schedule Date <span class="required">*</span></label>
+                        <input type="date" name="scheduleDate" required class="input-field scheduleDate">
                     </div>
-                </div>
-
-                <!-- Schedule -->
-                <div class="form-section">
-                    <div class="section-title">Delivery Schedule</div>
-                    <div class="grid-2">
-                        <div class="input-group">
-                            <label class="input-label">Date <span class="required">*</span></label>
-                            <input type="date" name="scheduleDate" required class="input-field scheduleDate">
-                        </div>
-                        <div class="input-group">
-                            <label class="input-label">Time Slot <span class="required">*</span></label>
-                            <select name="scheduledTime" required class="select-field scheduledTime">
-                                <option value="">Select time slot</option>
-                                <option value="9AM to 10AM">9 AM - 10 AM</option>
-                                <option value="10AM to 11AM">10 AM - 11 AM</option>
-                                <option value="11AM to 12PM">11 AM - 12 PM</option>
-                                <option value="12PM to 1PM">12 PM - 1 PM</option>
-                                <option value="1PM to 2PM">1 PM - 2 PM</option>
-                                <option value="2PM to 3PM">2 PM - 3 PM</option>
-                                <option value="3PM to 4PM">3 PM - 4 PM</option>
-                                <option value="4PM to 5PM">4 PM - 5 PM</option>
-                                <option value="5PM to 6PM">5 PM - 6 PM</option>
-                                <option value="6PM to 7PM">6 PM - 7 PM</option>
-                                <option value="7PM to 8PM">7 PM - 8 PM</option>
-                                <option value="8PM to 9PM">8 PM - 9 PM</option>
-                            </select>
-                        </div>
+                    <div class="input-group">
+                        <label class="input-label">Time Slot <span class="required">*</span></label>
+                        <select name="scheduledTime" required class="select-field scheduledTime">
+                            <option value="">Select</option>
+                            <option value="9AM to 10AM">9 AM - 10 AM</option>
+                            <option value="10AM to 11AM">10 AM - 11 AM</option>
+                            <option value="11AM to 12PM">11 AM - 12 PM</option>
+                            <option value="12PM to 1PM">12 PM - 1 PM</option>
+                            <option value="1PM to 2PM">1 PM - 2 PM</option>
+                            <option value="2PM to 3PM">2 PM - 3 PM</option>
+                            <option value="3PM to 4PM">3 PM - 4 PM</option>
+                            <option value="4PM to 5PM">4 PM - 5 PM</option>
+                            <option value="5PM to 6PM">5 PM - 6 PM</option>
+                            <option value="6PM to 7PM">6 PM - 7 PM</option>
+                            <option value="7PM to 8PM">7 PM - 8 PM</option>
+                            <option value="8PM to 9PM">8 PM - 9 PM</option>
+                        </select>
                     </div>
                 </div>
 
@@ -884,11 +852,10 @@
                 </div>
             </form>
 
-            <!-- Summary Card -->
+            <!-- Summary Card - Compact -->
             <div class="summary-card">
                 <div class="summary-header">
                     <h3>Order Summary</h3>
-                    <span class="summary-badge">Live Preview</span>
                 </div>
 
                 <div class="summary-item">
@@ -907,7 +874,7 @@
                 </div>
 
                 <div class="summary-item">
-                    <div class="summary-label">Order Channel</div>
+                    <div class="summary-label">Channel</div>
                     <div class="summary-value empty sumOrderChannel">-</div>
                 </div>
 
@@ -1082,7 +1049,7 @@
                 customAreaInput.required = true;
             } else if (cityAreaMap[selectedCity]) {
                 const defaultOpt = document.createElement('option');
-                defaultOpt.value = ''; defaultOpt.innerText = 'Select area';
+                defaultOpt.value = ''; defaultOpt.innerText = 'Select';
                 areaSelect.appendChild(defaultOpt);
 
                 cityAreaMap[selectedCity].forEach(area => {
@@ -1092,7 +1059,7 @@
                 });
             } else {
                 const defaultOpt = document.createElement('option');
-                defaultOpt.value = ''; defaultOpt.innerText = 'Select city first';
+                defaultOpt.value = ''; defaultOpt.innerText = 'Select';
                 areaSelect.appendChild(defaultOpt);
             }
             updateLiveSummary(form.closest('div'));
@@ -1120,7 +1087,7 @@
             const road = container.querySelector('.addrRoad').value.trim() || '-';
             const block = container.querySelector('.addrBlock').value.trim() || '-';
             const others = container.querySelector('.addrOthers').value.trim() || '-';
-            return `Flat: ${flat}\nHouse: ${house}\nRoad: ${road}\nBlock: ${block}\nOther: ${others}`;
+            return `Flat: ${flat}\nHouse: ${house}\nRoad: ${road}\nBlock: ${block}`;
         }
 
         function updateLiveSummary(container) {
@@ -1163,7 +1130,7 @@
             const statusText = container.querySelector('.status-text');
 
             submitBtn.disabled = true;
-            submitBtn.innerText = '⏳ Placing Order...';
+            submitBtn.innerText = '⏳ Processing...';
 
             let finalCity = container.querySelector('.citySelect').value;
             if (finalCity === 'Others') finalCity = container.querySelector('.customCity').value.trim();
@@ -1188,7 +1155,7 @@
                     container.querySelector('.createdByName').value = userName;
                     container.querySelector('.customCityWrapper').style.display = 'none';
                     container.querySelector('.customAreaWrapper').style.display = 'none';
-                    container.querySelector('.deliveryAreaSelect').innerHTML = '<option value="">Select city first</option>';
+                    container.querySelector('.deliveryAreaSelect').innerHTML = '<option value="">Select</option>';
                     
                     const today = new Date();
                     container.querySelector('.createDate').value = today.toISOString().split('T')[0] + ' ' + today.toLocaleTimeString();
