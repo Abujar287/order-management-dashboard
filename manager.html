@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -103,7 +102,7 @@
                         
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                             <input type="text" id="newAgentUser" placeholder="Agent Username (e.g. agent01)" class="px-4 py-2 border rounded-lg text-slate-900">
-                            <input type="password" id="newAgentPassword" placeholder="Agent Password" class="px-4 py-2 border rounded-lg text-slate-900">
+                            <input type="text" id="newAgentPassword" placeholder="Agent Password" class="px-4 py-2 border rounded-lg text-slate-900">
                             <select id="newAgentTeam" class="px-4 py-2 border rounded-lg text-slate-900">
                                 <option value="Acquisition">Acquisition</option>
                                 <option value="Retention">Retention</option>
@@ -142,14 +141,52 @@
                         </button>
                     </div>
 
-                    <div class="bg-white p-4 rounded-xl shadow flex flex-wrap gap-4 items-center">
+                    <div class="bg-white p-4 rounded-xl shadow flex flex-wrap gap-6 items-center">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Create Date Filter:</label>
+                            <select id="orderCreateDateFilter" onchange="handleDetailFilterTypeChange('createDate')" class="px-3 py-1.5 border rounded text-sm text-slate-900 bg-white">
+                                <option value="all">All Time</option>
+                                <option value="today">Today</option>
+                                <option value="yesterday">Yesterday</option>
+                                <option value="last7">Last 7 Days</option>
+                                <option value="last30">Last 30 Days</option>
+                                <option value="thisMonth">This Month</option>
+                                <option value="lastMonth">Last Month</option>
+                                <option value="lastYear">Last Year</option>
+                                <option value="custom">Custom Date Range</option>
+                            </select>
+                            <div id="customDetailCreateDateContainer" class="hidden gap-2 items-center mt-2">
+                                <input type="date" id="orderCreateStartDate" onchange="applyFilters()" class="px-2 py-1 border rounded text-sm">
+                                <span>to</span>
+                                <input type="date" id="orderCreateEndDate" onchange="applyFilters()" class="px-2 py-1 border rounded text-sm">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Schedule Date Filter:</label>
+                            <select id="orderScheduleDateFilter" onchange="handleDetailFilterTypeChange('scheduleDate')" class="px-3 py-1.5 border rounded text-sm text-slate-900 bg-white">
+                                <option value="all">All Time</option>
+                                <option value="today">Today</option>
+                                <option value="yesterday">Yesterday</option>
+                                <option value="last7">Last 7 Days</option>
+                                <option value="last30">Last 30 Days</option>
+                                <option value="thisMonth">This Month</option>
+                                <option value="lastMonth">Last Month</option>
+                                <option value="lastYear">Last Year</option>
+                                <option value="custom">Custom Date Range</option>
+                            </select>
+                            <div id="customDetailScheduleDateContainer" class="hidden gap-2 items-center mt-2">
+                                <input type="date" id="orderScheduleStartDate" onchange="applyFilters()" class="px-2 py-1 border rounded text-sm">
+                                <span>to</span>
+                                <input type="date" id="orderScheduleEndDate" onchange="applyFilters()" class="px-2 py-1 border rounded text-sm">
+                            </div>
+                        </div>
                         <div>
                             <label class="block text-xs font-semibold text-slate-500 mb-1">Search Order ID:</label>
-                            <input type="text" id="orderIdSearchInput" onkeyup="applyFilters()" placeholder="Enter Order ID..." class="px-3 py-1.5 border rounded text-sm text-slate-900 w-48">
+                            <input type="text" id="orderIdSearchInput" onkeyup="applyFilters()" placeholder="Enter Order ID..." class="px-3 py-1.5 border rounded text-sm text-slate-900 w-44">
                         </div>
                         <div>
                             <label class="block text-xs font-semibold text-slate-500 mb-1">Search Contact:</label>
-                            <input type="text" id="contactSearchInput" onkeyup="applyFilters()" placeholder="Mobile Number..." class="px-3 py-1.5 border rounded text-sm text-slate-900 w-48">
+                            <input type="text" id="contactSearchInput" onkeyup="applyFilters()" placeholder="Mobile Number..." class="px-3 py-1.5 border rounded text-sm text-slate-900 w-44">
                         </div>
                     </div>
 
@@ -214,20 +251,20 @@
                     </div>
 
                     <div class="bg-white p-6 rounded-xl shadow border-l-4 border-blue-600">
-                        <span class="text-xs font-bold uppercase text-slate-500 block mb-1">Total Orders (Summary Count)[cite: 1]</span>
+                        <span class="text-xs font-bold uppercase text-slate-500 block mb-1">Total Orders (Summary Count)</span>
                         <h2 id="summaryTotalCount" class="text-4xl font-extrabold text-slate-900">0</h2>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <!-- City Wise Summary[cite: 1] -->
+                        <!-- City Wise Summary -->
                         <div class="bg-white p-6 rounded-xl shadow">
-                            <h4 class="font-bold text-slate-800 mb-4 pb-2 border-b-2 border-blue-600">City Wise Summary[cite: 1]</h4>
+                            <h4 class="font-bold text-slate-800 mb-4 pb-2 border-b-2 border-blue-600">City Wise Summary</h4>
                             <div class="overflow-x-auto">
                                 <table class="w-full text-left text-sm">
                                     <thead>
                                         <tr class="border-b text-slate-500">
-                                            <th class="pb-2">City[cite: 1]</th>
-                                            <th class="pb-2 text-right">Order Count[cite: 1]</th>
+                                            <th class="pb-2">City</th>
+                                            <th class="pb-2 text-right">Order Count</th>
                                         </tr>
                                     </thead>
                                     <tbody id="citySummaryBody" class="text-slate-700"></tbody>
@@ -236,15 +273,15 @@
                             </div>
                         </div>
 
-                        <!-- Channel Wise Summary[cite: 1] -->
+                        <!-- Channel Wise Summary -->
                         <div class="bg-white p-6 rounded-xl shadow">
-                            <h4 class="font-bold text-slate-800 mb-4 pb-2 border-b-2 border-blue-600">Channel Wise Summary[cite: 1]</h4>
+                            <h4 class="font-bold text-slate-800 mb-4 pb-2 border-b-2 border-blue-600">Channel Wise Summary</h4>
                             <div class="overflow-x-auto">
                                 <table class="w-full text-left text-sm">
                                     <thead>
                                         <tr class="border-b text-slate-500">
-                                            <th class="pb-2">Channel[cite: 1]</th>
-                                            <th class="pb-2 text-right">Order Count[cite: 1]</th>
+                                            <th class="pb-2">Channel</th>
+                                            <th class="pb-2 text-right">Order Count</th>
                                         </tr>
                                     </thead>
                                     <tbody id="channelSummaryBody" class="text-slate-700"></tbody>
@@ -253,15 +290,15 @@
                             </div>
                         </div>
 
-                        <!-- Delivery Area Wise Summary[cite: 1] -->
+                        <!-- Delivery Area Wise Summary -->
                         <div class="bg-white p-6 rounded-xl shadow">
-                            <h4 class="font-bold text-slate-800 mb-4 pb-2 border-b-2 border-blue-600">Delivery Area Wise Summary[cite: 1]</h4>
+                            <h4 class="font-bold text-slate-800 mb-4 pb-2 border-b-2 border-blue-600">Delivery Area Wise Summary</h4>
                             <div class="overflow-x-auto">
                                 <table class="w-full text-left text-sm">
                                     <thead>
                                         <tr class="border-b text-slate-500">
-                                            <th class="pb-2">Delivery Area[cite: 1]</th>
-                                            <th class="pb-2 text-right">Order Count[cite: 1]</th>
+                                            <th class="pb-2">Delivery Area</th>
+                                            <th class="pb-2 text-right">Order Count</th>
                                         </tr>
                                     </thead>
                                     <tbody id="areaSummaryBody" class="text-slate-700"></tbody>
@@ -373,7 +410,7 @@
                 tbody.innerHTML += `
                     <tr class="border-b">
                         <td class="p-3 font-medium text-slate-800">${agent.user}</td>
-                        <td class="p-3 text-slate-800">••••••••</td>
+                        <td class="p-3 text-slate-800 font-mono">${agent.pass}</td>
                         <td class="p-3"><span class="bg-blue-100 text-blue-800 text-xs px-2.5 py-1 rounded-full font-semibold">${agent.team}</span></td>
                         <td class="p-3 space-x-2">
                             <button onclick="editAgent(${index})" class="text-blue-600 hover:text-blue-800 text-sm font-semibold cursor-pointer">Edit</button>
@@ -476,6 +513,19 @@
             applyFilters();
         }
 
+        function handleDetailFilterTypeChange(type) {
+            if (type === 'createDate') {
+                const val = document.getElementById('orderCreateDateFilter').value;
+                const container = document.getElementById('customDetailCreateDateContainer');
+                container.style.display = (val === 'custom') ? 'flex' : 'none';
+            } else if (type === 'scheduleDate') {
+                const val = document.getElementById('orderScheduleDateFilter').value;
+                const container = document.getElementById('customDetailScheduleDateContainer');
+                container.style.display = (val === 'custom') ? 'flex' : 'none';
+            }
+            applyFilters();
+        }
+
         function applyFilters() {
             if (!rawSheetData || rawSheetData.length <= 1) return;
 
@@ -484,6 +534,7 @@
             const orderIdSearch = document.getElementById('orderIdSearchInput').value.trim().toLowerCase();
             const contactSearch = document.getElementById('contactSearchInput').value.trim().toLowerCase();
 
+            // Summary Filters
             const createFilterType = document.getElementById('createDateFilter').value;
             const createStart = document.getElementById('createStartDate').value;
             const createEnd = document.getElementById('createEndDate').value;
@@ -491,6 +542,15 @@
             const scheduleFilterType = document.getElementById('scheduleDateFilter').value;
             const scheduleStart = document.getElementById('scheduleStartDate').value;
             const scheduleEnd = document.getElementById('scheduleEndDate').value;
+
+            // Details Filters
+            const detailCreateFilterType = document.getElementById('orderCreateDateFilter').value;
+            const detailCreateStart = document.getElementById('orderCreateStartDate').value;
+            const detailCreateEnd = document.getElementById('orderCreateEndDate').value;
+
+            const detailScheduleFilterType = document.getElementById('orderScheduleDateFilter').value;
+            const detailScheduleStart = document.getElementById('orderScheduleStartDate').value;
+            const detailScheduleEnd = document.getElementById('orderScheduleEndDate').value;
 
             let summaryFilteredRows = rows.filter(r => {
                 const matchesCreateDate = matchDateCriteria(r[4], createFilterType, createStart, createEnd);
@@ -503,6 +563,12 @@
             });
 
             let detailFilteredRows = rows.filter(r => {
+                const matchesCreateDate = matchDateCriteria(r[4], detailCreateFilterType, detailCreateStart, detailCreateEnd);
+                if (!matchesCreateDate) return false;
+
+                const matchesScheduleDate = matchDateCriteria(r[11], detailScheduleFilterType, detailScheduleStart, detailScheduleEnd);
+                if (!matchesScheduleDate) return false;
+
                 if (orderIdSearch !== "") {
                     const orderIdVal = (r[0] !== undefined ? r[0] : "").toString().toLowerCase();
                     if (!orderIdVal.includes(orderIdSearch)) return false;
@@ -526,7 +592,7 @@
             const channelMap = {};
             const areaMap = {};
 
-            summaryRows.exports = summaryRows.forEach(r => {
+            summaryRows.forEach(r => {
                 const channel = r[5] || 'Unknown';
                 const city = r[8] || 'Unknown';
                 const area = r[9] || 'Unknown';
